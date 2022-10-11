@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import MainBackgroundContainer from '../../components/backgrounds';
+
 const AddRecord = () => {
 
     return (
-        <View style={styles.addRecordScreenContainer}>
-            <Text style={styles.addRecordScreenText}>Add Record Screen</Text>
-        </View>
+        <MainBackgroundContainer>
+            <View style={styles.addRecordScreenContainer}>
+                <Text style={styles.addRecordScreenText}>Add Record Screen</Text>
+            </View>
+        </MainBackgroundContainer>
     )
 }
 
