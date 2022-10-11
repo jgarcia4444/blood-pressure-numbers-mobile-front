@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../../../screens/Home';
 import AddRecord from '../../../screens/AddRecord';
 import Records from '../../../screens/Records';
-import {Ionicons} from 'react-native-vector-icons'
+import {Ionicons} from 'react-native-vector-icons';
 
 const FooterTabs = () => {
 
@@ -22,6 +22,7 @@ const FooterTabs = () => {
                 tabBarActiveTintColor: "#000",
                 tabBarInactiveTintColor: "#fff",
                 tabBarActiveBackgroundColor: 'rgba(255, 255, 255, 0.5)',
+                tabBarLabelPosition: 'below-icon',
             }}
         >
             <Tab.Screen
@@ -51,5 +52,10 @@ const FooterTabs = () => {
         </Tab.Navigator>
     )
 }
+
+const {height, width} = Dimensions.get('screen');
+
+const styles = StyleSheet.create({
+})
 
 export default FooterTabs;

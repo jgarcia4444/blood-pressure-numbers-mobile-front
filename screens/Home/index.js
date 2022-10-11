@@ -7,13 +7,29 @@ const { globalContainer } = globalStyles;
 
 const Home = () => {
 
+    const appTitleSection = (
+        <View style={styles.appTitleContainer}>
+            <Text style={styles.homeScreenTextAbbreviated}>BPN</Text>
+            <Text style={styles.homeScreenText}>Blood Pressure Numbers</Text>
+        </View>
+    )
+
+    const mostRecentSection = (
+        <View style={styles.mostRecentSection}>
+            <View style={styles.cardTitleRow}>
+                
+            </View>
+            <View style={styles.mostRecentCard}>
+
+            </View>
+        </View>
+    )
+
     return (
         <MainBackgroundContainer>
             <View style={[styles.homeScreenContainer]}>
-                <View>
-                    <Text style={styles.homeScreenTextAbbreviated}>BPN</Text>
-                    <Text style={styles.homeScreenText}>Blood Pressure Numbers</Text>
-                </View>
+                {appTitleSection}
+                {mostRecentSection}
             </View>
         </MainBackgroundContainer>
     )
@@ -23,17 +39,27 @@ const  {height, width} = Dimensions.get('screen');
 
 
 const styles = StyleSheet.create({
+    appTitleContainer: {
+        height: height * 0.15,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     homeScreenContainer: {
         alignItems: 'center',
         justifyContent: 'center',
 
     },
     homeScreenText:{
-
+        marginTop: 0,
+        fontSize: height * 0.015,
+        color: "#fff",
+        opacity: 0.50,
     },
     homeScreenTextAbbreviated: {
-        fontSize: 54,
+        fontSize: height * 0.10,
         fontWeight: 'bold',
+        marginBottom: 0,
+        color: '#fff',
     }
 })
 
