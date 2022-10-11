@@ -1,11 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
 import MainBackgroundContainer from '../../components/backgrounds/index.js';
 
 import globalStyles from '../../config/styles/globalStyles.js';
 const { globalContainer } = globalStyles; 
 
 const Home = () => {
+
+    const mostRecentRecord = undefined;
+
+    const configuredCardShadow = Platform.OS === 'android' ?
+        {
+            elevation: 7,
+        }
+        :
+        {
+            shadowColor: '#000',
+            shadowOpacity: 0.35,
+            shadowOffset: {
+                width: 0,
+                height: 3
+            },
+            shadowRadius: 3,
+        };
 
     const appTitleSection = (
         <View style={styles.appTitleContainer}>
@@ -17,10 +34,14 @@ const Home = () => {
     const mostRecentSection = (
         <View style={styles.mostRecentSection}>
             <View style={styles.cardTitleRow}>
-                
+                <Text style={styles.cardTitle}>Most Recent</Text>
             </View>
-            <View style={styles.mostRecentCard}>
-
+            <View style={[styles.mostRecentCard, configuredCardShadow]}>
+                {mostRecentRecord !== undefined ?
+                    <Text>Record Found!</Text>
+                    :
+                    <Text style={{color: '#fff'}}>Nothing has been recorded yet...</Text>
+                }
             </View>
         </View>
     )
@@ -44,6 +65,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    cardTitle: {
+        color: '#fff',
+        fontSize: height * 0.03,
+    },
+    cardTitleRow: {
+        width: '80%',
+    },
     homeScreenContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -60,7 +88,21 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 0,
         color: '#fff',
-    }
+    },
+    mostRecentCard: {
+        width: '80%',
+        backgroundColor: '#f00',
+        borderRadius: 5,
+        padding: height * 0.02,
+        alignItems: 'center'
+    },
+    mostRecentSection: {
+        marginTop: height * 0.05,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: "center"
+    },
+
 })
 
 export default Home;
