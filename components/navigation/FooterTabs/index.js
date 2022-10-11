@@ -16,27 +16,36 @@ const FooterTabs = () => {
             initialRouteName='Home'
             screenOptions={{
                 headerShown: false,
+                tabBarStyle: {
+                    backgroundColor: 'rgba(255, 40, 40, 1.0)',
+                },
+                tabBarActiveTintColor: "#000",
+                tabBarInactiveTintColor: "#fff",
+                tabBarActiveBackgroundColor: 'rgba(255, 255, 255, 0.5)',
             }}
         >
             <Tab.Screen
                 name="Home" 
                 component={Home}
                 options={{
-                    tabBarIcon: ({tintColor}) => <Ionicons name="home" size={32} color={"#f00"} />
+                    tabBarIcon: ({focused, color, size}) => <Ionicons name="home" size={focused === true ? 32 : 24} color={focused === true ? "#000" : "#fff"} />,
+                    title: "Home",
                 }} 
             />
             <Tab.Screen 
-                name="Add Record" 
+                name="AddRecord" 
                 component={AddRecord}
                 options={{
-                    tabBarIcon: ({tintColor}) => <Ionicons name="add-circle" size={32} color={"#f00"} />
+                    tabBarIcon: ({focused, color, size}) => <Ionicons name="add-circle" size={focused === true ? 32 : 24} color={focused === true ? "#000" : "#fff"} />,
+                    title: "Add",
                 }} 
             />
             <Tab.Screen 
                 name="Records" 
                 component={Records}
                 options={{
-                    tabBarIcon: ({tintColor}) => <Ionicons name="bookmarks" size={32} color={"#f00"} />
+                    tabBarIcon: ({focused, color, size}) => <Ionicons name="bookmarks" size={focused === true ? 32 : 24} color={focused === true ? "#000" : "#fff"} />,
+                    title: "Records",
                 }} 
             />
         </Tab.Navigator>
