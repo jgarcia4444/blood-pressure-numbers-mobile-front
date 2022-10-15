@@ -1,23 +1,30 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 
 import MainBackgroundContainer from '../../components/backgrounds';
+import AddRecordForm from '../../components/forms/AddRecordForm';
+import globalStyles from '../../config/styles/globalStyles';
+const {pageTitle, pageTitleContainer} = globalStyles;
 
 const AddRecord = () => {
 
     return (
         <MainBackgroundContainer>
             <View style={styles.addRecordScreenContainer}>
-                <Text style={styles.addRecordScreenText}>Add Record Screen</Text>
+                <View style={pageTitleContainer}>
+                    <Text style={pageTitle}>Add Record</Text>
+                </View>
+                <AddRecordForm />
             </View>
         </MainBackgroundContainer>
     )
 }
 
+const {height, width} = Dimensions.get('screen');
+
 const styles = StyleSheet.create({
     addRecordScreenContainer: {
-        alignItems: 'center',
-        justifyContent: 'center'
+        height: height,
     },
     addRecordScreenText: {
         fontSize: 64,

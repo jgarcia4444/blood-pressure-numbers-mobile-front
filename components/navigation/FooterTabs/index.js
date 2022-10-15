@@ -31,6 +31,7 @@ const FooterTabs = () => {
                 options={{
                     tabBarIcon: ({focused, color, size}) => <Ionicons name="home" size={focused === true ? 32 : 24} color={focused === true ? "#000" : "#fff"} />,
                     title: "Home",
+                    headerShown: false,
                 }} 
             />
             <Tab.Screen 
@@ -38,7 +39,13 @@ const FooterTabs = () => {
                 component={AddRecord}
                 options={{
                     tabBarIcon: ({focused, color, size}) => <Ionicons name="add-circle" size={focused === true ? 32 : 24} color={focused === true ? "#000" : "#fff"} />,
-                    title: "Add",
+                    title: "Add Record",
+                    // headerTitleStyle: {
+                    //     fontSize: 42,
+                    //     fontWeight: '100',
+                    //     color: '#fff',
+                    // },
+                    // headerTransparent: true,
                 }} 
             />
             <Tab.Screen 

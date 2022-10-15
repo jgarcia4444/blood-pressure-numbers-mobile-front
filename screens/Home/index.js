@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Dimensions, Platform } from 'react-native';
 import MainBackgroundContainer from '../../components/backgrounds/index.js';
 
 import globalStyles from '../../config/styles/globalStyles.js';
@@ -47,12 +47,14 @@ const Home = () => {
     )
 
     return (
+            <ScrollView>    
         <MainBackgroundContainer>
-            <View style={[styles.homeScreenContainer]}>
-                {appTitleSection}
-                {mostRecentSection}
-            </View>
+                <View style={[styles.homeScreenContainer]}>
+                    {appTitleSection}
+                    {mostRecentSection}
+                </View>
         </MainBackgroundContainer>
+            </ScrollView>
     )
 }
 
