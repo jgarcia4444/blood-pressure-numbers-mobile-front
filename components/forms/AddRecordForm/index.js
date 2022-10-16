@@ -1,10 +1,14 @@
 import React, { useState, } from 'react';
-import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform } from 'react-native';
+import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform, } from 'react-native';
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 const AddRecordForm = () => {
 
     const [systolic, setSystolic] = useState("");
     const [diastolic, setDiastolic] = useState("");
+
+    const armValues = ['Left', 'Right'];
+    const [armSelectedIndex, setArmSelectedIndex] = useState();
 
     return (
         <View style={[styles.addRecordContainer]}>
@@ -27,6 +31,22 @@ const AddRecordForm = () => {
                         </View>
                     </View>
                 </View>
+                <View style={styles.formRow}>
+                    <View style={styles.formContainer}>
+                        <View style={styles.formLabelRow}>
+                            <Text style={styles.formLabel}>Arm Taken</Text>
+                        </View>
+                        <SegmentedControl 
+                            style={styles.segmentControl}
+                            values={armValues}
+                            selectedIndex={armSelectedIndex}
+                            onChange={(e) => {
+                                setArmSelectedIndex(e.nativeEvent.selectedSegmentIndex);
+                            }}
+                            tintColor='#fff'
+                        />
+                    </View>
+                </View>
             </ScrollView>
         </View>
     )
@@ -44,6 +64,9 @@ const styles = StyleSheet.create({
     },
     formCol: {
         width: '50%',
+    },
+    formContainer: {
+        width: '100%',
     },
     formInput: {
         width: '100%',
@@ -67,8 +90,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        marginVertical: height * 0.025,
     },
+    segmentControl: {
+        width: '100%',
 
+    },
 })
 
 export default AddRecordForm;
