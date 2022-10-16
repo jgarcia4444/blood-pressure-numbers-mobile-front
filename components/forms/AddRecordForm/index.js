@@ -1,5 +1,5 @@
-import React, { useState, } from 'react';
-import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform, } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform, TouchableOpacity } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 const AddRecordForm = () => {
@@ -9,7 +9,31 @@ const AddRecordForm = () => {
     const [notes, setNotes] = useState("");
 
     const armValues = ['Left', 'Right'];
-    const [armSelectedIndex, setArmSelectedIndex] = useState();
+    const [armSelectedIndex, setArmSelectedIndex] = useState(null);
+    const [requirementsMet, setRequirementsMet] = useState(false);
+
+    const handleSavePress = () => {
+
+    }
+
+    const isValid = requirementsMet === true &&
+    {
+        backgroundColor: '#fff',
+    }
+    const isValidText = requirementsMet === true &&
+    {
+        color: "#f00",
+    }
+
+    useEffect(() => {
+        if ((systolic !== "") && (diastolic !== "") && (armSelectedIndex !== null)) {
+            setTimeout(() => {
+                setRequirementsMet(true);
+            }, 500)
+        } else {
+            setRequirementsMet(false);
+        }
+    },)
 
     return (
         <View style={[styles.addRecordContainer]}>
@@ -53,7 +77,7 @@ const AddRecordForm = () => {
                         <View style={styles.formLabelRow}>
                             <Text style={styles.formLabel}>Notes</Text>
                         </View>
-                        <View style={styles.formInputContainer}>
+                        <View style={[styles.formInputContainer, {width: '100%'}]}>
                             <TextInput 
                                 value={notes}
                                 onChange={(val) => setNotes(val)}
@@ -63,6 +87,11 @@ const AddRecordForm = () => {
                             />
                         </View>
                     </View>
+                </View>
+                <View style={styles.formRow}>
+                    <TouchableOpacity style={[styles.saveBtn, isValid]} onPress={handleSavePress}>
+                        <Text style={[styles.saveBtnText, isValidText]}>Save</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </View>
@@ -90,7 +119,7 @@ const styles = StyleSheet.create({
         height: height * 0.04,
     },
     formInputContainer: {
-        width: '95%',
+        width: '97.5%',
         padding: 5,
         backgroundColor: 'rgba(255, 255, 255, 0.25)',
         borderRadius: 5,
@@ -113,6 +142,19 @@ const styles = StyleSheet.create({
     notesTextArea: {
         width: '100%',
         height: height * 0.1,
+    },
+    saveBtn: {
+        width: '100%',
+        paddingVertical: height * 0.02,
+        borderWidth: 2,
+        borderColor: '#fff',
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    saveBtnText: {
+        color: '#fff',
+        fontWeight: '900',
+        fontSize: 18,
     },
     segmentControl: {
         width: '100%',
