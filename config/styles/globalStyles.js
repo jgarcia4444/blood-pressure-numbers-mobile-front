@@ -11,10 +11,9 @@ export default {
         height: height,
     },
     pageTitle: {
-        fontSize: 36,
-        fontColor: '#fff',
-        fontWeight: '400',
-        
+        fontSize: 40,
+        color: '#fff',
+        fontWeight: '900',
     },
     pageTitleContainer: {
         width: '100%',
