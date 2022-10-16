@@ -6,6 +6,7 @@ const AddRecordForm = () => {
 
     const [systolic, setSystolic] = useState("");
     const [diastolic, setDiastolic] = useState("");
+    const [notes, setNotes] = useState("");
 
     const armValues = ['Left', 'Right'];
     const [armSelectedIndex, setArmSelectedIndex] = useState();
@@ -47,6 +48,22 @@ const AddRecordForm = () => {
                         />
                     </View>
                 </View>
+                <View style={styles.formRow}>
+                    <View style={styles.formContainer}>
+                        <View style={styles.formLabelRow}>
+                            <Text style={styles.formLabel}>Notes</Text>
+                        </View>
+                        <View style={styles.formInputContainer}>
+                            <TextInput 
+                                value={notes}
+                                onChange={(val) => setNotes(val)}
+                                placeholder="Write Here"
+                                multiline={true}
+                                style={styles.notesTextArea}
+                            />
+                        </View>
+                    </View>
+                </View>
             </ScrollView>
         </View>
     )
@@ -75,7 +92,8 @@ const styles = StyleSheet.create({
     formInputContainer: {
         width: '95%',
         padding: 5,
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+        borderRadius: 5,
     },
     formLabel: {
         fontSize: 24,
@@ -91,6 +109,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginVertical: height * 0.025,
+    },
+    notesTextArea: {
+        width: '100%',
+        height: height * 0.1,
     },
     segmentControl: {
         width: '100%',
