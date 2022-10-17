@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, Alert } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 const AddRecordForm = () => {
 
     const [systolic, setSystolic] = useState("");
+    const [errorSystolic, setErrorSystolic] = useState("");
     const [diastolic, setDiastolic] = useState("");
+    const [errorDiastolic, setErrorDiastolic] = useState("");
     const [notes, setNotes] = useState("");
 
     const armValues = ['Left', 'Right'];
@@ -13,7 +15,46 @@ const AddRecordForm = () => {
     const [requirementsMet, setRequirementsMet] = useState(false);
 
     const handleSavePress = () => {
+        if (requirementsMet === true) {
+            checkForErrors()
+            if (errorSystolic === "" && errorDiastolic === "" && armSelectedIndex !== null) {
+                // show confirmation alert
+                confirmationAlert();
+            }
+        }
+    }
 
+    const persistRecord = () => {
+        console.log("Record Persisted!!!!!")
+    }
+
+    const confirmationAlert = () => {
+        return Alert.alert(
+            'Confirmation',
+            `Saving a blood pressure record with a systolic pressure of ${systolic} and a diastolic pressure of ${diastolic}. The reading was taken on your ${armValues[armSelectedIndex]} arm. Is the previous information correct?`,
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Confirm',
+                    onPress: persistRecord,
+                }
+            ]
+        )
+    }
+
+    const checkForErrors = () => {
+        if (isNaN(parseInt(systolic)) === true) {
+            // set error for systolic
+        }
+        if (isNaN(parseInt(diastolic)) === true) {
+            // set error for diastolic
+        }
+        if (armSelectedIndex === null) {
+            // set error for arm taken
+        }
     }
 
     const isValid = requirementsMet === true &&
