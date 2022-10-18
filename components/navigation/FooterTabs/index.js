@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../../screens/Home';
 import AddRecord from '../../../screens/AddRecord';
 import Records from '../../../screens/Records';
+import Profile from '../../../screens/Profile';
 import {Ionicons} from 'react-native-vector-icons';
 
 const FooterTabs = () => {
@@ -54,6 +55,14 @@ const FooterTabs = () => {
                 options={{
                     tabBarIcon: ({focused, color, size}) => <Ionicons name="bookmarks" size={focused === true ? 32 : 24} color={focused === true ? "#000" : "#fff"} />,
                     title: "Records",
+                }} 
+            />
+            <Tab.Screen 
+                name="Profile" 
+                component={Profile}
+                options={{
+                    tabBarIcon: ({focused, color, size}) => <Ionicons name="person" size={focused === true ? 32 : 24} color={focused === true ? "#000" : "#fff"} />,
+                    title: "Profile",
                 }} 
             />
         </Tab.Navigator>
