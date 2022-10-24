@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, ScrollView, Text, StyleSheet, Dimensions, Platform } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, ScrollView, Text, StyleSheet, Dimensions, Platform, Animated } from 'react-native';
 import MainBackgroundContainer from '../../components/backgrounds/index.js';
 
 import globalStyles from '../../config/styles/globalStyles.js';
@@ -8,7 +8,6 @@ const { globalContainer } = globalStyles;
 const Home = () => {
 
     const mostRecentRecord = undefined;
-
     const configuredCardShadow = Platform.OS === 'android' ?
         {
             elevation: 7,
@@ -23,6 +22,8 @@ const Home = () => {
             },
             shadowRadius: 3,
         };
+
+        const viewOpacity = useRef(new Animated.Value(0)).current;
 
     const appTitleSection = (
         <View style={styles.appTitleContainer}>
@@ -46,15 +47,29 @@ const Home = () => {
         </View>
     )
 
+    const fadeIn = () => {
+        Animated.timing(viewOpacity, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+        }).start();
+    }
+
+    useEffect(() => {
+        fadeIn()
+    })
+
     return (
-            <ScrollView>    
-        <MainBackgroundContainer>
-                <View style={[styles.homeScreenContainer]}>
-                    {appTitleSection}
-                    {mostRecentSection}
-                </View>
-        </MainBackgroundContainer>
-            </ScrollView>
+        <ScrollView> 
+            <Animated.View style={{opacity: viewOpacity}}>
+                <MainBackgroundContainer>
+                    <View style={[styles.homeScreenContainer]}>
+                        {appTitleSection}
+                        {mostRecentSection}
+                    </View>
+                </MainBackgroundContainer>
+            </Animated.View>   
+        </ScrollView>
     )
 }
 
