@@ -1,15 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import { Provider } from 'react-redux';
+import {store, persistor} from './redux/store'
+
 import FooterTabs from './components/navigation/FooterTabs';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <NavigationContainer>
-        <FooterTabs />
-      </NavigationContainer>
-    </View>
+    <Provider store={store}>
+      <PersistGate loadgin={null} persistor={persistor}>
+        <View style={styles.container}>
+          <NavigationContainer>
+            <FooterTabs />
+          </NavigationContainer>
+        </View>
+      </PersistGate>
+    </Provider>
   );
 }
 

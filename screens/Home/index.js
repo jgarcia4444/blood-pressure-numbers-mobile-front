@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { View, ScrollView, Text, StyleSheet, Dimensions, Platform, Animated } from 'react-native';
 import MainBackgroundContainer from '../../components/backgrounds/index.js';
+import HomeNumberOfRecords from '../../components/HomeNumberOfRecords/index.js';
 
 import globalStyles from '../../config/styles/globalStyles.js';
 const { globalContainer } = globalStyles; 
@@ -66,6 +67,7 @@ const Home = () => {
                     <View style={[styles.homeScreenContainer]}>
                         {appTitleSection}
                         {mostRecentSection}
+                        <HomeNumberOfRecords />
                     </View>
                 </MainBackgroundContainer>
             </Animated.View>   
@@ -116,8 +118,9 @@ const styles = StyleSheet.create({
     mostRecentSection: {
         marginTop: height * 0.05,
         width: '100%',
+        height: height * 0.5,
         alignItems: 'center',
-        justifyContent: "center"
+        justifyContent: "flex-start",
     },
 
 })
