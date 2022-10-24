@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { Provider } from 'react-redux';
-import {store, persistor} from './redux/store'
+import Store from './redux/store.js'
+const {store, persistor} = Store;
 
 import FooterTabs from './components/navigation/FooterTabs';
 

@@ -1,14 +1,17 @@
-const initalState = {
+const initialState = {
     userId: "",
     email: "",
     authenticationLoading: false,
+    recordsCount: 0,
+    autenticationError: ""
 }
 
-const userReducer = (state=initalState, action) => {
+const userReducer = (state=initialState, action) => {
     switch(action.type) {
         case "SIGN_UP_SUCCESS":
             return {
                 ...state,
+                ...action.userInfo,
                 authenticationLoading: false,
             }
         case "SIGN_UP_ERROR":
@@ -22,7 +25,9 @@ const userReducer = (state=initalState, action) => {
                 authenticationLoading: true,
             }
         default: 
-            return state;
+            return {
+                ...state,
+            }
     }
 }
 
