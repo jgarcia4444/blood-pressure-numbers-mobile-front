@@ -1,6 +1,6 @@
 
 const initialState = {
-    userRecords: [],
+    userRecords: [{systolic: 140, diastolic: 90}, {systolic: 120, diastolic: 80}],
     loadingUserRecords: false,
     loadingUserRecordsError: "",
 }

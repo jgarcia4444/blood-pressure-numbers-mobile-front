@@ -2,7 +2,7 @@ const initialState = {
     userId: "",
     email: "",
     authenticationLoading: false,
-    recordsCount: 0,
+    recordsCount: 2,
     autenticationError: ""
 }
 
