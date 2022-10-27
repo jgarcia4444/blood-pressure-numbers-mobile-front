@@ -5,9 +5,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 
 import userReducer from './reducers/userReducer';
+import recordsReducer from './reducers/recordsReducer';
 
 const rootReducer = combineReducers({
     user: userReducer,
+    records: recordsReducer,
 })
 
 
