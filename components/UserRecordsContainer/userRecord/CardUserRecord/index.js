@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 
 const {height, width} = Dimensions.get('screen');
 import globalStyles from '../../../../config/styles/globalStyles';
@@ -8,8 +8,23 @@ const {platformShadow} = globalStyles
  
 
 const CardUserRecord = ({userRecord}) => {
+
+    const viewOpacity = useRef(new Animated.Value(0)).current;
+
+    const fadeViewIn = () => {
+        Animated.timing(viewOpacity, {
+            toValue: 1,
+            duration: 750,
+            useNativeDriver: true,
+        }).start();
+    }
+
+    useEffect(() => {
+        fadeViewIn()
+    })
+
     return (
-        <View style={[styles.cardUserRecord, platformShadow]}>
+        <Animated.View style={[styles.cardUserRecord, platformShadow, {opacity: viewOpacity}]}>
             <View style={styles.dateRecordedRow}>
                 <Text style={styles.dateRecordedLabel}>Date:</Text>
                 <Text style={styles.dateRecordedValue}>{userRecord.dateRecorded}</Text>
@@ -32,7 +47,7 @@ const CardUserRecord = ({userRecord}) => {
                     </View>
                 </View>
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
