@@ -1,7 +1,23 @@
 
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 
 const {height, width} = Dimensions.get('screen');
+
+const platformShadow = Platform.OS === 'android' ?
+{
+    elevation: 3,
+    shadowColor: '#000',
+}
+:
+{
+    shadowColor: '#000',
+    shadowOffset: {
+        height: 5,
+        width: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 7,
+}
 
 export default {
     globalContainer: {
@@ -21,4 +37,5 @@ export default {
         alignItems: 'flex-start',
         justifyContent: 'flex-end',
     },
+    platformShadow,
 }

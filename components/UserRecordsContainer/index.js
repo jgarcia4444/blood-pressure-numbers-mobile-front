@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Dimensions, Platform } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Platform, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 const {height, width} = Dimensions.get('screen');
 import {Ionicons} from 'react-native-vector-icons';
@@ -39,12 +39,11 @@ const UserRecordsContainer = ({userRecords}) => {
         shadowRadius: 5,
     }
 
-    const renderRecords = () => {
-        return userRecords.map(userRecord => rowsSelected === true ? 
-            <RowUserRecord userRecord={userRecord} /> 
+    const renderRecordItem = ({item}) => {
+        return rowsSelected === true ? 
+            <RowUserRecord userRecord={item} /> 
         :
-            <CardUserRecord userRecord={userRecord}/>
-        )
+            <CardUserRecord userRecord={item}/>
     }
 
     return (
@@ -53,7 +52,12 @@ const UserRecordsContainer = ({userRecords}) => {
                 {cardPresentation}{rowPresentation}
             </View>
             <View style={styles.userRecordsBox}>
-                {renderRecords()}
+                <FlatList 
+                    data={userRecords}
+                    renderItem={renderRecordItem}
+                    keyExtractor={item => item.dateRecorded + item.systolic}
+                    contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
+                />
             </View>
         </View>
     )
@@ -69,12 +73,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
         marginTop: height * 0.03,
+        paddingBottom: height * 0.01,
     },
     userRecordsBox: {
-
+        width: '100%',
+        flex: 1,
     },
     userRecordsContainer: {
-
+        width: '100%',
+        flex: 1,
     },
 })
 
