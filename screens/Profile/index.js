@@ -2,9 +2,11 @@ import React from 'react'
 import { View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
-import MainBackgroundContainer from '../../components/backgrounds';
 import globalStyles from '../../config/styles/globalStyles';
 const {pageTitleContainer, pageTitle} = globalStyles
+
+import MainBackgroundContainer from '../../components/backgrounds';
+import UserAuthActionsContainer from '../../components/userAuth/UserAuthActionsContainer';
 
 const Profile = ({email}) => {
 
