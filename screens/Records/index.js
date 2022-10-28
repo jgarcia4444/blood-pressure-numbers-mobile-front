@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 
 import MainBackgroundContainer from '../../components/backgrounds';
+import UserRecordsContainer from '../../components/UserRecordsContainer';
 
 import globalStyles from '../../config/styles/globalStyles';
 const {pageTitleContainer, pageTitle} = globalStyles;
@@ -54,6 +55,7 @@ const Records = ({recordsCount, records}) => {
                         {calculateAverage()}
                     </View>
                 </View>
+                <UserRecordsContainer />
             </View>
         </MainBackgroundContainer>
     )
