@@ -1,11 +1,14 @@
-import React from 'react';
-import { View, StyleSheet, Text, Dimensions, Platform } from 'react-native';
+import React , {useRef, useEffect, useState}from 'react';
+import { View, StyleSheet, Text, Dimensions, Platform, Animated, TouchableOpacity, TextInput } from 'react-native';
 const {height, width} = Dimensions.get('screen');
+
+import {Ionicons} from 'react-native-vector-icons'
 
 const SignUpForm = () => {
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const [signUpEmail, setsignUpEmail] = useState('');
     const [signUpPassword, setsignUpPassword] = useState('');
+    const [signUpConfirmPassword, setSignUpConfirmPassword] = useState('');
     const [inputFocused, setInputFocused] = useState('');
 
     const fadeViewIn = () => {
@@ -16,26 +19,19 @@ const SignUpForm = () => {
         }).start();
     }
 
-    const handleLoginPress = () => {
-        if (signUpEmail !== "" && signUpPassword !== "") {
-            // send request to login.
+    const handleSignUpPress = () => {
+        if (signUpEmail !== "") {
+            if (signUpPassword === confirmationPassword) {
+                // send request sign up
+            }
         }
     }
 
-    const dynamicPasswordColor = () => {
-        if (inputFocused === 'password') {
+    const dynamicIconColor = (input) => {
+        if (input === inputFocused) {
             return '#f00';
-        } else {
-            return '#ddd';
         }
-    }
-
-    const dynamicEmailColor = () => {
-        if (inputFocused === 'email') {
-            return '#f00';
-        } else {
-            return '#ddd';
-        }
+        return '#ddd';
     }
 
     useEffect(() => {
@@ -70,17 +66,17 @@ const SignUpForm = () => {
     }
 
     return (
-        <View style={styles.loginFormContainer}>
+        <View style={styles.signUpFormContainer}>
             <View style={styles.formTitleRow}>
                 <Text style={styles.formTitle}>Sign Up</Text>
             </View>
-            <View style={styles.loginForm}>
+            <View style={styles.signUpForm}>
                 <View style={[styles.formRow]}>
                     <View style={styles.formLabelRow}>
                         <Text style={styles.formLabel}>Email</Text>
                     </View>
                     <View style={[styles.formInputRow, emailSelected]}>
-                        <Ionicons name="mail" size={24} color={dynamicEmailColor()} />
+                        <Ionicons name="mail" size={24} color={dynamicIconColor('email')} />
                         <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('email')} placeholder="jon@doe.com" textContentType='emailAddress' keyboardType='email-address' autoComplete='email' style={styles.formInput} value={signUpEmail} onChangeText={(val) => setsignUpEmail(val)} />
                     </View>
                 </View>
@@ -89,14 +85,23 @@ const SignUpForm = () => {
                         <Text style={styles.formLabel}>Password</Text>
                     </View>
                     <View style={[styles.formInputRow, passwordSelected]}>
-                        <Ionicons name="lock-closed" size={24} color={dynamicPasswordColor()} />
+                        <Ionicons name="lock-closed" size={24} color={dynamicIconColor('password')} />
                         <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('password')} placeholder='Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={signUpPassword} onChangeText={(val) => setsignUpPassword(val)} />
+                    </View>
+                </View>
+                <View style={styles.formRow}>
+                    <View style={styles.formLabelRow}>
+                        <Text style={styles.formLabel}>Confirm Password</Text>
+                    </View>
+                    <View style={[styles.formInputRow, confirmPasswordSelected]}>
+                        <Ionicons name="lock-closed" size={24} color={dynamicIconColor('confirm')} />
+                        <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('confirm')} placeholder='Confirm Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={signUpConfirmPassword} onChangeText={(val) => setSignUpConfirmPassword(val)} />
                     </View>
                 </View>
             </View>
             <View style={styles.formButtonRow}>
-                <TouchableOpacity style={styles.loginButton} onPress={handleLoginPress}>
-                    <Text style={styles.loginButtonText}>Sign Up</Text>
+                <TouchableOpacity style={styles.signUpButton} onPress={handleSignUpPress}>
+                    <Text style={styles.signUpButtonText}>Sign Up</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -135,21 +140,21 @@ const styles = StyleSheet.create({
     formTitleRow: {
         width: '100%',
     },
-    loginButton: {
+    signUpButton: {
         width: '100%',
         backgroundColor: '#fff',
         paddingVertical: height * 0.02,
         borderRadius: 5,
         alignItems: 'center',
     },
-    loginButtonText: {
+    signUpButtonText: {
         color: '#f00',
         fontSize: height * 0.03,
         fontWeight: '900',
     },
-    loginForm: {
+    signUpForm: {
     },
-    loginFormContainer: {
+    signUpFormContainer: {
         width: '80%',
     }
 });
