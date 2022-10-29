@@ -49,33 +49,6 @@ const SignUpForm = () => {
         }
     }
 
-    const emailSelected = inputFocused === 'email' ?
-    {
-        backgroundColor: '#fff'
-    }
-    :
-    {
-
-    }
-
-    const passwordSelected = inputFocused === 'password' ?
-    {
-        backgroundColor: '#fff',
-    }
-    :
-    {
-
-    }
-
-    const confirmPasswordSelected = inputFocused === 'confirm' ?
-    {
-        backgroundColor: '#fff',
-    }
-    :
-    {
-
-    }
-
     return (
         <View style={styles.signUpFormContainer}>
             <View style={styles.formTitleRow}>
