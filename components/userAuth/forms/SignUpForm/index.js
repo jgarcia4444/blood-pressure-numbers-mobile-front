@@ -38,6 +38,17 @@ const SignUpForm = () => {
         fadeViewIn()
     })
 
+    const inputHighlighted = (inputName) => {
+        if (inputName === inputFocused) {
+            return {
+                backgroundColor: '#fff',
+            }
+        }
+        return {
+
+        }
+    }
+
     const emailSelected = inputFocused === 'email' ?
     {
         backgroundColor: '#fff'
@@ -75,7 +86,7 @@ const SignUpForm = () => {
                     <View style={styles.formLabelRow}>
                         <Text style={styles.formLabel}>Email</Text>
                     </View>
-                    <View style={[styles.formInputRow, emailSelected]}>
+                    <View style={[styles.formInputRow, inputHighlighted('email')]}>
                         <Ionicons name="mail" size={24} color={dynamicIconColor('email')} />
                         <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('email')} placeholder="jon@doe.com" textContentType='emailAddress' keyboardType='email-address' autoComplete='email' style={styles.formInput} value={signUpEmail} onChangeText={(val) => setsignUpEmail(val)} />
                     </View>
@@ -84,7 +95,7 @@ const SignUpForm = () => {
                     <View style={styles.formLabelRow}>
                         <Text style={styles.formLabel}>Password</Text>
                     </View>
-                    <View style={[styles.formInputRow, passwordSelected]}>
+                    <View style={[styles.formInputRow, inputHighlighted('password')]}>
                         <Ionicons name="lock-closed" size={24} color={dynamicIconColor('password')} />
                         <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('password')} placeholder='Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={signUpPassword} onChangeText={(val) => setsignUpPassword(val)} />
                     </View>
@@ -93,7 +104,7 @@ const SignUpForm = () => {
                     <View style={styles.formLabelRow}>
                         <Text style={styles.formLabel}>Confirm Password</Text>
                     </View>
-                    <View style={[styles.formInputRow, confirmPasswordSelected]}>
+                    <View style={[styles.formInputRow, inputHighlighted('confirm')]}>
                         <Ionicons name="lock-closed" size={24} color={dynamicIconColor('confirm')} />
                         <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('confirm')} placeholder='Confirm Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={signUpConfirmPassword} onChangeText={(val) => setSignUpConfirmPassword(val)} />
                     </View>
