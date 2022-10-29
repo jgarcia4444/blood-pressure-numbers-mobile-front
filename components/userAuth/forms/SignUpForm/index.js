@@ -10,6 +10,9 @@ const SignUpForm = () => {
     const [signUpPassword, setsignUpPassword] = useState('');
     const [signUpConfirmPassword, setSignUpConfirmPassword] = useState('');
     const [inputFocused, setInputFocused] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmError, setConfirmError] = useState('');
 
     const fadeViewIn = () => {
         Animated.timing(viewOpacity, {
@@ -20,9 +23,12 @@ const SignUpForm = () => {
     }
 
     const handleSignUpPress = () => {
-        if (signUpEmail !== "") {
-            if (signUpPassword === confirmationPassword) {
-                // send request sign up
+        if (signUpEmail !== "" && signUpPassword !== "" && signUpConfirmPassword !== "") {
+            if (signUpConfirmPassword === signUpPassword) {
+                // send user info to backend
+            } else {
+                setPasswordError('Password and confirm password do not match.');
+                setConfirmError('Password and confirm password do not match.');
             }
         }
     }

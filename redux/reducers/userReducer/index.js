@@ -18,6 +18,7 @@ const userReducer = (state=initialState, action) => {
             return {
                 ...state,
                 authenticationLoading: false,
+                authenticationError: "There was an error creating your account."
             }
         case "SIGNING_UP":
             return {
