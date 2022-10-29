@@ -101,6 +101,9 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: height * 0.03,
     },
+    formLabelRow: {
+
+    },
     formInput: {
         flex: 1,
         marginStart: width * 0.01,
