@@ -1,10 +1,12 @@
 import React , {useRef, useEffect, useState}from 'react';
 import { View, StyleSheet, Text, Dimensions, Platform, Animated, TouchableOpacity, TextInput } from 'react-native';
 const {height, width} = Dimensions.get('screen');
-
+import { connect } from 'react-redux';
 import {Ionicons} from 'react-native-vector-icons'
 
-const SignUpForm = () => {
+import createUser from '../../../../redux/actions/userActions/createUser';
+
+const SignUpForm = ({createUser}) => {
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const [signUpEmail, setsignUpEmail] = useState('');
     const [signUpPassword, setsignUpPassword] = useState('');
@@ -26,9 +28,24 @@ const SignUpForm = () => {
         if (signUpEmail !== "" && signUpPassword !== "" && signUpConfirmPassword !== "") {
             if (signUpConfirmPassword === signUpPassword) {
                 // send user info to backend
+                let userInfo = {
+                    email: signUpEmail,
+                    password: signUpPassword
+                }
+                createUser(userInfo)
             } else {
                 setPasswordError('Password and confirm password do not match.');
                 setConfirmError('Password and confirm password do not match.');
+            }
+        } else {
+            if (signUpEmail === '') {
+                setEmailError('Email can not be left blank.');
+            }
+            if (signUpPassword === '') {
+                setPasswordError('Password can not be left blank.');
+            }
+            if (signUpConfirmPassword === '') {
+                setConfirmError('Confirm Password must match the password above.')
             }
         }
     }
@@ -149,4 +166,19 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SignUpForm
+const mapStateToProps = state => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        createUser: (userInfo) => dispatch(createUser(userInfo)),
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SignUpForm)

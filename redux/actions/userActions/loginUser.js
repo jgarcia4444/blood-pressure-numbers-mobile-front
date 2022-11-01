@@ -1,38 +1,41 @@
 
 import Urls from "../../../config/networking/Urls";
-const { baseUrl } = Urls;
+const {baseUrl} = Urls;
 
-const createUser = (userInfo) => {
-    console.log("Create User triggerred!!!")
-    let url = `${baseUrl}users`;
+const loginUser = (userInfo) => {
+
+    let url = `${baseUrl}`
     let options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            new_user_info: {
+            login_info: {
                 ...userInfo,
             }
         })
     }
 
     return async dispatch => {
-        dispatch({type: "SIGNING_UP"});
+
+        dispatch({type: "LOGGING_IN"});
+
         fetch(url, options)
             .then(res => res.json())
             .then(data => {
-                console.log("Here is the data sent from the users create route.")
                 let {success} = data;
                 if (success === true) {
                     let {userInfo} = data;
-                    return dispatch({type: "SIGN_UP_SUCCESS", userInfo})
+                    return dispatch({type: "USER_LOGIN_SUCCESS", userInfo});
                 } else {
                     let {errors} = data;
-                    return dispatch({type: "SIGN_UP_ERROR"});
+                    return dispatch({type: "USER_LOGIN_ERROR", errors})
                 }
             })
+
     }
+
 }
 
-export default createUser;
+export default loginUser;

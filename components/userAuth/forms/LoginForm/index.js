@@ -1,13 +1,18 @@
 import React, {useRef, useEffect, useState} from 'react';
 import { View, StyleSheet, Text, Dimensions, Platform, TouchableOpacity, TextInput, Animated } from 'react-native';
 const {height, width} = Dimensions.get('screen')
-import {Ionicons} from 'react-native-vector-icons'
+import {Ionicons} from 'react-native-vector-icons';
+import { connect } from 'react-redux';
 
-const LoginForm = () => {
+import loginUser from '../../../../redux/actions/userActions/loginUser';
+
+const LoginForm = ({loginUser}) => {
 
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const [loginEmail, setLoginEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
+    const [passwordError, setPasswordError] = useState('')
     const [inputFocused, setInputFocused] = useState('');
 
     const fadeViewIn = () => {
@@ -20,7 +25,18 @@ const LoginForm = () => {
 
     const handleLoginPress = () => {
         if (loginEmail !== "" && loginPassword !== "") {
-            // send request to login.
+            let userInfo = {
+                email: loginEmail,
+                password: loginPassword
+            }
+            loginUser(userInfo);
+        } else {
+            if (loginEmail === "") {
+                setEmailError('Email must not be left blank.');
+            }
+            if (loginPassword === "") {
+                setPasswordError('Password must not be left blank.');
+            }
         }
     }
 
@@ -147,4 +163,13 @@ const styles = StyleSheet.create({
     }
 });
 
-export default LoginForm
+const mapDispatchToProps = dispatch => {
+    return {
+        loginUser: (userInfo) => dispatch(loginUser(userInfo)),
+    }
+}
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(LoginForm);
