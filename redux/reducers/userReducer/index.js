@@ -8,6 +8,15 @@ const initialState = {
 
 const userReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "LOGGING_OUT":
+            return {
+                ...state,
+                authenticationLoading: true,
+            }
+        case "LOGGED_OUT_SUCCESS":
+            return {
+                ...initialState,
+            }
         case "USER_LOGIN_SUCCESS":
             return {
                 ...state,

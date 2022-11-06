@@ -7,8 +7,29 @@ const {pageTitleContainer, pageTitle} = globalStyles
 
 import MainBackgroundContainer from '../../components/backgrounds';
 import UserAuthActionsContainer from '../../components/userAuth/UserAuthActionsContainer';
+import logoutUser from '../../redux/actions/userActions/logoutUser';
 
-const Profile = ({email}) => {
+const Profile = ({email, logoutUser}) => {
+
+    const userProfile = (
+        <View style={styles.userProfileContainer}>
+            <View style={styles.userInfoContainer}>
+
+            </View>
+            <View style={styles.logoutRow}>
+                <TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
+                    <Text style={styles.logoutText}>Logout</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    )
+
+    const renderProfileView = () => {
+        return email === "" ?
+        <UserAuthActionsContainer />
+        :
+        userProfile
+    }
 
     return (
         <MainBackgroundContainer>
@@ -16,12 +37,7 @@ const Profile = ({email}) => {
                 <View style={pageTitleContainer}>
                     <Text style={pageTitle}>Profile</Text>
                 </View>
-                {email === "" &&
-                    <UserAuthActionsContainer />
-                }
-                <View style={styles.userInfoContainer}>
-
-                </View>
+                {renderProfileView()}
             </View>
         </MainBackgroundContainer>
     )
@@ -40,7 +56,13 @@ const mapStateToProps = state => {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        logoutUser: () => dispatch(logoutUser()),
+    }
+}
+
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(Profile)

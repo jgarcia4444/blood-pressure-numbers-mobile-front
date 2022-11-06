@@ -4,7 +4,7 @@ const {baseUrl} = Urls;
 
 const loginUser = (userInfo) => {
 
-    let url = `${baseUrl}`
+    let url = `${baseUrl}users/login`;
     let options = {
         method: 'POST',
         headers: {
@@ -25,8 +25,10 @@ const loginUser = (userInfo) => {
             .then(res => res.json())
             .then(data => {
                 let {success} = data;
+                console.log("Here is the data returned from logging in", data);
                 if (success === true) {
                     let {userInfo} = data;
+                    
                     return dispatch({type: "USER_LOGIN_SUCCESS", userInfo});
                 } else {
                     let {errors} = data;
