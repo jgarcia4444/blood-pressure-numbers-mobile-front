@@ -42,6 +42,14 @@ const Profile = ({email, logoutUser, authenticationLoading}) => {
         )
     }
 
+    const changePasswordButton = (
+        <View style={styles.changePasswordRow}>
+            <TouchableOpacity style={styles.changePasswordButton}>
+                <Text style={styles.changePasswordText}>Change Password</Text>
+            </TouchableOpacity>            
+        </View>
+    )
+
     const userProfile = (
         <View style={styles.userProfileContainer}>
             <View style={styles.userInfoContainer}>
@@ -50,6 +58,7 @@ const Profile = ({email, logoutUser, authenticationLoading}) => {
                     <Text style={styles.emailLabel}>Email:</Text>
                     <Text style={styles.userEmail}>{email}</Text>
                 </View>
+                {changePasswordButton}
             </View>
             <View style={styles.logoutRow}>
                 {logoutButton}
@@ -89,8 +98,26 @@ const Profile = ({email, logoutUser, authenticationLoading}) => {
 }
 
 const styles = StyleSheet.create({
+    changePasswordButton: {
+        width: '100%',
+        height:  height * 0.075,
+        alignItems: 'center',
+        justifyContent: "center",
+        backgroundColor: '#f00',
+        borderRadius: 5,
+
+    },
+    changePasswordRow: {
+        width: '100%',
+        marginTop: height * 0.03,
+    },
+    changePasswordText: {
+        fontWeight: '900',
+        fontSize: 20,
+        color: '#fff',
+    },
     emailLabel: {
-        fontSize: height * 0.025,
+        fontSize: height * 0.03,
         color: '#f00' ,
         fontWeight: '900',
         marginEnd: width * 0.01, 
@@ -110,9 +137,9 @@ const styles = StyleSheet.create({
     },
     logoutRow: {
         width: '100%',
-        height: height * 0.2,
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: height * 0.03,
     },
     logoutText: {
         color: '#f00',
@@ -128,7 +155,7 @@ const styles = StyleSheet.create({
         marginBottom: height * 0.03,
     },
     userEmail: {
-        fontSize: height * 0.025,
+        fontSize: height * 0.03,
         color: '#f00'
     },
     userEmailRow: {
@@ -140,6 +167,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: height * 0.01,
         paddingVertical: height * 0.02,
+        marginTop: height * 0.03,
     }
 });
 
