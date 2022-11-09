@@ -84,7 +84,7 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
                     </View>
                     <View style={[styles.formInputRow, inputHighlighted('email')]}>
                         <Ionicons name="mail" size={24} color={dynamicIconColor('email')} />
-                        <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('email')} placeholder="jon@doe.com" textContentType='emailAddress' keyboardType='email-address' autoComplete='email' style={styles.formInput} value={signUpEmail} onChangeText={(val) => setsignUpEmail(val)} />
+                        <TextInput clearButtonMode='while-editing' onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('email')} placeholder="jon@doe.com" textContentType='emailAddress' keyboardType='email-address' autoComplete='email' style={styles.formInput} value={signUpEmail} onChangeText={(val) => setsignUpEmail(val)} />
                     </View>
                 </View>
                 <View style={styles.formRow}>
@@ -93,7 +93,7 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
                     </View>
                     <View style={[styles.formInputRow, inputHighlighted('password')]}>
                         <Ionicons name="lock-closed" size={24} color={dynamicIconColor('password')} />
-                        <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('password')} placeholder='Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={signUpPassword} onChangeText={(val) => setsignUpPassword(val)} />
+                        <TextInput clearButtonMode='while-editing' onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('password')} placeholder='Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={signUpPassword} onChangeText={(val) => setsignUpPassword(val)} />
                     </View>
                 </View>
                 <View style={styles.formRow}>
@@ -102,7 +102,7 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
                     </View>
                     <View style={[styles.formInputRow, inputHighlighted('confirm')]}>
                         <Ionicons name="lock-closed" size={24} color={dynamicIconColor('confirm')} />
-                        <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('confirm')} placeholder='Confirm Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={signUpConfirmPassword} onChangeText={(val) => setSignUpConfirmPassword(val)} />
+                        <TextInput clearButtonMode='while-editing' onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('confirm')} placeholder='Confirm Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={signUpConfirmPassword} onChangeText={(val) => setSignUpConfirmPassword(val)} />
                     </View>
                 </View>
             </View>

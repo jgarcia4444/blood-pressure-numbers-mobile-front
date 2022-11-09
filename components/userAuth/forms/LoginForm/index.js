@@ -90,7 +90,7 @@ const LoginForm = ({loginUser, authenticationLoading}) => {
                     </View>
                     <View style={[styles.formInputRow, emailSelected]}>
                         <Ionicons name="mail" size={24} color={dynamicEmailColor()} />
-                        <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('email')} placeholder="jon@doe.com" textContentType='emailAddress' keyboardType='email-address' autoComplete='email' style={styles.formInput} value={loginEmail} onChangeText={(val) => setLoginEmail(val)} />
+                        <TextInput clearButtonMode='while-editing' onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('email')} placeholder="jon@doe.com" textContentType='emailAddress' keyboardType='email-address' autoComplete='email' style={styles.formInput} value={loginEmail} onChangeText={(val) => setLoginEmail(val)} />
                     </View>
                 </View>
                 <View style={styles.formRow}>
@@ -99,7 +99,7 @@ const LoginForm = ({loginUser, authenticationLoading}) => {
                     </View>
                     <View style={[styles.formInputRow, passwordSelected]}>
                         <Ionicons name="lock-closed" size={24} color={dynamicPasswordColor()} />
-                        <TextInput onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('password')} placeholder='Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={loginPassword} onChangeText={(val) => setLoginPassword(val)} />
+                        <TextInput clearButtonMode='while-editing' onEndEditing={() => setInputFocused('')} onFocus={() => setInputFocused('password')} placeholder='Password' textContentType='password' secureTextEntry={true} style={styles.formInput} value={loginPassword} onChangeText={(val) => setLoginPassword(val)} />
                     </View>
                 </View>
             </View>
