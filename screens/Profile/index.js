@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, {useEffect, useRef} from 'react'
+import { Animated, View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, ActivityIndicator } from 'react-native';
 const {height, width} = Dimensions.get('screen');
 import { connect } from 'react-redux';
 
@@ -11,6 +11,8 @@ import UserAuthActionsContainer from '../../components/userAuth/UserAuthActionsC
 import logoutUser from '../../redux/actions/userActions/logoutUser';
 
 const Profile = ({email, logoutUser, authenticationLoading}) => {
+
+    const viewOpacity = useRef(new Animated.Value(0)).current;
 
     const logoutButton = (
         <TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
@@ -62,14 +64,26 @@ const Profile = ({email, logoutUser, authenticationLoading}) => {
         userProfile
     }
 
+    const fadeViewIn = () => {
+        Animated.timing(viewOpacity, {
+            toValue: 1,
+            duration: 1500,
+            useNativeDriver: true,
+        }).start();
+    }
+
+    useEffect(() => {
+        fadeViewIn()
+    })
+
     return (
         <MainBackgroundContainer>
-            <View style={styles.profileScreenContainer}>
+            <Animated.View style={[styles.profileScreenContainer, {opacity: viewOpacity}]}>
                 <View style={pageTitleContainer}>
                     <Text style={pageTitle}>Profile</Text>
                 </View>
                 {renderProfileView()}
-            </View>
+            </Animated.View>
         </MainBackgroundContainer>
     )
 }
