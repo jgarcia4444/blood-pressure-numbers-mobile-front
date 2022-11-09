@@ -1,12 +1,12 @@
 import React , {useRef, useEffect, useState}from 'react';
-import { View, StyleSheet, Text, Dimensions, Platform, Animated, TouchableOpacity, TextInput } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Platform, Animated, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
 const {height, width} = Dimensions.get('screen');
 import { connect } from 'react-redux';
 import {Ionicons} from 'react-native-vector-icons'
 
 import createUser from '../../../../redux/actions/userActions/createUser';
 
-const SignUpForm = ({createUser}) => {
+const SignUpForm = ({createUser, authenticationLoading}) => {
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const [signUpEmail, setsignUpEmail] = useState('');
     const [signUpPassword, setsignUpPassword] = useState('');
@@ -108,7 +108,11 @@ const SignUpForm = ({createUser}) => {
             </View>
             <View style={styles.formButtonRow}>
                 <TouchableOpacity style={styles.signUpButton} onPress={handleSignUpPress}>
+                    { authenticationLoading === true ?
+                    <ActivityIndicator color={'#f00'} size="large" />
+                    :
                     <Text style={styles.signUpButtonText}>Sign Up</Text>
+                    }
                 </TouchableOpacity>
             </View>
         </View>
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-
+        authenticationLoading: state.user.authenticationLoading,
     }
 }
 

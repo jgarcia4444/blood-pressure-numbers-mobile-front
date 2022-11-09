@@ -1,12 +1,12 @@
 import React, {useRef, useEffect, useState} from 'react';
-import { View, StyleSheet, Text, Dimensions, Platform, TouchableOpacity, TextInput, Animated } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Platform, TouchableOpacity, TextInput, Animated, ActivityIndicator } from 'react-native';
 const {height, width} = Dimensions.get('screen')
 import {Ionicons} from 'react-native-vector-icons';
 import { connect } from 'react-redux';
 
 import loginUser from '../../../../redux/actions/userActions/loginUser';
 
-const LoginForm = ({loginUser}) => {
+const LoginForm = ({loginUser, authenticationLoading}) => {
 
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const [loginEmail, setLoginEmail] = useState('');
@@ -105,7 +105,11 @@ const LoginForm = ({loginUser}) => {
             </View>
             <View style={styles.formButtonRow}>
                 <TouchableOpacity style={styles.loginButton} onPress={handleLoginPress}>
+                    {authenticationLoading === true ?
+                    <ActivityIndicator color={'#f00'} size="large" />
+                    :
                     <Text style={styles.loginButtonText}>Login</Text>
+                    }
                 </TouchableOpacity>
             </View>
         </View>
@@ -163,6 +167,12 @@ const styles = StyleSheet.create({
     }
 });
 
+const mapStateToProps = state => {
+    return {
+        authenticationLoading: state.user.authenticationLoading,
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         loginUser: (userInfo) => dispatch(loginUser(userInfo)),
@@ -170,6 +180,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(LoginForm);
