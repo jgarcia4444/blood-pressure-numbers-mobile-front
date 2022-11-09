@@ -22,10 +22,32 @@ const Profile = ({email, logoutUser, authenticationLoading}) => {
         </TouchableOpacity>
     )
 
+    const renderGreeting = () => {
+        let todaysDate = new Date()
+        let todaysHour = todaysDate.getHours();
+        let timeBasedGreeting = '';
+        if (todaysHour < 12) {
+            timeBasedGreeting = "Morning";
+        } else if (todaysHour > 11 && todaysHour < 18) {
+            timeBasedGreeting = "Afternoon"
+        } else {
+            timeBasedGreeting = 'Evening';
+        }
+        return (
+            <View>
+                <Text>Good {timeBasedGreeting}</Text>
+            </View>
+        )
+    }
+
     const userProfile = (
         <View style={styles.userProfileContainer}>
             <View style={styles.userInfoContainer}>
-
+                {renderGreeting()}
+                <View style={styles.userEmailRow}>
+                    <Text>Email:</Text>
+                    <Text style={styles.userEmail}>{email}</Text>
+                </View>
             </View>
             <View style={styles.logoutRow}>
                 {logoutButton}
