@@ -34,8 +34,8 @@ const Profile = ({email, logoutUser, authenticationLoading}) => {
             timeBasedGreeting = 'Evening';
         }
         return (
-            <View>
-                <Text>Good {timeBasedGreeting}</Text>
+            <View style={styles.timeBasedGreetingRow}>
+                <Text style={styles.greetingText}>Good {timeBasedGreeting}</Text>
             </View>
         )
     }
@@ -45,7 +45,7 @@ const Profile = ({email, logoutUser, authenticationLoading}) => {
             <View style={styles.userInfoContainer}>
                 {renderGreeting()}
                 <View style={styles.userEmailRow}>
-                    <Text>Email:</Text>
+                    <Text style={styles.emailLabel}>Email:</Text>
                     <Text style={styles.userEmail}>{email}</Text>
                 </View>
             </View>
@@ -75,12 +75,24 @@ const Profile = ({email, logoutUser, authenticationLoading}) => {
 }
 
 const styles = StyleSheet.create({
+    emailLabel: {
+        fontSize: height * 0.025,
+        color: '#f00' ,
+        fontWeight: '900',
+        marginEnd: width * 0.01, 
+    },
+    greetingText: {
+        color: '#f00',
+        fontSize: height * 0.05,
+        fontWeight: '900',
+    },
     logoutButton: {
-        width: '80%',
-        paddingVertical: height * 0.02,
+        width: '100%',
+        height: height * 0.075,
         backgroundColor: "#fff",
         borderRadius: 5,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     logoutRow: {
         width: '100%',
@@ -97,11 +109,23 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    timeBasedGreetingRow: {
+        width: '100%',
+        marginBottom: height * 0.03,
+    },
+    userEmail: {
+        fontSize: height * 0.025,
+        color: '#f00'
+    },
+    userEmailRow: {
+        flexDirection: 'row',
+    },
     userInfoContainer: {
         width: '100%',
-        height: height * 0.55,
-        borderWidth: 1,
-        borderColor: "#000",
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        borderRadius: 5,
+        paddingHorizontal: height * 0.01,
+        paddingVertical: height * 0.02,
     }
 });
 
