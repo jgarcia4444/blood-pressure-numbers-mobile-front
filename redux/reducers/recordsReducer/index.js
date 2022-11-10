@@ -7,6 +7,13 @@ const initialState = {
 
 const recordsReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "RECORD_SAVED": 
+            return {
+                ...state,
+                userRecords: state.userRecords.concat(action.persistedRecord),
+                loadingUserRecords: false,
+                loadingUserRecordsError: "",
+            }
         case "LOADING_RECORDS":
             return {
                 ...state,

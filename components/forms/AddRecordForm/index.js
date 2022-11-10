@@ -25,6 +25,7 @@ const AddRecordForm = () => {
     }
 
     const persistRecord = () => {
+        // 
         console.log("Record Persisted!!!!!")
     }
 
