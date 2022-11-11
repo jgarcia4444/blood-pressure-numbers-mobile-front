@@ -4,7 +4,7 @@ const { baseUrl } = Urls;
 
 const addRecord = (recordInfo) => {
     const {userId, systolic, diastolic, notes, rightArmRecorded} = recordInfo;
-    const url = `${baseUrl}user/${userId}/records`;
+    const url = `${baseUrl}users/${userId}/records`;
     const options = {
         method: "POST",
         headers: {

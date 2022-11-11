@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, Alert } from 'react-native';
+import { connect } from 'react-redux';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
+import addRecord from '../../../redux/actions/addRecordActions/addRecord';
 
-const AddRecordForm = () => {
+const AddRecordForm = ({addRecord, userId}) => {
 
     const [systolic, setSystolic] = useState("");
     const [errorSystolic, setErrorSystolic] = useState("");
@@ -25,8 +27,14 @@ const AddRecordForm = () => {
     }
 
     const persistRecord = () => {
-        // 
-        console.log("Record Persisted!!!!!")
+        let recordInfo = {
+            userId,
+            systolic,
+            diastolic,
+            notes,
+            rightArmRecorded: armSelectedIndex === 1 ? true : false,
+        }
+        addRecord(recordInfo);
     }
 
     const confirmationAlert = () => {
@@ -122,7 +130,7 @@ const AddRecordForm = () => {
                         <View style={[styles.formInputContainer, {width: '100%'}]}>
                             <TextInput 
                                 value={notes}
-                                onChange={(val) => setNotes(val)}
+                                onChange={(val) => setNotes(val.target.value)}
                                 placeholder="Write Here"
                                 multiline={true}
                                 style={styles.notesTextArea}
@@ -204,4 +212,19 @@ const styles = StyleSheet.create({
     },
 })
 
-export default AddRecordForm;
+const mapStateToProps = state => {
+    return {
+        userId: state.user.userId,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addRecord: (recordInfo) => dispatch(addRecord(recordInfo)),
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AddRecordForm);
