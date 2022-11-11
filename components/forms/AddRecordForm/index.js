@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import addRecord from '../../../redux/actions/addRecordActions/addRecord';
 
-const AddRecordForm = ({addRecord, userId}) => {
+const AddRecordForm = ({addRecord, userId, recordPersistanceError}) => {
 
     const [systolic, setSystolic] = useState("");
     const [errorSystolic, setErrorSystolic] = useState("");
@@ -26,6 +26,13 @@ const AddRecordForm = ({addRecord, userId}) => {
         }
     }
 
+    const clearFormVariables = () => {
+        setSystolic('');
+        setDiastolic('');
+        setNotes('');
+        setArmSelectedIndex(null);
+    }
+
     const persistRecord = () => {
         let recordInfo = {
             userId,
@@ -35,6 +42,9 @@ const AddRecordForm = ({addRecord, userId}) => {
             rightArmRecorded: armSelectedIndex === 1 ? true : false,
         }
         addRecord(recordInfo);
+        if (recordPersistanceError === "") {
+            clearFormVariables()
+        }
     }
 
     const confirmationAlert = () => {
@@ -215,6 +225,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         userId: state.user.userId,
+        recordPersistanceError: state.addRecord.recordPersistanceError,
     }
 }
 

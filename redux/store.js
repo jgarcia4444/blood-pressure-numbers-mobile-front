@@ -6,10 +6,12 @@ import thunk from 'redux-thunk';
 
 import userReducer from './reducers/userReducer';
 import recordsReducer from './reducers/recordsReducer';
+import addRecordReducer from './reducers/addRecordReducer';
 
 const rootReducer = combineReducers({
     user: userReducer,
     records: recordsReducer,
+    addRecord: addRecordReducer,
 })
 
 
