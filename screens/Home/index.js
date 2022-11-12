@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { View, ScrollView, Text, StyleSheet, Dimensions, Platform, Animated } from 'react-native';
+import { connect } from 'react-redux';
 import MainBackgroundContainer from '../../components/backgrounds/index.js';
 import HomeNumberOfRecords from '../../components/HomeNumberOfRecords/index.js';
 
 import globalStyles from '../../config/styles/globalStyles.js';
 const { globalContainer } = globalStyles; 
 
-const Home = () => {
+const Home = ({userId}) => {
 
     const mostRecentRecord = undefined;
     const configuredCardShadow = Platform.OS === 'android' ?
@@ -58,6 +59,9 @@ const Home = () => {
 
     useEffect(() => {
         fadeIn()
+        if (userId !== "") {
+            // fetch user records
+        }
     })
 
     return (
@@ -125,4 +129,19 @@ const styles = StyleSheet.create({
 
 })
 
-export default Home;
+const mapStateToProps = state => {
+    return {
+        userId: state.user.userId,
+    }
+}
+
+const mapDisaptchToProps = dispatch => {
+    return {
+
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDisaptchToProps,
+)(Home);
