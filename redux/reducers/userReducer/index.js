@@ -8,6 +8,12 @@ const initialState = {
 
 const userReducer = (state=initialState, action) => {
     switch(action.type) {
+        case 'persist/REHYDRATE':
+            console.log("User Reducer", action);
+            return {
+                ...state,
+                ...action.payload.user,
+            }
         case "LOGGING_OUT":
             return {
                 ...state,
