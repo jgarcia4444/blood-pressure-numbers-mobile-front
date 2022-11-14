@@ -55,7 +55,7 @@ const UserRecordsContainer = ({userRecords}) => {
                 <FlatList 
                     data={userRecords}
                     renderItem={renderRecordItem}
-                    keyExtractor={item => item.dateRecorded + item.systolic}
+                    keyExtractor={(item, i) => `${item.dateRecorded}${item.systolic}${i}`}
                     contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
                 />
             </View>

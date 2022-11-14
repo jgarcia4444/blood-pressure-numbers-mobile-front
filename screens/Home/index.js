@@ -27,7 +27,7 @@ const Home = ({userId, fetchUserRecords, userRecords}) => {
             shadowRadius: 3,
         };
 
-        const viewOpacity = useRef(new Animated.Value(0)).current;
+    const viewOpacity = useRef(new Animated.Value(0)).current;
 
     const appTitleSection = (
         <View style={styles.appTitleContainer}>
@@ -140,7 +140,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchUserRecords: (userId) => dispatch(fetchUserRecords(userId))
+        fetchUserRecords: (userId) => dispatch(fetchUserRecords(userId)),
     }
 }
 
