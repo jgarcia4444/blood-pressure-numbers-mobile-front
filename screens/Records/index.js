@@ -43,7 +43,7 @@ const Records = ({recordsCount, records, userId, fetchUserRecords}) => {
     }
 
     useEffect(() => {
-        if (userId !== "") {
+        if (userId !== "" && records.length === 0) {
             fetchUserRecords(userId)
         }
     })
