@@ -128,7 +128,8 @@ const AddRecordForm = ({addRecord, userId, recordPersistanceError}) => {
                             onChange={(e) => {
                                 setArmSelectedIndex(e.nativeEvent.selectedSegmentIndex);
                             }}
-                            tintColor='#fff'
+                            tintColor='#ccc'
+                            fontStyle={{color: "#000"}}
                         />
                     </View>
                 </View>

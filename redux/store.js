@@ -74,11 +74,22 @@ const migrations = {
                 autenticationError: ""
             }
         }
+    },
+    6: (state) => {
+        return {
+            user: {
+                userId: "",
+                email: "",
+                authenticationLoading: false,
+                recordsCount: 2,
+                autenticationError: ""
+            }
+        }
     }
 }
 
 const persistConfig = {
-    version: 5,
+    version: 6,
     key: 'root',
     storage: AsyncStorage,
     whitelist: ['user'],
