@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -8,9 +8,11 @@ import UserRecordsContainer from '../../components/UserRecordsContainer';
 import globalStyles from '../../config/styles/globalStyles';
 const {pageTitleContainer, pageTitle} = globalStyles;
 
+import fetchUserRecords from '../../redux/actions/recordActions/fetchUserRecords';
+
 const {height, width} = Dimensions.get('screen');
 
-const Records = ({recordsCount, records}) => {
+const Records = ({recordsCount, records, userId, fetchUserRecords}) => {
 
     const calculateAverage = () => {
         if (recordsCount === 0) {
@@ -39,6 +41,12 @@ const Records = ({recordsCount, records}) => {
             )
         }
     }
+
+    useEffect(() => {
+        if (userId !== "") {
+            fetchUserRecords(userId)
+        }
+    })
 
     return (
         <MainBackgroundContainer>
@@ -113,10 +121,17 @@ const mapStateToProps = state => {
     return {
         recordsCount: state.user.recordsCount,
         records: state.records.userRecords,
+        userId: state.user.userId,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchUserRecords: (userId) => dispatch(fetchUserRecords(userId))
     }
 }
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(Records);

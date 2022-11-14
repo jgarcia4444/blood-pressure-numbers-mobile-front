@@ -7,7 +7,9 @@ import HomeNumberOfRecords from '../../components/HomeNumberOfRecords/index.js';
 import globalStyles from '../../config/styles/globalStyles.js';
 const { globalContainer } = globalStyles; 
 
-const Home = ({userId}) => {
+import fetchUserRecords from '../../redux/actions/recordActions/fetchUserRecords.js';
+
+const Home = ({userId, fetchUserRecords}) => {
 
     const mostRecentRecord = undefined;
     const configuredCardShadow = Platform.OS === 'android' ?
@@ -60,7 +62,7 @@ const Home = ({userId}) => {
     useEffect(() => {
         fadeIn()
         if (userId !== "") {
-            // fetch user records
+            fetchUserRecords(userId);
         }
     })
 
@@ -135,13 +137,13 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDisaptchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
     return {
-
+        fetchUserRecords: (userId) => dispatch(fetchUserRecords(userId))
     }
 }
 
 export default connect(
     mapStateToProps,
-    mapDisaptchToProps,
+    mapDispatchToProps,
 )(Home);

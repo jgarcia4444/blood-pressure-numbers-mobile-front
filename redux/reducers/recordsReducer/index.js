@@ -14,23 +14,23 @@ const recordsReducer = (state=initialState, action) => {
                 loadingUserRecords: false,
                 loadingUserRecordsError: "",
             }
-        case "LOADING_RECORDS":
+        case "FETCHING_RECORDS":
             return {
                 ...state,
                 loadingUserRecordsError: '',
                 loadingUserRecords: true,
             }
-        case "RECORDS_LOAD_SUCCESS":
+        case "RECORDS_FETCH_SUCCESS":
             return {
                 ...state,
                 loadingUserRecords: false,
                 userRecords: action.userRecords,
             };
-        case "RECORDS_LOAD_ERROR":
+        case "RECORDS_FETCH_ERROR":
             return {
                 ...state,
                 loadingUserRecords: false,
-                loadingUserRecordsError: action.error,
+                loadingUserRecordsError: action.errorMessage,
             }
         default:
             return {
