@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
 import MainBackgroundContainer from '../../components/backgrounds';
@@ -13,6 +13,9 @@ import fetchUserRecords from '../../redux/actions/recordActions/fetchUserRecords
 const {height, width} = Dimensions.get('screen');
 
 const Records = ({recordsCount, records, userId, fetchUserRecords}) => {
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [dismissTapped, setDismissTapped] = useState(false);
 
     const calculateAverage = () => {
         if (records.length === 0) {
@@ -42,6 +45,25 @@ const Records = ({recordsCount, records, userId, fetchUserRecords}) => {
         }
     }
 
+    const userAuthDirectedComponent = (
+        <View style={styles.userAuthDirectedContainer}>
+            <View style={styles.userAuthTitleRow}>
+                <Text style={styles.userAuthTitle}>Login or Sign Up</Text>
+            </View>
+            <View style={styles.userAuthDetailsRow}>
+                <Text style={styles.userAuthDetailsText}>In order to view your previously saved records</Text>
+                <TouchableOpacity><Text style={styles.loginButtonText}>Login</Text></TouchableOpacity>
+            </View>
+            <View style={styles.orTextRow}>
+                <Text style={styles.orText}>Or</Text>
+            </View>
+            <View style={styles.userAuthDetailsRow}>
+                <Text style={styles.userAuthDetailsText}>In order save records you must create an account and</Text>
+                <TouchableOpacity><Text style={styles.loginButtonText}>Sign Up</Text></TouchableOpacity>
+            </View>
+        </View>
+    )
+
     useEffect(() => {
         if (userId !== "" && records.length === 0) {
             fetchUserRecords(userId)
@@ -63,7 +85,12 @@ const Records = ({recordsCount, records, userId, fetchUserRecords}) => {
                         {calculateAverage()}
                     </View>
                 </View>
-                <UserRecordsContainer />
+                {userId === "" ?
+                    userAuthDirectedComponent
+                :
+                    <UserRecordsContainer />
+                }
+                
             </View>
         </MainBackgroundContainer>
     )

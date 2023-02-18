@@ -2,14 +2,17 @@ const initialState = {
     userId: "",
     email: "",
     authenticationLoading: false,
-    recordsCount: 2,
+    recordsCount: 0,
     autenticationError: ""
 }
 
 const userReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "RESET_USER_INFO": 
+            return {
+                ...initialState,
+            }
         case 'persist/REHYDRATE':
-            console.log("User Reducer", action);
             return {
                 ...state,
                 ...action.payload.user,

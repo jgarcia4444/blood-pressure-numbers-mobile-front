@@ -9,7 +9,7 @@ const { globalContainer } = globalStyles;
 
 import fetchUserRecords from '../../redux/actions/recordActions/fetchUserRecords.js';
 
-const Home = ({userId, fetchUserRecords, userRecords}) => {
+const Home = ({resetUserReducer, userId, fetchUserRecords, userRecords}) => {
 
     const mostRecentRecord = undefined;
     const configuredCardShadow = Platform.OS === 'android' ?
@@ -63,8 +63,10 @@ const Home = ({userId, fetchUserRecords, userRecords}) => {
         fadeIn()
         if (userId !== "" && userRecords.length === 0) {
             fetchUserRecords(userId);
+        } else if (userId === "") {
+            resetUserReducer()
         }
-    })
+    }, [userId])
 
     return (
         <ScrollView> 
@@ -141,6 +143,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchUserRecords: (userId) => dispatch(fetchUserRecords(userId)),
+        resetUserReducer: () => dispatch({type: "RESET_USER_INFO"}),
     }
 }
 
