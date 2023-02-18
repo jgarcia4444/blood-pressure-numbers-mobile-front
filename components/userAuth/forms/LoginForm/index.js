@@ -65,18 +65,14 @@ const LoginForm = ({loginUser, authenticationLoading}) => {
         backgroundColor: '#fff'
     }
     :
-    {
-
-    }
+    {}
 
     const passwordSelected = inputFocused === 'password' ?
     {
         backgroundColor: '#fff',
     }
     :
-    {
-
-    }
+    {}
 
     return (
         <View style={styles.loginFormContainer}>
@@ -164,7 +160,7 @@ const styles = StyleSheet.create({
     },
     loginFormContainer: {
         width: '80%',
-    }
+    },
 });
 
 const mapStateToProps = state => {

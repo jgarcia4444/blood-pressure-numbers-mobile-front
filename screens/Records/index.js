@@ -15,7 +15,7 @@ const {height, width} = Dimensions.get('screen');
 const Records = ({recordsCount, records, userId, fetchUserRecords}) => {
 
     const calculateAverage = () => {
-        if (recordsCount === 0) {
+        if (records.length === 0) {
             return (
                 <View style={styles.averageValuesContainer}>
                     <View style={[styles.horizontalBar, {marginEnd: width * 0.02}]}></View>

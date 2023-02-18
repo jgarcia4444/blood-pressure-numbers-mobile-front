@@ -12,8 +12,6 @@ import logoutUser from '../../redux/actions/userActions/logoutUser';
 
 const Profile = ({email, logoutUser, authenticationLoading}) => {
 
-    console.log("User email from Profile Screen", email);
-
     const viewOpacity = useRef(new Animated.Value(0)).current;
 
     const logoutButton = (

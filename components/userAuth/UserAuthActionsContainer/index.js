@@ -48,13 +48,40 @@ const UserAuthActionsContainer = () => {
         }).start()
     }
 
+    const configureGoToText = () => {
+        return display === 'login' ? "Signup" : "Login";
+    }
+
+    const configureGoToOnPress = () => {
+        if (display === 'login') {
+            setDisplay('signup');
+        } else {
+            setDisplay('login');
+        }
+    }
+
+    const configureGoToDetail = () => {
+        return display === 'login' ? "Don't have an account?" : "Already have an account?"
+    }
+
+    const otherFormComponent = (
+        <View style={styles.otherFormRow}>
+            <Text style={styles.goToDetail}>{configureGoToDetail()}</Text>
+            <TouchableOpacity onPress={configureGoToOnPress}>
+                <Text style={styles.goToText}>{configureGoToText()}</Text>
+            </TouchableOpacity>
+        </View>
+    )
+
     useEffect(() => {
         fadeViewIn();
     })
 
+
     return (
         <Animated.View style={[styles.userAuthActionsContainer, {opacity: viewOpacity}]}>
             {renderDisplay()}
+            {display !== "" && otherFormComponent}
         </Animated.View>
     )
 }
@@ -83,12 +110,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: height * 0.05,
     },
+    goToDetail: {
+        fontWeight: 'bold',
+        color: '#fff'
+    },
+    goToText: {
+        fontWeight: 'bold',
+        marginStart: width * 0.02,
+        color: '#00f'
+    },
     loginButton: {
         backgroundColor: '#fff',
         
     },
     loginText: {
         color: "#f00",
+    },
+    otherFormRow: {
+        flexDirection: 'row',
+        marginTop: height * 0.05,
     },
     orText: {
         color: '#fff',
