@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState,} from 'react'
-import { Animated, View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
+import { Animated, View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, ActivityIndicator, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 const {height, width} = Dimensions.get('screen');
 import { connect } from 'react-redux';
 
@@ -89,6 +89,10 @@ const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationL
                     style={styles.codeInput} 
                     value={otaCode}
                     onChangeText={handleOtaCodeChange}
+                    placeholder={'Enter Verification Code'}
+                    placeholderTextColor={'#fff'}
+                    keyboardType='number-pad'
+                    
                 />
             </View>
             <View style={styles.codeInputSubmitRow}>
@@ -153,12 +157,14 @@ const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationL
 
     return (
         <MainBackgroundContainer>
-            <Animated.View style={[styles.profileScreenContainer, {opacity: viewOpacity}]}>
-                <View style={pageTitleContainer}>
-                    <Text style={pageTitle}>Profile</Text>
-                </View>
-                {renderProfileView()}
-            </Animated.View>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <Animated.View style={[styles.profileScreenContainer, {opacity: viewOpacity}]}>
+                    <View style={pageTitleContainer}>
+                        <Text style={pageTitle}>Profile</Text>
+                    </View>
+                    {renderProfileView()}
+                </Animated.View>
+            </TouchableWithoutFeedback>
         </MainBackgroundContainer>
     )
 }
@@ -180,6 +186,17 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         fontSize: 20,
         color: '#fff',
+    },
+    codeInput: {
+        width: '100%',
+        borderWidth: 2,
+        borderRadius: 5,
+        borderColor: '#f00',
+        height: height * 0.05,
+        marginBottom: height * 0.02,
+        color: '#fff',
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
     emailLabel: {
         fontSize: height * 0.03,
