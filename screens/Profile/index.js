@@ -1,5 +1,5 @@
-import React, {useEffect, useRef} from 'react'
-import { Animated, View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, {useEffect, useRef, useState,} from 'react'
+import { Animated, View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 const {height, width} = Dimensions.get('screen');
 import { connect } from 'react-redux';
 
@@ -9,12 +9,19 @@ const {pageTitleContainer, pageTitle} = globalStyles
 import MainBackgroundContainer from '../../components/backgrounds';
 import UserAuthActionsContainer from '../../components/userAuth/UserAuthActionsContainer';
 import logoutUser from '../../redux/actions/userActions/logoutUser';
+import changePassword from '../../redux/actions/userActions/changePassword';
+import sendVerificationCode from '../../redux/actions/userActions/sendVerificationCode';
 
-const Profile = ({route, email, logoutUser, authenticationLoading}) => {
+const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationLoading, changePassword}) => {
 
     let navState = route.params === undefined ? "" : route.params.navState;
+
+    const {email, userId, passwordChangeInfo} = user;
+    const {passwordDisplay, codeSending, verificationProcessing} = passwordChangeInfo;
     
     const viewOpacity = useRef(new Animated.Value(0)).current;
+
+    const [otaCode, setOtaCode] = useState('');
 
     const logoutButton = (
         <TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
@@ -44,13 +51,67 @@ const Profile = ({route, email, logoutUser, authenticationLoading}) => {
         )
     }
 
+    const handleChangePasswordPress = () => {
+        changePassword(userId);
+    }
+
     const changePasswordButton = (
-        <View style={styles.changePasswordRow}>
-            <TouchableOpacity style={styles.changePasswordButton}>
-                <Text style={styles.changePasswordText}>Change Password</Text>
-            </TouchableOpacity>            
+        <TouchableOpacity onPress={handleChangePasswordPress} style={styles.changePasswordButton}>
+            <Text style={styles.changePasswordText}>Change Password</Text>
+        </TouchableOpacity>            
+    )
+
+    const handleOtaCodeChange = val => {
+        setOtaCode(val);
+        if (val.length === 6) {
+            let codeInformation = {
+                userId: userId,
+                otaCode: otaCode,
+            }
+            sendVerificationCode(codeInformation);
+        }
+    }
+
+    const handleVerifyCodePress = () => {
+        if (verificationProcessing === false) {
+            let codeInformation = {
+                userId: userId,
+                otaCode: otaCode,
+            }
+            sendVerificationCode(codeInformation);
+        }
+    }
+
+    const codeInput = (
+        <View style={styles.codeInputContainer}>
+            <View style={styles.codeInputRow}>
+                <TextInput 
+                    style={styles.codeInput} 
+                    value={otaCode}
+                    onChangeText={handleOtaCodeChange}
+                />
+            </View>
+            <View style={styles.codeInputSubmitRow}>
+                <TouchableOpacity onPress={handleVerifyCodePress} style={styles.verifyCodeButton}>
+                    {codeSending === true ?
+                        <ActivityIndicator color={'#fff'} size={'large'} />
+                    :
+                        <Text style={styles.verifyCodeText}>Send Code</Text>
+                    }
+                </TouchableOpacity>
+            </View>
         </View>
     )
+
+    const renderPasswordDisplay = () => {
+        if (passwordDisplay === 'code') {
+            return codeInput;
+        } else if (passwordDisplay === 'change_password') {
+            return <Text>Change Password</Text>
+        } else {
+            return changePasswordButton;
+        }
+    }
 
     const userProfile = (
         <View style={styles.userProfileContainer}>
@@ -60,7 +121,10 @@ const Profile = ({route, email, logoutUser, authenticationLoading}) => {
                     <Text style={styles.emailLabel}>Email:</Text>
                     <Text style={styles.userEmail}>{email}</Text>
                 </View>
-                {changePasswordButton}
+                <View style={styles.changePasswordRow}>
+                    {renderPasswordDisplay()}
+                </View>
+                
             </View>
             <View style={styles.logoutRow}>
                 {logoutButton}
@@ -70,9 +134,9 @@ const Profile = ({route, email, logoutUser, authenticationLoading}) => {
 
     const renderProfileView = () => {
         return email === "" ?
-        <UserAuthActionsContainer navState={navState !== undefined ? navState : ""} />
+            <UserAuthActionsContainer navState={navState !== undefined ? navState : ""} />
         :
-        userProfile
+            userProfile
     }
 
     const fadeViewIn = () => {
@@ -85,7 +149,7 @@ const Profile = ({route, email, logoutUser, authenticationLoading}) => {
 
     useEffect(() => {
         fadeViewIn()
-    })
+    },)
 
     return (
         <MainBackgroundContainer>
@@ -107,7 +171,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: '#f00',
         borderRadius: 5,
-
     },
     changePasswordRow: {
         width: '100%',
@@ -170,12 +233,24 @@ const styles = StyleSheet.create({
         paddingHorizontal: height * 0.01,
         paddingVertical: height * 0.02,
         marginTop: height * 0.03,
+    },
+    verifyCodeButton: {
+        width: '100%',
+        height:  height * 0.075,
+        alignItems: 'center',
+        justifyContent: "center",
+        backgroundColor: '#f00',
+        borderRadius: 5,
+    },
+    verifyCodeText: {
+        color: '#fff',
+        fontWeight: 'bold',
     }
 });
 
 const mapStateToProps = state => {
     return {
-        email: state.user.email,
+        user: state.user,
         authenticationLoading: state.user.authenticationLoading,
     }
 }
@@ -183,6 +258,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         logoutUser: () => dispatch(logoutUser()),
+        changePassword: userId => dispatch(changePassword(userId)),
+        sendVerificationCode: codeInformation => dispatch(sendVerificationCode(codeInformation)),
     }
 }
 

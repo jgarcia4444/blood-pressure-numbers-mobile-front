@@ -3,13 +3,74 @@ const initialState = {
     email: "",
     authenticationLoading: false,
     recordsCount: 0,
-    autenticationError: ""
+    autenticationError: "",
+    passwordChangeInfo: {
+        codeSending: false,
+        codeSendError: "",
+        codeVerificationError: "",
+        passwordDisplay: '',
+        verificationProcessing: false,
+    },
 }
 
 const userReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "CODE_VERIFICATION_SUCCESS":
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    verificationProcessing: false,
+                    codeVerificationError: "",
+                    passwordDisplay: 'change_password',
+                }
+            }
+        case "CODE_VERIFICATION_ERROR":
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    verificationProcessing: false,
+                    codeVerificationError: action.message,
+                }
+            }
+        case "VERIFYING_CODE":
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    verificationProcessing: true,
+                },
+            }
+        case "CODE_SEND_SUCCESS": 
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    codeSending: false,
+                    codeSendError: "",
+                    passwordDisplay: 'code',
+                }
+            }
+        case "CODE_SEND_ERROR":
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    codeSendError: action.message,
+                    codeSending: false,
+                }
+            }
+        case "SENDING_CODE":
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    codeSending: true,
+                    codeSendError: ""
+                }
+            }
         case "RECORDS_FETCH_SUCCESS":
-            console.log("Fetch success in the user reducer", action.userRecords.length);
             return {
                 ...state,
                 recordsCount: action.userRecords.length,
