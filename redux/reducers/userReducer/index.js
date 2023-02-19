@@ -43,6 +43,7 @@ const userReducer = (state=initialState, action) => {
                 },
             }
         case "CODE_SEND_SUCCESS": 
+        console.log("Console.log in the CODE_SEND_SUCCESS reducer case")
             return {
                 ...state,
                 passwordChangeInfo: {
