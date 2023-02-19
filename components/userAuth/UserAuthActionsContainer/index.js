@@ -5,16 +5,19 @@ import SignUpForm from '../forms/SignUpForm';
 
 const {height, width} = Dimensions.get('screen');
 
-const UserAuthActionsContainer = () => {
+const UserAuthActionsContainer = ({navState}) => {
+
+    console.log("NAV STATE", navState);
 
     const viewOpacity = useRef(new Animated.Value(0)).current;
 
     const [display, setDisplay] = useState('')
 
     const renderDisplay = () => {
-        if (display === "login") {
+        console.log("display from render display", display);
+        if (display === "login" || display === 'LOGIN') {
             return <LoginForm />
-        } else if (display === 'signup') {
+        } else if (display === 'signup' || display === 'SIGNUP') {
             return <SignUpForm />
         } else {
             return (
@@ -75,7 +78,10 @@ const UserAuthActionsContainer = () => {
 
     useEffect(() => {
         fadeViewIn();
-    })
+        if (navState !== "") {
+            setDisplay(navState);
+        }
+    }, [navState])
 
 
     return (

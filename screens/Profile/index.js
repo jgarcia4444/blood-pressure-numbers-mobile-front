@@ -10,8 +10,10 @@ import MainBackgroundContainer from '../../components/backgrounds';
 import UserAuthActionsContainer from '../../components/userAuth/UserAuthActionsContainer';
 import logoutUser from '../../redux/actions/userActions/logoutUser';
 
-const Profile = ({email, logoutUser, authenticationLoading}) => {
+const Profile = ({route, email, logoutUser, authenticationLoading}) => {
 
+    const {navState} = route.params;
+    
     const viewOpacity = useRef(new Animated.Value(0)).current;
 
     const logoutButton = (
@@ -68,7 +70,7 @@ const Profile = ({email, logoutUser, authenticationLoading}) => {
 
     const renderProfileView = () => {
         return email === "" ?
-        <UserAuthActionsContainer />
+        <UserAuthActionsContainer navState={navState !== undefined ? navState : ""} />
         :
         userProfile
     }
