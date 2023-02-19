@@ -1,14 +1,21 @@
 import React, {useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
-const HomeNumberOfRecords = ({recordsCount}) => {
+const HomeNumberOfRecords = ({recordsCount, loadingUserRecords}) => {
 
     const navigation = useNavigation();
 
     const navigateToRecords = () => {
         navigation.navigate('Records');
+    }
+
+    const renderRecordsCount = () => {
+        return loadingUserRecords === true ? 
+            <ActivityIndicator size={'large'} color={'#fff'} />
+        :
+            <Text style={styles.recordsNumber}>{recordsCount}</Text>
     }
 
     return (
@@ -18,7 +25,7 @@ const HomeNumberOfRecords = ({recordsCount}) => {
             </View>
             <View style={styles.numberSeeAllContainer}>
                 <View style={styles.numberContainer}>
-                    <Text style={styles.recordsNumber}>{recordsCount}</Text>
+                    {renderRecordsCount()}
                 </View>
                 <View style={styles.seeAllButtonContainer}>
                     <TouchableOpacity onPress={navigateToRecords} style={styles.seeAllButton}>
@@ -50,7 +57,7 @@ const styles = StyleSheet.create({
     recordsNumber: {
         color: '#fff',
         fontSize: height * 0.06,
-        fontWeight: '100',
+        fontWeight: 'bold',
     },
     seeAllButton: {
         padding: height * 0.015,
@@ -77,6 +84,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         recordsCount: state.user.recordsCount,
+        loadingUserRecords: state.records.loadingUserRecords,
     }
 }
 

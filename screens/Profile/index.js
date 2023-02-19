@@ -12,7 +12,7 @@ import logoutUser from '../../redux/actions/userActions/logoutUser';
 
 const Profile = ({route, email, logoutUser, authenticationLoading}) => {
 
-    const {navState} = route.params;
+    let navState = route.params === undefined ? "" : route.params.navState;
     
     const viewOpacity = useRef(new Animated.Value(0)).current;
 

@@ -8,6 +8,12 @@ const initialState = {
 
 const userReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "RECORDS_FETCH_SUCCESS":
+            console.log("Fetch success in the user reducer", action.userRecords.length);
+            return {
+                ...state,
+                recordsCount: action.userRecords.length,
+            }
         case "RESET_USER_INFO": 
             return {
                 ...initialState,

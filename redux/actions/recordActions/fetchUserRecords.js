@@ -3,6 +3,7 @@ const {baseUrl} = Urls;
 
 
 const fetchUserRecords = (userId) => {
+    console.log("Fetch Records Running", userId);
     let url = `${baseUrl}records/${userId}`;
     return async dispatch => {
         dispatch({type: "FETCHING_RECORDS"});
