@@ -62,7 +62,7 @@ const Profile = ({passwordMinLengthError, updatePassword, sendVerificationCode, 
         if (val.split('').length === 6) {
             let codeInformation = {
                 userId: userId,
-                otaCode: otaCode,
+                otaCode: val,
             }
             sendVerificationCode(codeInformation);
         }
@@ -143,11 +143,19 @@ const Profile = ({passwordMinLengthError, updatePassword, sendVerificationCode, 
         </View>
     )
 
+    const sucessMessage = (
+        <View style={styles.successContainer}>
+            <Text style={styles.sucessText}>Your Password has been updated.</Text>
+        </View>
+    )
+
     const renderPasswordDisplay = () => {
         if (passwordDisplay === 'code') {
             return codeInput;
         } else if (passwordDisplay === 'change_password') {
             return changePasswordInput;
+        } else if (passwordDisplay === 'password_updated') {
+            return sucessMessage;
         } else {
             return changePasswordButton;
         }
@@ -189,7 +197,10 @@ const Profile = ({passwordMinLengthError, updatePassword, sendVerificationCode, 
 
     useEffect(() => {
         fadeViewIn()
-    },)
+        if (passwordDisplay === "password_updated") {
+
+        }
+    },[passwordDisplay])
 
     return (
         <MainBackgroundContainer>
@@ -274,6 +285,14 @@ const styles = StyleSheet.create({
     profileScreenContainer: {
         width: '100%',
         height: '100%',
+    },
+    successContainer: {
+        width: '100%',
+    },
+    successText: {
+        color: "#f00",
+        fontWeight: 'bold',
+        fontSize: height * 0.03,
     },
     timeBasedGreetingRow: {
         width: '100%',
