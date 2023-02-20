@@ -11,13 +11,14 @@ import UserAuthActionsContainer from '../../components/userAuth/UserAuthActionsC
 import logoutUser from '../../redux/actions/userActions/logoutUser';
 import changePassword from '../../redux/actions/userActions/changePassword';
 import sendVerificationCode from '../../redux/actions/userActions/sendVerificationCode';
+import updatePassword from '../../redux/actions/userActions/updatePassword';
 
-const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationLoading, changePassword}) => {
+const Profile = ({passwordMinLengthError, updatePassword, sendVerificationCode, route, user, logoutUser, authenticationLoading, changePassword}) => {
 
     let navState = route.params === undefined ? "" : route.params.navState;
 
     const {email, userId, passwordChangeInfo} = user;
-    const {passwordDisplay, codeSending, verificationProcessing, updatingPassword} = passwordChangeInfo;
+    const {passwordDisplay, codeSending, verificationProcessing, updatingPassword, passwordUpdateError} = passwordChangeInfo;
     
     const viewOpacity = useRef(new Animated.Value(0)).current;
 
@@ -77,6 +78,15 @@ const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationL
         }
     }
 
+    const handleUpdatePasswordPress = () => {
+        if (newPassword.split('').length > 7) {
+            let newPasswordInformation = {userId, newPassword};
+            updatePassword(newPasswordInformation);
+        } else {
+            passwordMinLengthError()
+        }
+    }
+
     const changePasswordButton = (
         <TouchableOpacity onPress={handleChangePasswordPress} style={styles.changePasswordButton}>
             {codeSending === true ?
@@ -113,14 +123,17 @@ const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationL
 
     const changePasswordInput = (
         <View style={styles.changePasswordContainer}>
+            {passwordUpdateError !== "" &&
+            <Text style={styles.passwordChangeError}>{passwordUpdateError}</Text>
+            }
             <TextInput 
                 style={styles.updatePasswordInput}
-                value={newPasword}
+                value={newPassword}
                 onChangeText={val => setNewPassword(val)}
                 placeholder={'Enter New Password'}
                 placeholderTextColor={'#fff'}
             />
-            <TouchableOpacity style={[platformShadow, styles.updatePasswordButton]}>
+            <TouchableOpacity onPress={handleUpdatePasswordPress} style={[platformShadow, styles.updatePasswordButton]}>
                 {updatingPassword === true ?
                     <ActivityIndicator color={'#fff'} size='large' />
                 :
@@ -254,6 +267,10 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         fontSize: 20,
     },
+    passwordChangeError: {
+        color: '#fff',
+        fontWeight: '100',
+    },
     profileScreenContainer: {
         width: '100%',
         height: '100%',
@@ -326,6 +343,8 @@ const mapDispatchToProps = dispatch => {
         logoutUser: () => dispatch(logoutUser()),
         changePassword: userId => dispatch(changePassword(userId)),
         sendVerificationCode: codeInformation => dispatch(sendVerificationCode(codeInformation)),
+        updatePassword: (updatePasswordInfo) => dispatch(updatePassword(updatePasswordInfo)),
+        passwordMinLengthError: () => dispatch({type: "PASSWORD_UPDATE_ERROR", message: "Password must be at least 8 characters long."})
     }
 }
 
