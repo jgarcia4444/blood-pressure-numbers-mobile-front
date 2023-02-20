@@ -17,6 +17,14 @@ const initialState = {
 
 const userReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "RESET_PASSWORD_DISPLAY":
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    passwordDisplay: "",
+                }
+            }
         case "PASSWORD_UPDATE_SUCCESS":
             return {
                 ...state,

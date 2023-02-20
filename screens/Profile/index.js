@@ -13,7 +13,7 @@ import changePassword from '../../redux/actions/userActions/changePassword';
 import sendVerificationCode from '../../redux/actions/userActions/sendVerificationCode';
 import updatePassword from '../../redux/actions/userActions/updatePassword';
 
-const Profile = ({passwordMinLengthError, updatePassword, sendVerificationCode, route, user, logoutUser, authenticationLoading, changePassword}) => {
+const Profile = ({resetPasswordDisplay, passwordMinLengthError, updatePassword, sendVerificationCode, route, user, logoutUser, authenticationLoading, changePassword}) => {
 
     let navState = route.params === undefined ? "" : route.params.navState;
 
@@ -21,6 +21,7 @@ const Profile = ({passwordMinLengthError, updatePassword, sendVerificationCode, 
     const {passwordDisplay, codeSending, verificationProcessing, updatingPassword, passwordUpdateError} = passwordChangeInfo;
     
     const viewOpacity = useRef(new Animated.Value(0)).current;
+    const successOpacity = useRef(new Animated.Value(1)).current;
 
     const [otaCode, setOtaCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -118,6 +119,9 @@ const Profile = ({passwordMinLengthError, updatePassword, sendVerificationCode, 
                     }
                 </TouchableOpacity>
             </View>
+            <View style={styles.codeInputdescriptionRow}>
+                <Text style={styles.codeInputDescription}>An email has been sent to the email associated with this account. Use the code in the email to continue the process of updating your password</Text>
+            </View>
         </View>
     )
 
@@ -144,9 +148,9 @@ const Profile = ({passwordMinLengthError, updatePassword, sendVerificationCode, 
     )
 
     const sucessMessage = (
-        <View style={styles.successContainer}>
-            <Text style={styles.sucessText}>Your Password has been updated.</Text>
-        </View>
+        <Animated.View style={[styles.successContainer, {opacity: successOpacity}]}>
+            <Text style={styles.successText}>Your Password has been updated.</Text>
+        </Animated.View>
     )
 
     const renderPasswordDisplay = () => {
@@ -195,10 +199,20 @@ const Profile = ({passwordMinLengthError, updatePassword, sendVerificationCode, 
         }).start();
     }
 
+    const fadeOutSuccess = () => {
+        Animated.timing(successOpacity, {
+            toValue: 0,
+            duration: 3000,
+            useNativeDriver: true
+        }).start(() => {
+            resetPasswordDisplay();
+        })
+    }
+
     useEffect(() => {
         fadeViewIn()
         if (passwordDisplay === "password_updated") {
-
+            fadeOutSuccess()
         }
     },[passwordDisplay])
 
@@ -247,6 +261,13 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    codeInputDescription: {
+        color: '#f00',
+        fontWeight: 'bold'
+    },
+    codeInputdescriptionRow: {
+        marginTop: height * 0.02,
     },
     emailLabel: {
         fontSize: height * 0.03,
@@ -363,7 +384,8 @@ const mapDispatchToProps = dispatch => {
         changePassword: userId => dispatch(changePassword(userId)),
         sendVerificationCode: codeInformation => dispatch(sendVerificationCode(codeInformation)),
         updatePassword: (updatePasswordInfo) => dispatch(updatePassword(updatePasswordInfo)),
-        passwordMinLengthError: () => dispatch({type: "PASSWORD_UPDATE_ERROR", message: "Password must be at least 8 characters long."})
+        passwordMinLengthError: () => dispatch({type: "PASSWORD_UPDATE_ERROR", message: "Password must be at least 8 characters long."}),
+        resetPasswordDisplay: () => dispatch({type: "RESET_PASSWORD_DISPLAY"}),
     }
 }
 
