@@ -10,11 +10,41 @@ const initialState = {
         codeVerificationError: "",
         passwordDisplay: '',
         verificationProcessing: false,
+        updatingPassword: false,
+        passwordUpdateError: "",
     },
 }
 
 const userReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "PASSWORD_UPDATE_SUCCESS":
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    updatingPassword: false,
+                    passwordUpdateError: "",
+                    passwordDisplay: "password_updated",
+                }
+            }
+        case "PASSWORD_UPDATE_ERROR":
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    passwordUpdateError: action.message,
+                    updatingPassword: false,
+                }
+            }
+        case "UPDATING_PASSWORD":
+            return {
+                ...state,
+                passwordChangeInfo: {
+                    ...state.passwordChangeInfo,
+                    updatingPassword: true,
+                    passwordUpdateError: "",
+                }
+            }
         case "CODE_VERIFICATION_SUCCESS":
             return {
                 ...state,

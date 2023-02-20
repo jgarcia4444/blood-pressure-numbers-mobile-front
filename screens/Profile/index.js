@@ -4,7 +4,7 @@ const {height, width} = Dimensions.get('screen');
 import { connect } from 'react-redux';
 
 import globalStyles from '../../config/styles/globalStyles';
-const {pageTitleContainer, pageTitle} = globalStyles
+const {pageTitleContainer, pageTitle, platformShadow} = globalStyles
 
 import MainBackgroundContainer from '../../components/backgrounds';
 import UserAuthActionsContainer from '../../components/userAuth/UserAuthActionsContainer';
@@ -17,11 +17,12 @@ const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationL
     let navState = route.params === undefined ? "" : route.params.navState;
 
     const {email, userId, passwordChangeInfo} = user;
-    const {passwordDisplay, codeSending, verificationProcessing} = passwordChangeInfo;
+    const {passwordDisplay, codeSending, verificationProcessing, updatingPassword} = passwordChangeInfo;
     
     const viewOpacity = useRef(new Animated.Value(0)).current;
 
     const [otaCode, setOtaCode] = useState('');
+    const [newPassword, setNewPassword] = useState('');
 
     const logoutButton = (
         <TouchableOpacity onPress={logoutUser} style={styles.logoutButton}>
@@ -55,15 +56,9 @@ const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationL
         changePassword(userId);
     }
 
-    const changePasswordButton = (
-        <TouchableOpacity onPress={handleChangePasswordPress} style={styles.changePasswordButton}>
-            <Text style={styles.changePasswordText}>Change Password</Text>
-        </TouchableOpacity>            
-    )
-
     const handleOtaCodeChange = val => {
         setOtaCode(val);
-        if (val.length === 6) {
+        if (val.split('').length === 6) {
             let codeInformation = {
                 userId: userId,
                 otaCode: otaCode,
@@ -82,6 +77,16 @@ const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationL
         }
     }
 
+    const changePasswordButton = (
+        <TouchableOpacity onPress={handleChangePasswordPress} style={styles.changePasswordButton}>
+            {codeSending === true ?
+                <ActivityIndicator color={'#fff'} size='large' />
+            :
+                <Text style={styles.changePasswordText}>Change Password</Text>
+            }
+        </TouchableOpacity>            
+    )
+
     const codeInput = (
         <View style={styles.codeInputContainer}>
             <View style={styles.codeInputRow}>
@@ -92,12 +97,11 @@ const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationL
                     placeholder={'Enter Verification Code'}
                     placeholderTextColor={'#fff'}
                     keyboardType='number-pad'
-                    
                 />
             </View>
             <View style={styles.codeInputSubmitRow}>
-                <TouchableOpacity onPress={handleVerifyCodePress} style={styles.verifyCodeButton}>
-                    {codeSending === true ?
+                <TouchableOpacity onPress={handleVerifyCodePress} style={[platformShadow, styles.verifyCodeButton]}>
+                    {verificationProcessing === true ?
                         <ActivityIndicator color={'#fff'} size={'large'} />
                     :
                         <Text style={styles.verifyCodeText}>Send Code</Text>
@@ -107,11 +111,30 @@ const Profile = ({sendVerificationCode, route, user, logoutUser, authenticationL
         </View>
     )
 
+    const changePasswordInput = (
+        <View style={styles.changePasswordContainer}>
+            <TextInput 
+                style={styles.updatePasswordInput}
+                value={newPasword}
+                onChangeText={val => setNewPassword(val)}
+                placeholder={'Enter New Password'}
+                placeholderTextColor={'#fff'}
+            />
+            <TouchableOpacity style={[platformShadow, styles.updatePasswordButton]}>
+                {updatingPassword === true ?
+                    <ActivityIndicator color={'#fff'} size='large' />
+                :
+                    <Text style={styles.updatePasswordButtonText}>Update Password</Text>
+                }
+            </TouchableOpacity>
+        </View>
+    )
+
     const renderPasswordDisplay = () => {
         if (passwordDisplay === 'code') {
             return codeInput;
         } else if (passwordDisplay === 'change_password') {
-            return <Text>Change Password</Text>
+            return changePasswordInput;
         } else {
             return changePasswordButton;
         }
@@ -178,6 +201,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#f00',
         borderRadius: 5,
     },
+    changePasswordContainer: {
+        width: '100%',
+    },
     changePasswordRow: {
         width: '100%',
         marginTop: height * 0.03,
@@ -235,6 +261,29 @@ const styles = StyleSheet.create({
     timeBasedGreetingRow: {
         width: '100%',
         marginBottom: height * 0.03,
+    },
+    updatePasswordButton: {
+        width: '100%',
+        height:  height * 0.075,
+        alignItems: 'center',
+        justifyContent: "center",
+        backgroundColor: '#f00',
+        borderRadius: 5,
+    },
+    updatePasswordButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    updatePasswordInput: {
+        width: '100%',
+        borderWidth: 2,
+        borderRadius: 5,
+        borderColor: '#f00',
+        height: height * 0.05,
+        marginBottom: height * 0.02,
+        color: '#fff',
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
     userEmail: {
         fontSize: height * 0.03,
