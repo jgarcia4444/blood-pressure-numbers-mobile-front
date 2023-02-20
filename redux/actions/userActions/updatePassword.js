@@ -15,7 +15,7 @@ const updatePassword = (passwordUpdateInfo) => {
         }),
     };
     return async dispatch => {
-        dispatch({type: "UPDATING_ PASSWORD"});
+        dispatch({type: "UPDATING_PASSWORD"});
         setTimeout(() => {
             fetch(url, options)
                 .then(res => res.json())

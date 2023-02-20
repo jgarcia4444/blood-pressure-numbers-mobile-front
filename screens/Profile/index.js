@@ -18,7 +18,7 @@ const Profile = ({resetPasswordDisplay, passwordMinLengthError, updatePassword, 
     let navState = route.params === undefined ? "" : route.params.navState;
 
     const {email, userId, passwordChangeInfo} = user;
-    const {passwordDisplay, codeSending, verificationProcessing, updatingPassword, passwordUpdateError} = passwordChangeInfo;
+    const {passwordDisplay, codeSending, verificationProcessing, updatingPassword, passwordUpdateError, codeVerificationError} = passwordChangeInfo;
     
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const successOpacity = useRef(new Animated.Value(1)).current;
@@ -66,6 +66,9 @@ const Profile = ({resetPasswordDisplay, passwordMinLengthError, updatePassword, 
                 otaCode: val,
             }
             sendVerificationCode(codeInformation);
+            if (codeVerificationError === "") {
+                setOtaCode('');
+            }
         }
     }
 
@@ -76,6 +79,9 @@ const Profile = ({resetPasswordDisplay, passwordMinLengthError, updatePassword, 
                 otaCode: otaCode,
             }
             sendVerificationCode(codeInformation);
+            if (codeVerificationError === "") {
+                setOtaCode('');
+            }
         }
     }
 
@@ -83,6 +89,9 @@ const Profile = ({resetPasswordDisplay, passwordMinLengthError, updatePassword, 
         if (newPassword.split('').length > 7) {
             let newPasswordInformation = {userId, newPassword};
             updatePassword(newPasswordInformation);
+            if (passwordUpdateError === "") {
+                setNewPassword('');
+            }
         } else {
             passwordMinLengthError()
         }
@@ -101,6 +110,9 @@ const Profile = ({resetPasswordDisplay, passwordMinLengthError, updatePassword, 
     const codeInput = (
         <View style={styles.codeInputContainer}>
             <View style={styles.codeInputRow}>
+                {codeVerificationError !== "" &&
+                    <Text style={styles.passwordChangeError}>{codeVerificationError}</Text>
+                }
                 <TextInput 
                     style={styles.codeInput} 
                     value={otaCode}
@@ -128,7 +140,7 @@ const Profile = ({resetPasswordDisplay, passwordMinLengthError, updatePassword, 
     const changePasswordInput = (
         <View style={styles.changePasswordContainer}>
             {passwordUpdateError !== "" &&
-            <Text style={styles.passwordChangeError}>{passwordUpdateError}</Text>
+                <Text style={styles.passwordChangeError}>{passwordUpdateError}</Text>
             }
             <TextInput 
                 style={styles.updatePasswordInput}
