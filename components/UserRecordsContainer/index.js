@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     userRecordsContainer: {
         width: '100%',
         flex: 1,
+        marginBottom: height * 0.05,
     },
 })
 

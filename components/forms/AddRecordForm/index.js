@@ -20,7 +20,6 @@ const AddRecordForm = ({addRecord, userId, recordPersistanceError}) => {
         if (requirementsMet === true) {
             checkForErrors()
             if (errorSystolic === "" && errorDiastolic === "" && armSelectedIndex !== null) {
-                // show confirmation alert
                 confirmationAlert();
             }
         }
@@ -85,6 +84,10 @@ const AddRecordForm = ({addRecord, userId, recordPersistanceError}) => {
         color: "#f00",
     }
 
+    const handleNotesValChange = (val) => {
+        setNotes(val);
+    }
+
     useEffect(() => {
         if ((systolic !== "") && (diastolic !== "") && (armSelectedIndex !== null)) {
             setTimeout(() => {
@@ -141,7 +144,7 @@ const AddRecordForm = ({addRecord, userId, recordPersistanceError}) => {
                         <View style={[styles.formInputContainer, {width: '100%'}]}>
                             <TextInput 
                                 value={notes}
-                                onChange={(val) => setNotes(val.target.value)}
+                                onChangeText={handleNotesValChange}
                                 placeholder="Write Here"
                                 multiline={true}
                                 style={styles.notesTextArea}
