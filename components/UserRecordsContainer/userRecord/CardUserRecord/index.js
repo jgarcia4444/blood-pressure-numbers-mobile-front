@@ -19,6 +19,22 @@ const CardUserRecord = ({userRecord}) => {
         }).start();
     }
 
+    const dayOfTheWeek = (dayIndex) => {
+        let dayCipher = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        return dayCipher[dayIndex];
+    }
+
+    const month = (monthIndex) => {
+        let monthCipher = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "NOV", "DEC"];
+        return monthCipher[monthIndex]
+    }
+
+    const readableDate = () => {
+        let date = new Date(Date.parse(userRecord.dateRecorded));
+        let formattedDate = `${dayOfTheWeek(date.getDay())}, ${month(date.getMonth())} ${date.getDate()}, ${date.getFullYear()}`
+        return formattedDate;
+    }
+
     useEffect(() => {
         fadeViewIn()
     })
@@ -27,7 +43,7 @@ const CardUserRecord = ({userRecord}) => {
         <Animated.View style={[styles.cardUserRecord, platformShadow, {opacity: viewOpacity}]}>
             <View style={styles.dateRecordedRow}>
                 <Text style={styles.dateRecordedLabel}>Date:</Text>
-                <Text style={styles.dateRecordedValue}>{userRecord.dateRecorded}</Text>
+                <Text style={styles.dateRecordedValue}>{readableDate()}</Text>
             </View>
             <View style={styles.recordValuesRow}>
                 <View style={styles.recordValueContainer}>
@@ -53,7 +69,7 @@ const CardUserRecord = ({userRecord}) => {
 
 const styles = StyleSheet.create({
     cardUserRecord: {
-        width: width * 0.5,
+        width: width * 0.75,
         padding: height * 0.02,
         alignItems: 'center',
         backgroundColor: '#f00',
@@ -63,13 +79,13 @@ const styles = StyleSheet.create({
     dateRecordedLabel: {
         color: '#fff',
         fontSize: height * 0.025,
-        fontWeight: '900',
+        fontWeight: '300',
     },
     dateRecordedValue: {
         color: '#fff',
         marginStart: width * 0.03,
         fontSize: height * 0.025,
-        fontWeight: '300',
+        fontWeight: 'bold',
     },
     dateRecordedRow: {
         width: '100%',
@@ -79,7 +95,7 @@ const styles = StyleSheet.create({
     recordValue: {
         color: '#fff',
         fontSize: height * 0.025,
-        fontWeight: '300',
+        fontWeight: '900',
     },
     recordValueContainer: {
         width: '50%',
@@ -87,7 +103,7 @@ const styles = StyleSheet.create({
     recordValueLabel: {
         color: '#fff',
         fontSize: height * 0.025,
-        fontWeight: '900',
+        fontWeight: '300',
     },
     recordValueLabelRow: {
         width: '100%',

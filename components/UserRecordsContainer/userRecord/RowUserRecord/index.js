@@ -15,6 +15,22 @@ const RowUserRecord = ({userRecord}) => {
         }).start();
     }
 
+    const dayOfTheWeek = (dayIndex) => {
+        let dayCipher = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        return dayCipher[dayIndex];
+    }
+
+    const month = (monthIndex) => {
+        let monthCipher = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "NOV", "DEC"];
+        return monthCipher[monthIndex]
+    }
+
+    const readableDate = () => {
+        let date = new Date(Date.parse(userRecord.dateRecorded));
+        let formattedDate = `${dayOfTheWeek(date.getDay())}, ${month(date.getMonth())} ${date.getDate()}, ${date.getFullYear()}`
+        return formattedDate;
+    }
+
     useEffect(() => {
         fadeViewIn()
     })
@@ -23,7 +39,7 @@ const RowUserRecord = ({userRecord}) => {
         <Animated.View style={[styles.rowUserRecordContainer, {opacity: viewOpacity}]}>
             <View style={styles.dateRecordedContainer}>
                 <Text style={styles.recordLabel}>Date</Text>
-                <Text style={styles.recordValue}>{userRecord.dateRecorded}</Text>
+                <Text style={styles.recordValue}>{readableDate()}</Text>
             </View>
             <View style={styles.recordValueContainer}>
                 <Text style={styles.recordLabel}>Systolic</Text>
@@ -44,12 +60,13 @@ const styles = StyleSheet.create({
     },
     recordLabel: {
         color: "#fff",
-        opacity: 0.75,
         fontSize: height * 0.025,
+        fontWeight: '300',
     },
     recordValue: {
         color: '#fff',
         fontSize: height * 0.025,
+        fontWeight: '900',
     },
     recordValueContainer: {
         width: '30%',
