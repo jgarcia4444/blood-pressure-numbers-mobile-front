@@ -1,17 +1,19 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, Animated, Easing, TouchableOpacity, Alert } from 'react-native';
-import {Ionicons} from 'react-native-vector-icons'
+import {Ionicons} from 'react-native-vector-icons';
+import { connect } from 'react-redux';
 
 const {height, width} = Dimensions.get('screen');
 import globalStyles from '../../../../config/styles/globalStyles';
 const {platformShadow} = globalStyles;
 
- 
+import removeRecord from '../../../../redux/actions/recordActions/removeRecord';
 
-const CardUserRecord = ({userRecord}) => {
+const CardUserRecord = ({userRecord, removeRecord, userId}) => {
 
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const iconRotation = useRef(new Animated.Value(0)).current;
+    const shrink = useRef(new Animated.Value(1)).current;
 
     const [showMore, setShowMore] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -89,12 +91,25 @@ const CardUserRecord = ({userRecord}) => {
         )
     }
 
+    const shrinkAway = () => {
+        Animated.timing(shrink, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true,
+            easing: linear,
+        }).start();
+    }
+
     const handleRecordDelete = () => {
-        console.log("Record delete confirmed.", userRecord.id)
+        let recordRemovalInfo = {
+            userId,
+            userRecordId: userRecord.id,
+        }
+        removeRecord(recordRemovalInfo);
+        shrinkAway();
     }
 
     const handleDeletePress = () => {
-        // Show alert to confirm deletion
         Alert.alert('Delete Record', 'Are you sure that you want to delete the selected record?',
         [
             {
@@ -115,7 +130,7 @@ const CardUserRecord = ({userRecord}) => {
     }, [showMore])
 
     return (
-        <Animated.View style={{opacity: viewOpacity, marginVertical: height * 0.03}}>
+        <Animated.View style={{opacity: viewOpacity, marginVertical: height * 0.03, transform: [{scale: shrink}]}}>
             <View style={[styles.cardUserRecord, platformShadow]}>
                 <View style={styles.dateRecordedRow}>
                     <Text style={styles.dateRecordedLabel}>Date:</Text>
@@ -262,4 +277,19 @@ const styles = StyleSheet.create({
     }
 })
 
-export default CardUserRecord;
+const mapStateToProps = state => {
+    return {
+        userId: state.user.userId
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        removeRecord: recordRemovalInfo => dispatch(removeRecord(recordRemovalInfo)),
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(CardUserRecord);
