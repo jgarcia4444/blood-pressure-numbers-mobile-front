@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Animated, Easing, TouchableOpacity } from 'react-native';
 import {Ionicons} from 'react-native-vector-icons'
 
 const {height, width} = Dimensions.get('screen');
 import globalStyles from '../../../../config/styles/globalStyles';
-const {platformShadow} = globalStyles
+const {platformShadow} = globalStyles;
 
  
 
@@ -14,6 +14,7 @@ const CardUserRecord = ({userRecord}) => {
     const iconRotation = useRef(new Animated.Value(0)).current;
 
     const [showMore, setShowMore] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     const {dateRecorded, systolic, diastolic, rightArmRecorded, notes} = userRecord;
 
@@ -120,15 +121,33 @@ const CardUserRecord = ({userRecord}) => {
                 {displayMoreInfo()}
             </View>
             <View style={styles.cardActionRow}>
-                <Animated.View style={{transform: [{rotate: rotation}]}}>
-                    <Ionicons onPress={handleMorePress} name='chevron-down-circle' size={28} color={'#fff'} />
-                </Animated.View>
+                <View style={styles.editDeleteContainer}>
+                    <TouchableOpacity style={[platformShadow, styles.actionButton, styles.editButton]}>
+                        <Ionicons name="pencil" size={28} color={'#00f'} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[platformShadow, styles.actionButton, styles.deleteButton]}>
+                        <Ionicons name="trash" size={28} color={'#f00'} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.showMoreButtonContainer}>
+                    <Animated.View style={{transform: [{rotate: rotation}]}}>
+                        <Ionicons onPress={handleMorePress} name='chevron-down-circle' size={28} color={'#fff'} />
+                    </Animated.View>
+                </View>
             </View>
         </Animated.View>
     )
 }
 
 const styles = StyleSheet.create({
+    actionButton: {
+        width: '40%',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: height * 0.01,
+        backgroundColor: "#fff",
+    },
     cardActionRow: {
         width: width * 0.75,
         marginTop: height * 0.01,
@@ -156,6 +175,12 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'flex-start'
+    },
+    deleteButton: {
+
+    },
+    editButton: {
+        marginEnd: '10%',
     },
     moreInfoContainer: {
         width: '100%',

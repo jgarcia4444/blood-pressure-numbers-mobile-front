@@ -5,6 +5,8 @@ const {height, width} = Dimensions.get('screen');
 
 const RowUserRecord = ({userRecord}) => {
 
+    //
+
     const viewOpacity = useRef(new Animated.Value(0)).current;
 
     const fadeViewIn = () => {
@@ -36,18 +38,20 @@ const RowUserRecord = ({userRecord}) => {
     })
 
     return (
-        <Animated.View style={[styles.rowUserRecordContainer, {opacity: viewOpacity}]}>
-            <View style={styles.dateRecordedContainer}>
-                <Text style={styles.recordLabel}>Date</Text>
-                <Text style={styles.recordValue}>{readableDate()}</Text>
-            </View>
-            <View style={styles.recordValueContainer}>
-                <Text style={styles.recordLabel}>Systolic</Text>
-                <Text style={styles.recordValue}>{userRecord.systolic}</Text>
-            </View>
-            <View style={styles.recordValueContainer}>
-                <Text style={styles.recordLabel}>Diastolic</Text>
-                <Text style={styles.recordValue}>{userRecord.diastolic}</Text>
+        <Animated.View style={{opacity: viewOpacity,}}>
+            <View style={styles.rowUserRecordContainer}>
+                <View style={styles.dateRecordedContainer}>
+                    <Text style={styles.recordLabel}>Date</Text>
+                    <Text style={styles.recordValue}>{readableDate()}</Text>
+                </View>
+                <View style={styles.recordValueContainer}>
+                    <Text style={styles.recordLabel}>Systolic</Text>
+                    <Text style={styles.recordValue}>{userRecord.systolic}</Text>
+                </View>
+                <View style={styles.recordValueContainer}>
+                    <Text style={styles.recordLabel}>Diastolic</Text>
+                    <Text style={styles.recordValue}>{userRecord.diastolic}</Text>
+                </View>
             </View>
         </Animated.View>
     )

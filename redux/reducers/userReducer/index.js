@@ -118,9 +118,15 @@ const userReducer = (state=initialState, action) => {
                 ...initialState,
             }
         case 'persist/REHYDRATE':
-            return {
-                ...state,
-                ...action.payload.user,
+            if (action.payload !== undefined) {
+                return {
+                    ...state,
+                    ...action.payload.user,
+                }
+            } else {
+                return {
+                    ...state,
+                }
             }
         case "LOGGING_OUT":
             return {
