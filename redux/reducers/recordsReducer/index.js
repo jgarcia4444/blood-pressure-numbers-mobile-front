@@ -7,7 +7,7 @@ const initialState = {
 
 const recordsReducer = (state=initialState, action) => {
     switch(action.type) {
-        case "LOGOUT_SUCCESS":
+        case "LOGGED_OUT_SUCCESS":
             return {
                 ...initialState,
             }

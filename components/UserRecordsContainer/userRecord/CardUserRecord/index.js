@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, Animated, Easing, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Animated, Easing, TouchableOpacity, Alert } from 'react-native';
 import {Ionicons} from 'react-native-vector-icons'
 
 const {height, width} = Dimensions.get('screen');
@@ -89,6 +89,27 @@ const CardUserRecord = ({userRecord}) => {
         )
     }
 
+    const handleRecordDelete = () => {
+        console.log("Record delete confirmed.", userRecord.id)
+    }
+
+    const handleDeletePress = () => {
+        // Show alert to confirm deletion
+        Alert.alert('Delete Record', 'Are you sure that you want to delete the selected record?',
+        [
+            {
+                text: "Delete",
+                onPress: handleRecordDelete,
+                style: 'destructive',
+            },
+            {
+                text: "Cancel",
+                style: 'cancel',
+            }
+        ]
+        )
+    }
+
     useEffect(() => {
         fadeViewIn();
     }, [showMore])
@@ -121,17 +142,19 @@ const CardUserRecord = ({userRecord}) => {
                 {displayMoreInfo()}
             </View>
             <View style={styles.cardActionRow}>
-                <View style={styles.editDeleteContainer}>
-                    <TouchableOpacity style={[platformShadow, styles.actionButton, styles.editButton]}>
-                        <Ionicons name="pencil" size={28} color={'#00f'} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[platformShadow, styles.actionButton, styles.deleteButton]}>
-                        <Ionicons name="trash" size={28} color={'#f00'} />
-                    </TouchableOpacity>
-                </View>
+                {showMore === true &&
+                    <View style={styles.editDeleteContainer}>
+                        <TouchableOpacity onPress={() => setIsEditing(true)} style={[platformShadow, styles.actionButton, styles.editButton]}>
+                            <Ionicons name="pencil" size={22} color={'#fff'} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleDeletePress} style={[platformShadow, styles.actionButton, styles.deleteButton]}>
+                            <Ionicons name="trash" size={22} color={'#fff'} />
+                        </TouchableOpacity>
+                    </View>
+                }
                 <View style={styles.showMoreButtonContainer}>
                     <Animated.View style={{transform: [{rotate: rotation}]}}>
-                        <Ionicons onPress={handleMorePress} name='chevron-down-circle' size={28} color={'#fff'} />
+                        <Ionicons onPress={handleMorePress} name='chevron-down-circle' size={38} color={'#fff'} />
                     </Animated.View>
                 </View>
             </View>
@@ -146,12 +169,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: height * 0.01,
-        backgroundColor: "#fff",
     },
     cardActionRow: {
         width: width * 0.75,
         marginTop: height * 0.01,
-        alignItems: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
     },
     cardUserRecord: {
         width: width * 0.75,
@@ -177,10 +200,16 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     deleteButton: {
-
+        backgroundColor: '#f00',
     },
     editButton: {
         marginEnd: '10%',
+        backgroundColor: '#24f',
+    },
+    editDeleteContainer: {
+        width: '75%',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     moreInfoContainer: {
         width: '100%',
@@ -226,6 +255,11 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
     },
+    showMoreButtonContainer: {
+        width: '25%',
+        alignItems: 'flex-end',
+        justifyContent: 'center'
+    }
 })
 
 export default CardUserRecord;
