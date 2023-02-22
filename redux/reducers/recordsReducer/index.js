@@ -3,10 +3,31 @@ const initialState = {
     userRecords: [],
     loadingUserRecords: false,
     loadingUserRecordsError: "",
+    deletingRecord: false,
+    recordDeleteError: "",
 }
 
 const recordsReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "RECORD_DELETION_SUCCESS":
+            let recordRemoved = state.userRecords(record => record.id !== action.userRecordId);
+            return {
+                ...state,
+                deletingRecord: false,
+                recordDeleteError: "",
+                userRecords: recordRemoved,
+            }
+        case "RECORD_DELETION_ERROR":
+            return {
+                ...state,
+                deletingRecord: false,
+                recordDeleteError: action.message,
+            }
+        case "DELETING_RECORD":
+            return {
+                ...state,
+                deletingRecord: true,
+            }
         case "LOGGED_OUT_SUCCESS":
             return {
                 ...initialState,
