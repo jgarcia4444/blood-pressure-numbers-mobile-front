@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, Animated, Easing, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Animated, Easing, TouchableOpacity, Alert, TextInput } from 'react-native';
 import {Ionicons} from 'react-native-vector-icons';
 import { connect } from 'react-redux';
 
@@ -17,6 +17,8 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
 
     const [showMore, setShowMore] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [editingSystolic, setEditingSystolic] = useState('');
+    const [editingDiastolic, setEditingDiastolic] = useState('');
 
     const {dateRecorded, systolic, diastolic, rightArmRecorded, notes} = userRecord;
 
@@ -52,6 +54,7 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
             useNativeDriver: true,
         }).start(() => {
             setShowMore(!showMore);
+            setIsEditing(false);
         })
     }
 
@@ -96,7 +99,7 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
             toValue: 0,
             duration: 1000,
             useNativeDriver: true,
-            easing: linear,
+            easing: Easing.linear,
         }).start();
     }
 
@@ -127,7 +130,7 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
 
     useEffect(() => {
         fadeViewIn();
-    }, [showMore])
+    }, [])
 
     return (
         <Animated.View style={{opacity: viewOpacity, marginVertical: height * 0.03, transform: [{scale: shrink}]}}>
@@ -142,15 +145,41 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
                             <Text style={styles.recordValueLabel}>Systolic</Text>
                         </View>
                         <View style={styles.recordValueRow}>
-                            <Text style={styles.recordValue}>{systolic}</Text>
+                            {isEditing === false ?
+                                <Text style={styles.recordValue}>{systolic}</Text>
+                            :
+                            <View style={styles.formInputContainer}>
+                                <TextInput 
+                                    style={styles.editingInputPressure}
+                                    value={editingSystolic}
+                                    onChangeText={val => setEditingSystolic(val)}
+                                    keyboardType='numeric'
+                                    placeholder={`${systolic}`}
+                                    placeholderTextColor={'#fff'}
+                                />
+                            </View>
+                            }
                         </View>
                     </View>
                     <View style={styles.recordValueContainer}>
                         <View style={styles.recordValueLabelRow}>
                             <Text style={styles.recordValueLabel}>Diastolic</Text>
-                        </View>
-                        <View style={styles.recordValueRow}>
-                            <Text style={styles.recordValue}>{diastolic}</Text>
+                            <View style={styles.recordValueRow}>
+                                {isEditing === false ?
+                                    <Text style={styles.recordValue}>{diastolic}</Text>
+                                :
+                                    <View style={styles.formInputContainer}>
+                                        <TextInput 
+                                            style={styles.editingInputPressure}
+                                            value={editingDiastolic}
+                                            onChangeText={val => setEditingDiastolic(val)}
+                                            keyboardType='numeric'
+                                            placeholder={`${diastolic}`}
+                                            placeholderTextColor={'#fff'}
+                                        />
+                                    </View>
+                                }
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -159,12 +188,25 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
             <View style={styles.cardActionRow}>
                 {showMore === true &&
                     <View style={styles.editDeleteContainer}>
-                        <TouchableOpacity onPress={() => setIsEditing(true)} style={[platformShadow, styles.actionButton, styles.editButton]}>
-                            <Ionicons name="pencil" size={22} color={'#fff'} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handleDeletePress} style={[platformShadow, styles.actionButton, styles.deleteButton]}>
-                            <Ionicons name="trash" size={22} color={'#fff'} />
-                        </TouchableOpacity>
+                        {isEditing === false ?
+                            <TouchableOpacity onPress={() => setIsEditing(true)} style={[platformShadow, styles.actionButton, styles.editButton]}>
+                                <Ionicons name="pencil" size={22} color={'#fff'} />
+                            </TouchableOpacity>
+                        :
+                            <TouchableOpacity onPress={() => setIsEditing(false)} style={[platformShadow, styles.actionButton, styles.cancelButton]}>
+                                <Ionicons name="close" size={22} color={'#fff'} />
+                            </TouchableOpacity>
+                        }
+                        {isEditing === false ?
+                            <TouchableOpacity onPress={handleDeletePress} style={[platformShadow, styles.actionButton, styles.deleteButton]}>
+                                <Ionicons name="trash" size={22} color={'#fff'} />
+                            </TouchableOpacity>
+                        :
+                            <TouchableOpacity onPress={handleDeletePress} style={[platformShadow, styles.actionButton, styles.confirmButton]}>
+                                <Ionicons name="checkmark" size={22} color={'#fff'} />
+                            </TouchableOpacity>
+                        }
+                        
                     </View>
                 }
                 <View style={styles.showMoreButtonContainer}>
@@ -185,6 +227,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingVertical: height * 0.01,
     },
+    cancelButton: {
+        backgroundColor: '#f00',
+        marginEnd: '10%',
+    },
     cardActionRow: {
         width: width * 0.75,
         marginTop: height * 0.01,
@@ -197,6 +243,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#f00',
         borderRadius: 5,
+    },
+    confirmButton: {
+        backgroundColor: '#24f',
     },
     dateRecordedLabel: {
         color: '#fff',
@@ -225,6 +274,18 @@ const styles = StyleSheet.create({
         width: '75%',
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    editingInputPressure: {
+        width: '100%',
+        height: height * 0.04,
+        color: '#fff',
+        fontWeight: '900',
+    },
+    formInputContainer: {
+        width: '97.5%',
+        padding: 5,
+        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+        borderRadius: 5,
     },
     moreInfoContainer: {
         width: '100%',

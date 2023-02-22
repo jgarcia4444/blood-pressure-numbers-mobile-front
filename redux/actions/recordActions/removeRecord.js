@@ -11,6 +11,7 @@ const removeRecord = (recordRemovalInfo) => {
                 .then(res => res.json())
                 .then(data => {
                     let {success} = data;
+                    console.log("Data sent back from the remove record action", data);
                     if (success === true) {
                         return dispatch({type: "RECORD_DELETION_SUCCESS", userRecordId});
                     } else {

@@ -10,7 +10,7 @@ const initialState = {
 const recordsReducer = (state=initialState, action) => {
     switch(action.type) {
         case "RECORD_DELETION_SUCCESS":
-            let recordRemoved = state.userRecords(record => record.id !== action.userRecordId);
+            let recordRemoved = state.userRecords.filter(record => record.id !== action.userRecordId);
             return {
                 ...state,
                 deletingRecord: false,
