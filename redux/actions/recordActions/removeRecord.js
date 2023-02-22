@@ -7,7 +7,7 @@ const removeRecord = (recordRemovalInfo) => {
     return async dispatch => {
         dispatch({type: "DELETING_RECORD"});
         setTimeout(() => {
-            fetch(url)
+            fetch(url, {method: "DELETE"})
                 .then(res => res.json())
                 .then(data => {
                     let {success} = data;
