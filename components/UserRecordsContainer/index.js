@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Dimensions, Platform, FlatList } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Platform, FlatList, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 const {height, width} = Dimensions.get('screen');
 import {Ionicons} from 'react-native-vector-icons';
@@ -47,7 +47,10 @@ const UserRecordsContainer = ({userRecords}) => {
     }
 
     return (
-        <View style={styles.userRecordsContainer}>
+        <KeyboardAvoidingView
+        style={styles.userRecordsContainer}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
             <View style={[styles.recordsPresentationRow]}>
                 {cardPresentation}{rowPresentation}
             </View>
@@ -59,7 +62,7 @@ const UserRecordsContainer = ({userRecords}) => {
                     contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
                 />
             </View>
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 

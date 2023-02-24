@@ -345,6 +345,8 @@ const styles = StyleSheet.create({
     notesTextArea: {
         width: '100%',
         height: height * 0.1,
+        color: '#fff',
+        fontWeight: "900",
     },
     recordValue: {
         color: '#fff',

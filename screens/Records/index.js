@@ -96,8 +96,7 @@ const Records = ({recordsCount, records, userId, fetchUserRecords}) => {
                     userAuthDirectedComponent
                 :
                     <UserRecordsContainer />
-                }
-                
+                }                
             </View>
         </MainBackgroundContainer>
     )
