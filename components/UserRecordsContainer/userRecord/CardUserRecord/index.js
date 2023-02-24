@@ -9,8 +9,9 @@ import globalStyles from '../../../../config/styles/globalStyles';
 const {platformShadow} = globalStyles;
 
 import removeRecord from '../../../../redux/actions/recordActions/removeRecord';
+import updateRecord from '../../../../redux/actions/recordActions/updateRecord';
 
-const CardUserRecord = ({userRecord, removeRecord, userId}) => {
+const CardUserRecord = ({userRecord, removeRecord, userId, updateRecord}) => {
 
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const iconRotation = useRef(new Animated.Value(0)).current;
@@ -23,7 +24,7 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
     const [armSelectedIndex, setArmSelectedIndex] = useState(0);
     const [editingNotes, setEditingNotes] = useState('');
 
-    const {dateRecorded, systolic, diastolic, rightArmRecorded, notes} = userRecord;
+    const {dateRecorded, systolic, diastolic, rightArmRecorded, notes, id} = userRecord;
 
     const armValues = ["Left", "Right"];
 
@@ -135,7 +136,7 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
     const handleRecordDelete = () => {
         let recordRemovalInfo = {
             userId,
-            userRecordId: userRecord.id,
+            userRecordId: id,
         }
         removeRecord(recordRemovalInfo);
         shrinkAway();
@@ -161,6 +162,18 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
         setArmSelectedIndex(rightArmRecorded === true ? 1 : 0);
         setEditingNotes(notes);
         setIsEditing(true)
+    }
+
+    const handleConfirmEdit = () => {
+        let updateInfo = {
+            systolic: editingSystolic === "" ? systolic : editingSystolic,
+            diastolic: editingDiastolic === "" ? diastolic : editingDiastolic,
+            right_arm_recorded: armSelectedIndex === 1 ? true : false,
+            notes: editingNotes === "" ? notes : editingNotes,
+            record_id: id,
+            user_id: userId,
+        }
+        updateRecord(updateInfo);
     }
 
     useEffect(() => {
@@ -237,7 +250,7 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
                                 <Ionicons name="trash" size={22} color={'#fff'} />
                             </TouchableOpacity>
                         :
-                            <TouchableOpacity onPress={handleDeletePress} style={[platformShadow, styles.actionButton, styles.confirmButton]}>
+                            <TouchableOpacity onPress={handleConfirmEdit} style={[platformShadow, styles.actionButton, styles.confirmButton]}>
                                 <Ionicons name="checkmark" size={22} color={'#fff'} />
                             </TouchableOpacity>
                         }
@@ -391,6 +404,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         removeRecord: recordRemovalInfo => dispatch(removeRecord(recordRemovalInfo)),
+        updateRecord: updateInfo => dispatch(updateRecord(updateInfo)),
     }
 }
 
