@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
     },
     segmentControl: {
         width: '100%',
-
     },
 })
 

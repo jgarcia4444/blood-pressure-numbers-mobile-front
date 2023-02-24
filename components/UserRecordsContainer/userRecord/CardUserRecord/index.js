@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, Animated, Easing, TouchableOpacity, Alert, TextInput } from 'react-native';
 import {Ionicons} from 'react-native-vector-icons';
 import { connect } from 'react-redux';
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 const {height, width} = Dimensions.get('screen');
 import globalStyles from '../../../../config/styles/globalStyles';
@@ -19,8 +20,12 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editingSystolic, setEditingSystolic] = useState('');
     const [editingDiastolic, setEditingDiastolic] = useState('');
+    const [armSelectedIndex, setArmSelectedIndex] = useState(0);
+    const [editingNotes, setEditingNotes] = useState('');
 
     const {dateRecorded, systolic, diastolic, rightArmRecorded, notes} = userRecord;
+
+    const armValues = ["Left", "Right"];
 
     const fadeViewIn = () => {
         Animated.timing(viewOpacity, {
@@ -82,12 +87,36 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
             <View style={styles.moreInfoContainer}>
                 <View style={[styles.dateRecordedRow, {marginTop: height * 0.01}]}>
                     <Text style={styles.dateRecordedLabel}>Arm Recorded: </Text>
-                    <Text style={styles.dateRecordedValue}>{armRecorded()}</Text>
+                    {isEditing === true ?
+                        <SegmentedControl 
+                            style={styles.segmentControl}
+                            values={armValues}
+                            selectedIndex={armSelectedIndex}
+                            onChange={(e) => {
+                                setArmSelectedIndex(e.nativeEvent.selectedSegmentIndex);
+                            }}
+                            tintColor='#f00'
+                            fontStyle={{color: "#000"}}
+                            activeFontStyle={{color: '#fff'}}
+                        />
+                    :
+                        <Text style={styles.dateRecordedValue}>{armRecorded()}</Text>
+                    }
                 </View>
                 <View style={styles.notesRow}>
                     <Text style={styles.recordValueLabel}>Notes:</Text>
                     <View style={styles.notesContainer}>
-                        <Text style={styles.notesText}>{notes}</Text>
+                        {isEditing === true ?
+                            <TextInput 
+                                value={editingNotes}
+                                onChangeText={val => setEditingNotes(val)}
+                                placeholder={notes === "" ? "Write Here" : notes}
+                                multiline={true}
+                                style={styles.notesTextArea}
+                            />
+                        :   
+                            <Text style={styles.notesText}>{notes}</Text>
+                        }
                     </View>
                 </View>
             </View>
@@ -126,6 +155,12 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
             }
         ]
         )
+    }
+
+    const handleSetEditingToTrue = () => {
+        setArmSelectedIndex(rightArmRecorded === true ? 1 : 0);
+        setEditingNotes(notes);
+        setIsEditing(true)
     }
 
     useEffect(() => {
@@ -189,7 +224,7 @@ const CardUserRecord = ({userRecord, removeRecord, userId}) => {
                 {showMore === true &&
                     <View style={styles.editDeleteContainer}>
                         {isEditing === false ?
-                            <TouchableOpacity onPress={() => setIsEditing(true)} style={[platformShadow, styles.actionButton, styles.editButton]}>
+                            <TouchableOpacity onPress={handleSetEditingToTrue} style={[platformShadow, styles.actionButton, styles.editButton]}>
                                 <Ionicons name="pencil" size={22} color={'#fff'} />
                             </TouchableOpacity>
                         :
@@ -261,7 +296,8 @@ const styles = StyleSheet.create({
     dateRecordedRow: {
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'flex-start'
+        alignItems: 'center',
+        justifyContent: 'flex-start',
     },
     deleteButton: {
         backgroundColor: '#f00',
@@ -304,8 +340,11 @@ const styles = StyleSheet.create({
     },
     notesText: {
         color: '#f00',
-
         fontWeight: '900',
+    },
+    notesTextArea: {
+        width: '100%',
+        height: height * 0.1,
     },
     recordValue: {
         color: '#fff',
@@ -330,6 +369,9 @@ const styles = StyleSheet.create({
     recordValuesRow: {
         width: '100%',
         flexDirection: 'row',
+    },
+    segmentControl: {
+        flex: 1,
     },
     showMoreButtonContainer: {
         width: '25%',
