@@ -5,10 +5,39 @@ const initialState = {
     loadingUserRecordsError: "",
     deletingRecord: false,
     recordDeleteError: "",
+    updatingRecord: false,
+    recordUpdateError: "",
+}
+
+const reconfigureRecords = (record, records) => {
+    let recordIds = records.map(recordInfo => recordInfo.id)
+    let indexOfRecord = recordIds.indexOf(record.id);
+    records[indexOfRecord] = record;
+    return records;
 }
 
 const recordsReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "RECORD_UPDATE_SUCCESS":
+            let recordsWithUpdatedRecord = reconfigureRecords(action.updatedRecord, state.userRecords);
+            return {
+                ...state,
+                updatingRecord: false,
+                recordUpdateError: "",
+                userRecords: recordsWithUpdatedRecord
+            }
+        case "RECORD_UPDATE_ERROR":
+            return {
+                ...state,
+                updatingRecord: false,
+                recordUpdateError: action.message,
+            }
+        case "UPDATING_RECORD":
+            return {
+                ...state,
+                recordUpdateError: "",
+                updatingRecord: true,
+            }
         case "RECORD_DELETION_SUCCESS":
             let recordRemoved = state.userRecords.filter(record => record.id !== action.userRecordId);
             return {
