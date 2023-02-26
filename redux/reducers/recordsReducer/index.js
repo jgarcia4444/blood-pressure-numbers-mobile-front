@@ -19,13 +19,12 @@ const reconfigureRecords = (record, records) => {
 const recordsReducer = (state=initialState, action) => {
     switch(action.type) {
         case "RECORD_UPDATE_SUCCESS":
-            let recordsWithUpdatedRecord = reconfigureRecords(action.updatedRecord, state.userRecords);
-            return {
-                ...state,
+            let recordsWithUpdatedRecord = state.userRecords.map(record => record.id === action.updatedRecord.id ? action.updatedRecord : record);
+            return Object.assign({}, state, {
                 updatingRecord: false,
                 recordUpdateError: "",
                 userRecords: recordsWithUpdatedRecord
-            }
+            });
         case "RECORD_UPDATE_ERROR":
             return {
                 ...state,

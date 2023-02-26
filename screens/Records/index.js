@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import MainBackgroundContainer from '../../components/backgrounds';
@@ -13,12 +13,13 @@ import fetchUserRecords from '../../redux/actions/recordActions/fetchUserRecords
 
 const {height, width} = Dimensions.get('screen');
 
-const Records = ({recordsCount, records, userId, fetchUserRecords}) => {
+const Records = ({recordsCount, userId, fetchUserRecords}) => {
 
     const [showAlert, setShowAlert] = useState(false);
     const [dismissTapped, setDismissTapped] = useState(false);
 
-    const navigation = useNavigation()
+    const navigation = useNavigation();
+    const records = useSelector(state => state.records.userRecords);
 
     const calculateAverage = () => {
         if (records.length === 0) {

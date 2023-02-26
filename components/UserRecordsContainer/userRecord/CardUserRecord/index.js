@@ -4,6 +4,7 @@ import {Ionicons} from 'react-native-vector-icons';
 import { connect } from 'react-redux';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
+
 const {height, width} = Dimensions.get('screen');
 import globalStyles from '../../../../config/styles/globalStyles';
 const {platformShadow} = globalStyles;
@@ -12,6 +13,8 @@ import removeRecord from '../../../../redux/actions/recordActions/removeRecord';
 import updateRecord from '../../../../redux/actions/recordActions/updateRecord';
 
 const CardUserRecord = ({userRecord, removeRecord, userId, updateRecord}) => {
+
+    console.log("Here is the user record info from the card user record.", userRecord);
 
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const iconRotation = useRef(new Animated.Value(0)).current;
@@ -178,7 +181,7 @@ const CardUserRecord = ({userRecord, removeRecord, userId, updateRecord}) => {
 
     useEffect(() => {
         fadeViewIn();
-    }, [])
+    }, [userRecord])
 
     return (
         <Animated.View style={{opacity: viewOpacity, marginVertical: height * 0.03, transform: [{scale: shrink}]}}>

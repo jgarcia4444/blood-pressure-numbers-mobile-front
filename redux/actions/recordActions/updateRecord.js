@@ -2,8 +2,7 @@ import Urls from "../../../config/networking/Urls";
 const {baseUrl} = Urls;
 
 const updateRecord = (updateInfo) => {
-    console.log("Here is the update info that is passed to the update action", updateInfo);
-    let url = `${baseUrl}/records/update`;
+    let url = `${baseUrl}records/update`;
     let options = {
         method: "PUT",
         headers: {
@@ -17,7 +16,6 @@ const updateRecord = (updateInfo) => {
             fetch(url, options)
                 .then(res => res.json())
                 .then(data => {
-                    console.log("Data passed back from the backend for update record.", data);
                     let {success} = data;
                     if (success === true) {
                         let {updatedRecord} = data;
