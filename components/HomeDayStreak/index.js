@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ImageBackground, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, ImageBackground, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
 import globalStyles from '../../config/styles/globalStyles';
@@ -11,8 +11,17 @@ const HomeDayStreak = ({dayStreak}) => {
 
     const {days, nextStreakRecordAvailable, hoursUntilExpiration, dayStreakLoading, loadError} = dayStreak;
 
+    const loadingModal = (
+        <View style={styles.loadingModal}>
+
+        </View>
+    )
+
     return (
         <View style={[styles.homeDayStreakContainer, platformShadow]}>
+            {dayStreakLoading === true &&
+                loadingModal
+            }
             <View style={styles.homeDayStreakTitleRow}>
                 <Text style={styles.homeDayStreakTitle}>Record Recorded</Text>
                 {hoursUntilExpiration > 0 &&
@@ -32,7 +41,7 @@ const HomeDayStreak = ({dayStreak}) => {
             {nextStreakRecordAvailable === true &&
                 <View style={styles.addToStreakRow}>
                     <Text style={styles.nextRecordDescription}>Record a Blood Pressure</Text>
-                    <TouchableOpacity style={styles.addToStreakButton}>
+                    <TouchableOpacity style={[styles.addToStreakButton, platformShadow]}>
                         <Text style={styles.addToStreakButtonText}>Record</Text>
                     </TouchableOpacity>
                 </View>
@@ -76,6 +85,13 @@ const styles = StyleSheet.create({
     homeDayStreakTitleRow: {
         width: '100%',
         flexDirection: "row",
+    },
+    loadingModal: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        borderRadius: 5,
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
     },
     nextRecordDescription: {
 
