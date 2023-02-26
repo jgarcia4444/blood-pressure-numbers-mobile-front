@@ -4,7 +4,8 @@ const initialState = {
     days: 0,
     dayStreakLoading: false,
     loadError: "",
-    nextStreakRecordAvailable: false
+    nextStreakRecordAvailable: false,
+    fetchDetails: true,
 }
 
 const configureHoursUntil = expiresAt => {
@@ -33,9 +34,9 @@ const configureNextDayAvailable = updatedAt => {
 const dayStreakReducer = (state=initialState, action) => {
     switch(action.type) {
         case "DAY_STREAK_FETCH_SUCCESS":
+            let {dayStreak} = action;
             let hoursUntilExpiration = dayStreak.expiresAt === "" ? 0 : configureHoursUntil(dayStreak.expiresAt);
             let nextDayAvailable = dayStreak.updatedAt === "" ? true : configureNextDayAvailable(dayStreak.updatedAt);
-            let {dayStreak} = action;
             return {
                 ...state,
                 loadError: "",
@@ -43,12 +44,14 @@ const dayStreakReducer = (state=initialState, action) => {
                 days: dayStreak.days,
                 hoursUntilExpiration: hoursUntilExpiration,
                 nextStreakRecordAvailable: nextDayAvailable,
+                fetchDetails: false,
             }
         case "DAY_STREAK_FETCH_ERROR":
             return {
                 ...state,
                 dayStreakLoading: false,
-                loadError: action.message
+                loadError: action.message,
+                fetchDetails: false,
             }
         case "FETCHING_DAY_STREAK":
             return {

@@ -2,7 +2,7 @@ import Urls from "../../../config/networking/Urls";
 const {baseUrl} = Urls;
 
 const fetchDayStreakInfo = userId => {
-    let url = `${baseUrl}/day-streak/${userId}`;
+    let url = `${baseUrl}day-streak/${userId}`;
     return async dispatch => {
         dispatch({type: "FETCHING_DAY_STREAK"});
         setTimeout(() => {
@@ -10,6 +10,7 @@ const fetchDayStreakInfo = userId => {
                 .then(res => res.json())
                 .then(data => {
                     let {success} = data;
+                    console.log("Here is the data sent back to the fetchDayStreakInfo action", data);
                     if (success === true) {
                         let {dayStreak} = data;
                         return dispatch({type: "DAY_STREAK_FETCH_SUCCESS", dayStreak});

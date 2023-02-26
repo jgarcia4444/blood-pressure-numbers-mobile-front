@@ -9,6 +9,7 @@ const {store, persistor} = Store;
 import FooterTabs from './components/navigation/FooterTabs';
 
 export default function App() {
+  console.log("Hi from App.js");
   return (
     <Provider store={store}>
       <PersistGate loadgin={null} persistor={persistor}>

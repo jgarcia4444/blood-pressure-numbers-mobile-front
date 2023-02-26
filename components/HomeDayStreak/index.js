@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import { View, Text, ImageBackground, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import globalStyles from '../../config/styles/globalStyles';
 const {platformShadow} = globalStyles
@@ -10,7 +11,9 @@ import fetchDayStreakInfo from '../../redux/actions/dayStreakActions/fetchDayStr
 
 const HomeDayStreak = ({dayStreak, userId, fetchDayStreakInfo}) => {
 
-    const {days, nextStreakRecordAvailable, hoursUntilExpiration, dayStreakLoading, loadError} = dayStreak;
+    const navigation = useNavigation();
+
+    const {days, nextStreakRecordAvailable, hoursUntilExpiration, dayStreakLoading, loadError, fetchDetails} = dayStreak;
 
     const loadingModal = (
         <View style={styles.loadingModal}>
@@ -19,55 +22,62 @@ const HomeDayStreak = ({dayStreak, userId, fetchDayStreakInfo}) => {
     )
 
     useEffect(() => {
-        fetchDayStreakInfo(userId);
-    })
+        if (fetchDetails === true) {
+            fetchDayStreakInfo(userId);
+        }
+    },[fetchDetails])
 
     return (
-        <View style={[styles.homeDayStreakContainer, platformShadow]}>
-            {dayStreakLoading === true &&
-                loadingModal
-            }
+        <View style={styles.homeDayStreakContainer}>
             <View style={styles.homeDayStreakTitleRow}>
                 <Text style={styles.homeDayStreakTitle}>Record Recorded</Text>
                 {hoursUntilExpiration > 0 &&
                     <Text>{hoursUntilExpiration} left</Text>
                 }
             </View>
-            <View style={styles.daysDescriptionContainer}>
-                {days > 0 ?
-                    <>
-                        <Text style={styles.days}>{days}</Text>
-                        <Text style={styles.daysDescription}>{days > 1} in a row</Text>
-                    </>
-                :
-                    <Text style={styles.noDays}>Start a new streak today!</Text>
+            <View style={[styles.homeDayStreakCard, platformShadow]}>
+                {dayStreakLoading === true &&
+                    loadingModal
+                }
+                <View style={styles.daysDescriptionContainer}>
+                    {days > 0 ?
+                        <>
+                            <Text style={styles.days}>{days}</Text>
+                            <Text style={styles.daysDescription}>{days > 1} in a row</Text>
+                        </>
+                    :
+                        <Text style={styles.noDays}>Start a new streak today!</Text>
+                    }
+                </View>
+                {nextStreakRecordAvailable === true &&
+                    <View style={styles.addToStreakRow}>
+                        <Text style={styles.nextRecordDescription}>Record a Blood Pressure</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('AddRecord')} style={[styles.addToStreakButton, platformShadow]}>
+                            <Text style={styles.addToStreakButtonText}>Record</Text>
+                        </TouchableOpacity>
+                    </View>
                 }
             </View>
-            {nextStreakRecordAvailable === true &&
-                <View style={styles.addToStreakRow}>
-                    <Text style={styles.nextRecordDescription}>Record a Blood Pressure</Text>
-                    <TouchableOpacity style={[styles.addToStreakButton, platformShadow]}>
-                        <Text style={styles.addToStreakButtonText}>Record</Text>
-                    </TouchableOpacity>
-                </View>
-            }
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     addToStreakButton: {
-        backgroundColor: '#f33',
+        backgroundColor: '#fff',
         borderRadius: 5,
         padding: height * 0.01,
     },
     addToStreakButtonText: {
-        color: '#fff',
+        color: '#f00',
         fontWeight: "900",
     },
     addToStreakRow: {
         flexDirection: 'row',
         width: '100%',
+        marginVertical: height * 0.01,
+        alignItems: 'center',
+        justifyContent: 'space-around',
     },
     days: {
 
@@ -78,14 +88,19 @@ const styles = StyleSheet.create({
     daysDescriptionContainer: {
 
     },
-    homeDayStreakContainer: {
-        backgroundColor: '#f00',
+    homeDayStreakCard: {
+        width: '100%',
         borderRadius: 5,
-        padding: height * 0.01
+        backgroundColor: '#f00',
+        padding: height * 0.01,
+    },
+    homeDayStreakContainer: {
+        width: '80%'
     },
     homeDayStreakTitle:{
         fontWeight: '900',
         color: '#fff',
+        fontSize: height * 0.03,
     },
     homeDayStreakTitleRow: {
         width: '100%',
@@ -93,16 +108,20 @@ const styles = StyleSheet.create({
     },
     loadingModal: {
         position: 'absolute',
+        top: 0,
+        left: 0,
         width: '100%',
         height: '100%',
         borderRadius: 5,
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
     },
     nextRecordDescription: {
-
+        color: "#fff",
+        fontWeight: '900',
     },
     noDays: {
-
+        color: '#fff',
+        fontSize: height * 0.03,
+        fontWeight: "900",
     },
 });
 

@@ -6,27 +6,13 @@ import HomeNumberOfRecords from '../../components/HomeNumberOfRecords/index.js';
 import HomeDayStreak from '../../components/HomeDayStreak/index.js';
 
 import globalStyles from '../../config/styles/globalStyles.js';
-const { globalContainer } = globalStyles; 
+const { globalContainer, platformShadow } = globalStyles; 
 
 import fetchUserRecords from '../../redux/actions/recordActions/fetchUserRecords.js';
 
 const Home = ({resetUserReducer, userId, fetchUserRecords, userRecords}) => {
 
     const mostRecentRecord = undefined;
-    const configuredCardShadow = Platform.OS === 'android' ?
-        {
-            elevation: 7,
-        }
-        :
-        {
-            shadowColor: '#000',
-            shadowOpacity: 0.35,
-            shadowOffset: {
-                width: 0,
-                height: 3
-            },
-            shadowRadius: 3,
-        };
 
     const viewOpacity = useRef(new Animated.Value(0)).current;
 
@@ -42,7 +28,7 @@ const Home = ({resetUserReducer, userId, fetchUserRecords, userRecords}) => {
             <View style={styles.cardTitleRow}>
                 <Text style={styles.cardTitle}>Most Recent</Text>
             </View>
-            <View style={[styles.mostRecentCard, configuredCardShadow]}>
+            <View style={[styles.mostRecentCard, platformShadow]}>
                 {mostRecentRecord !== undefined ?
                     <Text>Record Found!</Text>
                     :
@@ -90,21 +76,22 @@ const  {height, width} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
     appTitleContainer: {
-        height: height * 0.15,
         alignItems: 'center',
         justifyContent: 'center',
     },
     cardTitle: {
         color: '#fff',
         fontSize: height * 0.03,
+        fontWeight: '900',
     },
     cardTitleRow: {
         width: '80%',
     },
     homeScreenContainer: {
         alignItems: 'center',
-        justifyContent: 'center',
-
+        justifyContent: 'space-evenly',
+        flex: 1,
+        marginVertical: height * 0.02,
     },
     homeScreenText:{
         marginTop: 0,
@@ -126,9 +113,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     mostRecentSection: {
-        marginTop: height * 0.05,
         width: '100%',
-        height: height * 0.5,
         alignItems: 'center',
         justifyContent: "flex-start",
     },
