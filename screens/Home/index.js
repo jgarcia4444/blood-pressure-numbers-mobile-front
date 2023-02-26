@@ -3,6 +3,7 @@ import { View, ScrollView, Text, StyleSheet, Dimensions, Platform, Animated } fr
 import { connect } from 'react-redux';
 import MainBackgroundContainer from '../../components/backgrounds/index.js';
 import HomeNumberOfRecords from '../../components/HomeNumberOfRecords/index.js';
+import HomeDayStreak from '../../components/HomeDayStreak/index.js';
 
 import globalStyles from '../../config/styles/globalStyles.js';
 const { globalContainer } = globalStyles; 
@@ -75,6 +76,7 @@ const Home = ({resetUserReducer, userId, fetchUserRecords, userRecords}) => {
                     <View style={[styles.homeScreenContainer]}>
                         {appTitleSection}
                         {mostRecentSection}
+                        <HomeDayStreak />
                         <HomeNumberOfRecords />
                     </View>
                 </MainBackgroundContainer>
