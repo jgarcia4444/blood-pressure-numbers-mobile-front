@@ -15,8 +15,10 @@ const configureHoursUntil = expiresAt => {
     if (todaysDate.getDate() > expirationDate.getDate()) {
         return 0;
     } else if (todaysDate.getDate() <= expirationDate.getDate()) {
+        let dateDifference = expirationDate.getDate() - todaysDate.getDate();
+        console.log(`Todays date: ${todaysDate.getDate()}, expiration date: ${expirationDate.getDate()}`, dateDifference)
         let todaysHour = todaysDate.getHours();
-        let difference = 24 - todaysHour;
+        let difference = (24 + (dateDifference > 0 ? 24 : 0)) - todaysHour;
         return difference;
     } 
 }

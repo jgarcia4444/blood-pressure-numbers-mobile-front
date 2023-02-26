@@ -21,6 +21,14 @@ const HomeDayStreak = ({dayStreak, userId, fetchDayStreakInfo}) => {
         </View>
     )
 
+    const configureHoursUntilDisplay = () => {
+        if (hoursUntilExpiration > 23) {
+            return "1 Day Left";
+        } else {
+            return `${hoursUntilExpiration} hr${hoursUntilExpiration > 1 ? "s" : ""} Left`
+        }
+    }
+
     useEffect(() => {
         if (fetchDetails === true) {
             fetchDayStreakInfo(userId);
@@ -32,7 +40,9 @@ const HomeDayStreak = ({dayStreak, userId, fetchDayStreakInfo}) => {
             <View style={styles.homeDayStreakTitleRow}>
                 <Text style={styles.homeDayStreakTitle}>Record Recorded</Text>
                 {hoursUntilExpiration > 0 &&
-                    <Text>{hoursUntilExpiration} left</Text>
+                    <Text style={styles.hoursUntilExpirationText}>
+                        {configureHoursUntilDisplay()}
+                    </Text>
                 }
             </View>
             <View style={[styles.homeDayStreakCard, platformShadow]}>
@@ -114,6 +124,12 @@ const styles = StyleSheet.create({
     homeDayStreakTitleRow: {
         width: '100%',
         flexDirection: "row",
+        alignItems: "center",
+        justifyContent: 'flex-start',
+    },
+    hoursUntilExpirationText: {
+        color: "#fff",
+        marginStart: width * 0.02,
     },
     loadingModal: {
         position: 'absolute',
