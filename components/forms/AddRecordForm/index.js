@@ -3,8 +3,10 @@ import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform, To
 import { connect } from 'react-redux';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import addRecord from '../../../redux/actions/addRecordActions/addRecord';
+import createDayStreak from '../../../redux/actions/dayStreakActions/createDayStreak';
+import updateDayStreak from '../../../redux/actions/dayStreakActions/updateDayStreak';
 
-const AddRecordForm = ({addRecord, userId, recordPersistanceError}) => {
+const AddRecordForm = ({updateDayStreak, createDayStreak, addRecord, userId, recordPersistanceError}) => {
 
     const [systolic, setSystolic] = useState("");
     const [errorSystolic, setErrorSystolic] = useState("");
@@ -43,6 +45,11 @@ const AddRecordForm = ({addRecord, userId, recordPersistanceError}) => {
         addRecord(recordInfo);
         if (recordPersistanceError === "") {
             clearFormVariables()
+        }
+        if (dayStreak.days === 0) {
+            createDayStreak(userId);
+        } else {
+            updateDayStreak(userId);
         }
     }
 
@@ -235,6 +242,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         addRecord: (recordInfo) => dispatch(addRecord(recordInfo)),
+        createDayStreak: userId => dispatch(createDayStreak(userId)),
+        updateDayStreak: userId => dispatch(updateDayStreak(userId)),
     }
 }
 
