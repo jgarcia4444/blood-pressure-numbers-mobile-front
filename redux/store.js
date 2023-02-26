@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import userReducer from './reducers/userReducer';
 import recordsReducer from './reducers/recordsReducer';
 import addRecordReducer from './reducers/addRecordReducer';
+import dayStreakReducer from './reducers/dayStreakReducer';
 import createMigrate from 'redux-persist/es/createMigrate';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     user: userReducer,
     records: recordsReducer,
     addRecord: addRecordReducer,
+    dayStreak: dayStreakReducer,
 })
 const migrations = {
     0: (state) => {
