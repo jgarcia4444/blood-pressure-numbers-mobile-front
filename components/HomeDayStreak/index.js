@@ -41,10 +41,10 @@ const HomeDayStreak = ({dayStreak, userId, fetchDayStreakInfo}) => {
                 }
                 <View style={styles.daysDescriptionContainer}>
                     {days > 0 ?
-                        <>
+                        <View style={styles.daysRow}>
                             <Text style={styles.days}>{days}</Text>
-                            <Text style={styles.daysDescription}>{days > 1} in a row</Text>
-                        </>
+                            <Text style={styles.daysDescription}>day{days > 1 ? "s" : ""} in a row</Text>
+                        </View>
                     :
                         <Text style={styles.noDays}>Start a new streak today!</Text>
                     }
@@ -80,13 +80,22 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     days: {
-
+        color: "#fff",
+        fontWeight: '900',
+        fontSize: height * 0.05,
+        marginEnd: width * 0.02,
     },
     daysDescription: {
-
+        color: '#fff',
+        fontSize: height * 0.025,
+        fontWeight: '300',
     },
     daysDescriptionContainer: {
 
+    },
+    daysRow: {
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     homeDayStreakCard: {
         width: '100%',

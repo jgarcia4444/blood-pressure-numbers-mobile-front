@@ -6,7 +6,7 @@ import addRecord from '../../../redux/actions/addRecordActions/addRecord';
 import createDayStreak from '../../../redux/actions/dayStreakActions/createDayStreak';
 import updateDayStreak from '../../../redux/actions/dayStreakActions/updateDayStreak';
 
-const AddRecordForm = ({updateDayStreak, createDayStreak, addRecord, userId, recordPersistanceError}) => {
+const AddRecordForm = ({dayStreak, updateDayStreak, createDayStreak, addRecord, userId, recordPersistanceError}) => {
 
     const [systolic, setSystolic] = useState("");
     const [errorSystolic, setErrorSystolic] = useState("");
@@ -48,7 +48,7 @@ const AddRecordForm = ({updateDayStreak, createDayStreak, addRecord, userId, rec
         }
         if (dayStreak.days === 0) {
             createDayStreak(userId);
-        } else {
+        } else if(dayStreak.days > 0 && dayStreak.nextStreakRecordAvailable === true) {
             updateDayStreak(userId);
         }
     }
@@ -236,6 +236,7 @@ const mapStateToProps = state => {
     return {
         userId: state.user.userId,
         recordPersistanceError: state.addRecord.recordPersistanceError,
+        dayStreak: state.dayStreak,
     }
 }
 
