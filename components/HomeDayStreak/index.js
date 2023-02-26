@@ -1,21 +1,26 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, Text, ImageBackground, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
 import globalStyles from '../../config/styles/globalStyles';
 const {platformShadow} = globalStyles
-
 const {height, width} = Dimensions.get("screen");
 
-const HomeDayStreak = ({dayStreak}) => {
+import fetchDayStreakInfo from '../../redux/actions/dayStreakActions/fetchDayStreakInfo';
+
+const HomeDayStreak = ({dayStreak, userId, fetchDayStreakInfo}) => {
 
     const {days, nextStreakRecordAvailable, hoursUntilExpiration, dayStreakLoading, loadError} = dayStreak;
 
     const loadingModal = (
         <View style={styles.loadingModal}>
-
+            <ActivityIndicator size={'large'} color={'#fff'} />
         </View>
     )
+
+    useEffect(() => {
+        fetchDayStreakInfo(userId);
+    })
 
     return (
         <View style={[styles.homeDayStreakContainer, platformShadow]}>
@@ -104,12 +109,13 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         dayStreak: state.dayStreak,
+        userId: state.user.userId
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        fetchDayStreakInfo: userId => dispatch(fetchDayStreakInfo(userId)),
     }
 }
 

@@ -42,7 +42,7 @@ const dayStreakReducer = (state=initialState, action) => {
                 dayStreakLoading: false,
                 days: dayStreak.days,
                 hoursUntilExpiration: hoursUntilExpiration,
-                nextStreakRecordAvailable: nextDayAvailable;
+                nextStreakRecordAvailable: nextDayAvailable,
             }
         case "DAY_STREAK_FETCH_ERROR":
             return {
