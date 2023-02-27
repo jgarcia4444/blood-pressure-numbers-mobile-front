@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 5,
         backgroundColor: '#f00',
-        padding: height * 0.01,
+        padding: height * 0.02,
     },
     homeDayStreakContainer: {
         width: '80%'

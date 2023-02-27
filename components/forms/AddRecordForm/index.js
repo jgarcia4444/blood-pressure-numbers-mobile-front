@@ -6,6 +6,9 @@ import addRecord from '../../../redux/actions/addRecordActions/addRecord';
 import createDayStreak from '../../../redux/actions/dayStreakActions/createDayStreak';
 import updateDayStreak from '../../../redux/actions/dayStreakActions/updateDayStreak';
 
+import globalStyles from '../../../config/styles/globalStyles';
+const {platformShadow} = globalStyles;
+
 const AddRecordForm = ({dayStreak, updateDayStreak, createDayStreak, addRecord, userId, recordPersistanceError}) => {
 
     const [systolic, setSystolic] = useState("");
@@ -107,7 +110,7 @@ const AddRecordForm = ({dayStreak, updateDayStreak, createDayStreak, addRecord, 
 
     return (
         <View style={[styles.addRecordContainer]}>
-            <ScrollView style={styles.addRecordScroll}>
+            <ScrollView style={[styles.addRecordScroll, platformShadow]}>
                 <View style={styles.formRow}>
                     <View style={styles.formCol}>
                         <View style={styles.formLabelRow}>
@@ -177,7 +180,9 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     addRecordScroll: {
-
+        backgroundColor: "rgba(255, 255, 255, 0.25)",
+        padding: height * 0.01,
+        borderRadius: height * 0.01,
     },
     formCol: {
         width: '50%',

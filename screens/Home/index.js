@@ -32,7 +32,7 @@ const Home = ({resetUserReducer, userId, fetchUserRecords, userRecords}) => {
                 {mostRecentRecord !== undefined ?
                     <Text>Record Found!</Text>
                     :
-                    <Text style={{color: '#fff'}}>Nothing has been recorded yet...</Text>
+                    <Text style={styles.noRecordText}>Nothing has been recorded yet...</Text>
                 }
             </View>
         </View>
@@ -48,6 +48,7 @@ const Home = ({resetUserReducer, userId, fetchUserRecords, userRecords}) => {
 
     useEffect(() => {
         fadeIn()
+        console.log("Here is the user id from the home screen useEffect", userId);
         if (userId !== "" && userRecords.length === 0) {
             fetchUserRecords(userId);
         } else if (userId === "") {
@@ -117,7 +118,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: "flex-start",
     },
-
+    noRecordText: {
+        color: '#fff',
+        fontWeight: '900',
+        fontSize: height * 0.025,
+    }
 })
 
 const mapStateToProps = state => {
