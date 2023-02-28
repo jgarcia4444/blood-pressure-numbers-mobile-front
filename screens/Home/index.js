@@ -1,9 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import { View, ScrollView, Text, StyleSheet, Dimensions, Platform, Animated } from 'react-native';
 import { connect } from 'react-redux';
+
 import MainBackgroundContainer from '../../components/backgrounds/index.js';
 import HomeNumberOfRecords from '../../components/HomeNumberOfRecords/index.js';
 import HomeDayStreak from '../../components/HomeDayStreak/index.js';
+import MostRecentRecord from '../../components/Cards/MostRecentRecord/index.js';
 
 import globalStyles from '../../config/styles/globalStyles.js';
 const { globalContainer, platformShadow } = globalStyles; 
@@ -12,29 +14,12 @@ import fetchUserRecords from '../../redux/actions/recordActions/fetchUserRecords
 
 const Home = ({resetUserReducer, userId, fetchUserRecords, userRecords}) => {
 
-    const mostRecentRecord = undefined;
-
     const viewOpacity = useRef(new Animated.Value(0)).current;
 
     const appTitleSection = (
         <View style={styles.appTitleContainer}>
             <Text style={styles.homeScreenTextAbbreviated}>BPN</Text>
             <Text style={styles.homeScreenText}>Blood Pressure Numbers</Text>
-        </View>
-    )
-
-    const mostRecentSection = (
-        <View style={styles.mostRecentSection}>
-            <View style={styles.cardTitleRow}>
-                <Text style={styles.cardTitle}>Most Recent</Text>
-            </View>
-            <View style={[styles.mostRecentCard, platformShadow]}>
-                {mostRecentRecord !== undefined ?
-                    <Text>Record Found!</Text>
-                    :
-                    <Text style={styles.noRecordText}>Nothing has been recorded yet...</Text>
-                }
-            </View>
         </View>
     )
 
@@ -62,7 +47,7 @@ const Home = ({resetUserReducer, userId, fetchUserRecords, userRecords}) => {
                 <MainBackgroundContainer>
                     <View style={[styles.homeScreenContainer]}>
                         {appTitleSection}
-                        {mostRecentSection}
+                        <MostRecentRecord />
                         <HomeDayStreak />
                         <HomeNumberOfRecords />
                     </View>
@@ -79,14 +64,6 @@ const styles = StyleSheet.create({
     appTitleContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    cardTitle: {
-        color: '#fff',
-        fontSize: height * 0.03,
-        fontWeight: '900',
-    },
-    cardTitleRow: {
-        width: '80%',
     },
     homeScreenContainer: {
         alignItems: 'center',
@@ -106,23 +83,6 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         color: '#fff',
     },
-    mostRecentCard: {
-        width: '80%',
-        backgroundColor: '#f00',
-        borderRadius: 5,
-        padding: height * 0.02,
-        alignItems: 'center'
-    },
-    mostRecentSection: {
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: "flex-start",
-    },
-    noRecordText: {
-        color: '#fff',
-        fontWeight: '900',
-        fontSize: height * 0.025,
-    }
 })
 
 const mapStateToProps = state => {

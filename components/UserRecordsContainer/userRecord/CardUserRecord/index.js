@@ -12,7 +12,7 @@ const {platformShadow} = globalStyles;
 import removeRecord from '../../../../redux/actions/recordActions/removeRecord';
 import updateRecord from '../../../../redux/actions/recordActions/updateRecord';
 
-const CardUserRecord = ({userRecord, removeRecord, userId, updateRecord}) => {
+const CardUserRecord = ({customContainerStyle, userRecord, removeRecord, userId, updateRecord}) => {
 
     console.log("Here is the user record info from the card user record.", userRecord);
 
@@ -184,7 +184,7 @@ const CardUserRecord = ({userRecord, removeRecord, userId, updateRecord}) => {
     }, [userRecord])
 
     return (
-        <Animated.View style={{opacity: viewOpacity, marginVertical: height * 0.03, transform: [{scale: shrink}]}}>
+        <Animated.View style={{opacity: viewOpacity, marginVertical: height * 0.03, transform: [{scale: shrink}], ...customContainerStyle}}>
             <View style={[styles.cardUserRecord, platformShadow]}>
                 <View style={styles.dateRecordedRow}>
                     <Text style={styles.dateRecordedLabel}>Date:</Text>
