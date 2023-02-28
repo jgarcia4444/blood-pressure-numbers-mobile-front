@@ -23,22 +23,6 @@ const UserRecordsContainer = ({userRecords}) => {
         </View>
     )
 
-    const platformFloat = Platform.OS === 'android' ?
-    {
-        shadowColor: '#000',
-        elevation: 3,
-    }
-    : 
-    {
-        shadowColor: '#000',
-        shadowOffset: {
-            height: 20,
-            width: 0
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 5,
-    }
-
     const renderRecordItem = ({item}) => {
         return rowsSelected === true ? 
             <RowUserRecord userRecord={item} /> 
@@ -52,7 +36,13 @@ const UserRecordsContainer = ({userRecords}) => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
             <View style={[styles.recordsPresentationRow]}>
-                {cardPresentation}{rowPresentation}
+                <View style={styles.printButtonContainer}>
+                    <Ionicons name="print" size={28} color={'#fff'} />
+                </View>
+                <View style={styles.presentationContainer}>
+                    {cardPresentation}
+                    {rowPresentation}
+                </View>
             </View>
             <View style={styles.userRecordsBox}>
                 <FlatList 
@@ -68,11 +58,19 @@ const UserRecordsContainer = ({userRecords}) => {
 
 const styles = StyleSheet.create({
     presentationIconContainer: {
-        marginHorizontal: width * 0.05,
+        
+    },
+    presentationContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '30%',
+    },
+    printButtonContainer: {
+        width: '70%',
     },
     recordsPresentationRow: {
         flexDirection: 'row',
-        width: '100%',
+        width: '80%',
         alignItems: 'center',
         justifyContent: 'flex-end',
         marginTop: height * 0.03,
@@ -86,6 +84,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flex: 1,
         marginBottom: height * 0.05,
+        alignItems: 'center',
     },
 })
 

@@ -1,15 +1,14 @@
 import React, {useEffect} from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-
-import globalStyles from '../../../config/styles/globalStyles';
-const {platformShadow} = globalStyles;
 
 import CardUserRecord from '../../UserRecordsContainer/userRecord/CardUserRecord';
 
 const {height, width} = Dimensions.get('screen');
 
-const MostRecentRecord = ({userRecords}) => {
+const MostRecentRecord = ({records}) => {
+
+    const {userRecords, loadingUserRecords} = records;
 
     const mostRecentRecordInfo = () => {
         let record = userRecords[0];
@@ -19,21 +18,20 @@ const MostRecentRecord = ({userRecords}) => {
     }
 
     return (
-        // <View style={styles.mostRecentSection}>
-
-        //     <View style={[styles.mostRecentCard, platformShadow]}>
         <View>
             <View style={styles.cardTitleRow}>
                 <Text style={styles.cardTitle}>Most Recent</Text>
             </View>
-            {userRecords.length !== 0 ?
-                mostRecentRecordInfo()
+            {loadingUserRecords === true ?
+                <ActivityIndicator color={"#fff"} size='large' />
             :
-                <Text style={styles.noRecordText}>Nothing has been recorded yet...</Text>
+                userRecords.length !== 0 ?
+                    mostRecentRecordInfo()
+                :
+                    <Text style={styles.noRecordText}>Nothing has been recorded yet...</Text>
+                
             }
         </View>
-        //     </View>
-        // </View>
     )
 }
 
@@ -70,7 +68,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        userRecords: state.records.userRecords,
+        records: state.records,
     }
 }
 

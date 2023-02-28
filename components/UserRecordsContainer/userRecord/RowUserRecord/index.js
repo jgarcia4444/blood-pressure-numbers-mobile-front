@@ -1,11 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 
+import globalStyles from '../../../../config/styles/globalStyles';
+const {platformShadow} = globalStyles
+
 const {height, width} = Dimensions.get('screen');
 
 const RowUserRecord = ({userRecord}) => {
-
-    //
 
     const viewOpacity = useRef(new Animated.Value(0)).current;
 
@@ -38,7 +39,7 @@ const RowUserRecord = ({userRecord}) => {
     })
 
     return (
-        <Animated.View style={{opacity: viewOpacity,}}>
+        <Animated.View style={[{opacity: viewOpacity}, platformShadow]}>
             <View style={styles.rowUserRecordContainer}>
                 <View style={styles.dateRecordedContainer}>
                     <Text style={styles.recordLabel}>Date</Text>
@@ -78,11 +79,11 @@ const styles = StyleSheet.create({
     rowUserRecordContainer: {
         flexDirection: 'row',
         width: width * 0.95,
-        borderBottomWidth: 2,
-        borderColor: '#fff',
         backgroundColor: '#f00',
         paddingVertical: height * 0.01,
         paddingHorizontal: width * 0.02,
+        borderRadius: 5,
+        marginBottom: height * 0.01,
     },
 })
 
