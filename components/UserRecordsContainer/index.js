@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Dimensions, Platform, FlatList, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Platform, FlatList, KeyboardAvoidingView, Modal} from 'react-native';
 import { connect } from 'react-redux';
 const {height, width} = Dimensions.get('screen');
 import {Ionicons} from 'react-native-vector-icons';
@@ -10,6 +10,7 @@ import CardUserRecord from './userRecord/CardUserRecord';
 const UserRecordsContainer = ({userRecords}) => {
 
     const [rowsSelected, setRowsSelected] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
     const rowPresentation = (
         <View style={styles.presentationIconContainer}>
@@ -30,14 +31,30 @@ const UserRecordsContainer = ({userRecords}) => {
             <CardUserRecord userRecord={item}/>
     }
 
+    const handlePrintPress = () => {
+        setShowModal(true);
+    }
+
     return (
         <KeyboardAvoidingView
         style={styles.userRecordsContainer}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
+            <Modal
+                animationType='slide'
+                transparent={true}
+                visible={showModal}
+                onRequestClose={() => setShowModal(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modal}>
+                        <Text>Hello World</Text>
+                    </View>
+                </View>
+            </Modal>
             <View style={[styles.recordsPresentationRow]}>
                 <View style={styles.printButtonContainer}>
-                    <Ionicons name="print" size={28} color={'#fff'} />
+                    <Ionicons onPress={handlePrintPress} name="print" size={28} color={'#fff'} />
                 </View>
                 <View style={styles.presentationContainer}>
                     {cardPresentation}
