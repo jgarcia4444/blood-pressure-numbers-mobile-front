@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Dimensions, Platform, FlatList, KeyboardAvoidingView, Modal} from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Platform, FlatList, KeyboardAvoidingView, Modal, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 const {height, width} = Dimensions.get('screen');
 import {Ionicons} from 'react-native-vector-icons';
 
 import RowUserRecord from './userRecord/RowUserRecord';
 import CardUserRecord from './userRecord/CardUserRecord';
+import PrintForm from '../forms/PrintForm';
+
+import globalStyles from '../../config/styles/globalStyles';
+const {platformShadow} = globalStyles;
 
 const UserRecordsContainer = ({userRecords}) => {
 
@@ -47,8 +51,13 @@ const UserRecordsContainer = ({userRecords}) => {
                 onRequestClose={() => setShowModal(false)}
             >
                 <View style={styles.modalContainer}>
-                    <View style={styles.modal}>
-                        <Text>Hello World</Text>
+                    <View style={styles.dismissModalRow}>
+                        <TouchableOpacity onPress={() => setShowModal(false)} style={[styles.dismissModalButton, platformShadow]}>
+                            <Ionicons name="close" size={28} color={'#fff'} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={[styles.modal, platformShadow]}>
+                        <PrintForm />
                     </View>
                 </View>
             </Modal>
@@ -74,6 +83,32 @@ const UserRecordsContainer = ({userRecords}) => {
 }
 
 const styles = StyleSheet.create({
+    dismissModalButton: {
+        backgroundColor: "#f00",
+        paddingVertical: height * 0.01,
+        width: '15%',
+        borderRadius: '50%',
+        alignItems: 'center'
+    },
+    dismissModalRow: {
+        width: width * 0.75,
+        alignItems: 'flex-end'
+    },
+    modal: {
+        width: width * 0.75,
+        height: height * 0.33,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: "#f00",
+        borderRadius: 5,
+        marginTop: height * 0.01,
+    },
+    modalContainer: {
+        width: width,
+        height: height,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     presentationIconContainer: {
         
     },
