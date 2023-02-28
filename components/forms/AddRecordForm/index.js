@@ -110,7 +110,7 @@ const AddRecordForm = ({dayStreak, updateDayStreak, createDayStreak, addRecord, 
 
     return (
         <View style={[styles.addRecordContainer]}>
-            <ScrollView style={[styles.addRecordScroll, platformShadow]}>
+            <ScrollView contentContainerStyle={styles.scrollContent} style={[styles.addRecordScroll, platformShadow]}>
                 <View style={styles.formRow}>
                     <View style={styles.formCol}>
                         <View style={styles.formLabelRow}>
@@ -180,9 +180,10 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     addRecordScroll: {
-        backgroundColor: "rgba(255, 255, 255, 0.25)",
+        backgroundColor: "rgba(255, 0, 0, 0.5)",
         padding: height * 0.01,
         borderRadius: height * 0.01,
+        borderColor: '#f00',
     },
     formCol: {
         width: '50%',
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginVertical: height * 0.025,
+        // marginVertical: height * 0.025,
     },
     notesTextArea: {
         width: '100%',
@@ -231,6 +232,11 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: '900',
         fontSize: 18,
+    },
+    scrollContent: {
+        height: height * 0.75,
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
     },
     segmentControl: {
         width: '100%',
