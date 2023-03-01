@@ -42,7 +42,9 @@ const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRan
                         let fromDay = fromDate.getDate();
                         let toDay = toDate.getDate();
                         if (fromDay <= toDay) {
-                            fetchFilteredRecords(dateRange);
+                            if (fetchFilteredRecordsError === "") {
+                                printRecords();
+                            }
                         } else {
                             dateRangeError({
                                 fromDateError: "Must be before or equal to the 'To' date.",
@@ -60,10 +62,7 @@ const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRan
                         fromDateError: "Must be before or equal to the 'To' date.",
                         toDateError: "Must be after or equal to the 'From' date"
                     });
-                }
-                if (fetchFilteredRecordsError === "") {
-                    printRecords();
-                }
+                }  
             } else {
                 printRecords()
             }
@@ -73,7 +72,7 @@ const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRan
 
     const genrateHtml = () => {
         let records
-        if (filteredRecords.length > 0) {
+        if (filterIndex === 1) {
             records = filteredRecords;
         } else {
             records = userRecords
@@ -96,7 +95,6 @@ const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRan
     }
 
     const printRecords = async () => {
-        // use expo-print
         let html = genrateHtml();
         const file = await Print.printToFileAsync({html});
         console.log("File has been saved to.", file.uri);
@@ -117,10 +115,20 @@ const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRan
 
     const handleDateChangeFrom = (e, selectedDate) => {
         setFromDate(selectedDate);
+        fetchFilteredRecords({
+            fromDate: selectedDate,
+            toDate,
+            userId,
+        })
     }
 
     const handleDateChangeTo = (e, selectedDate) => {
         setToDate(selectedDate);
+        fetchFilteredRecords({
+            fromDate,
+            toDate: selectedDate,
+            userId,
+        })
     }
 
     const dateRange = (
