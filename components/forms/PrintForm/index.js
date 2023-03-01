@@ -13,7 +13,7 @@ const {platformShadow} = globalStyles;
 
 import fetchFilteredRecords from '../../../redux/actions/printableRecordsActions/fetchFilteredRecords';
 
-const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRangeError}) => {
+const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRangeError, userId}) => {
     const filterSelections = ["All", "Date Range"];
     const [filterIndex, setFilterIndex] = useState(0);
     const [printValid, setPrintValid] = useState(false);
@@ -28,7 +28,7 @@ const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRan
     const handlePrintPress = () => {
         if (printValid === true) {
             if (filterIndex === 1) {
-                let dateRange = {fromDate, toDate};
+                let dateRange = {fromDate, toDate, userId};
                 let fromYear = fromDate.getFullYear();
                 let toYear = toDate.getFullYear();
                 if (fromYear < toYear) {
@@ -297,6 +297,7 @@ const mapStateToProps = state => {
     return {
         printableRecords: state.printableRecords,
         userRecords: state.records.userRecords,
+        userId: state.user.userId,
     }
 }
 
