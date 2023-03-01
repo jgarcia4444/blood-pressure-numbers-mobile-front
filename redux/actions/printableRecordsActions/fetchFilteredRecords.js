@@ -6,21 +6,19 @@ const fetchFilteredRecords = dateRange => {
     let url = `${baseUrl}records/filter/date-range/${fromDate}/${toDate}`;
     return async dispatch => {
         dispatch({type: "FETCHING_FILTERED_RECORDS"});
-        setTimeout(() => {
-            fetch(url)
-                .then(res => res.json())
-                .then(data => {
-                    let {success} = data;
-                    if (success === true) {
-                        let {filteredRecords} = data;
-                        return dispatch({type: "FILTERED_RECORDS_FETCHED_SUCCESS", filteredRecords});
-                    } else {
-                        let {error} = data;
-                        let {message} = error;
-                        return dispatch({type: "FILTERED_RECORDS_FETCHED_ERROR", message})
-                    }
-                })
-        }, 500);
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                let {success} = data;
+                if (success === true) {
+                    let {filteredRecords} = data;
+                    return dispatch({type: "FILTERED_RECORDS_FETCHED_SUCCESS", filteredRecords});
+                } else {
+                    let {error} = data;
+                    let {message} = error;
+                    return dispatch({type: "FILTERED_RECORDS_FETCHED_ERROR", message})
+                }
+            })
     }
 }
 

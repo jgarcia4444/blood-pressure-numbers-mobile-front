@@ -1,37 +1,109 @@
 import React, {useState, useEffect, useRef} from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Animated, Easing } from 'react-native';
-import {Ionicons} from 'react-native-vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Animated, ActivityIndicator } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { connect } from 'react-redux';
+import * as Print from 'expo-print'
+import { shareAsync, isAvailableAsync } from 'expo-sharing';
 
 const {height, width} = Dimensions.get('screen');
 
 import globalStyles from '../../../config/styles/globalStyles';
 const {platformShadow} = globalStyles;
 
-const PrintForm = () => {
+import fetchFilteredRecords from '../../../redux/actions/printableRecordsActions/fetchFilteredRecords';
+
+const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRangeError}) => {
     const filterSelections = ["All", "Date Range"];
     const [filterIndex, setFilterIndex] = useState(0);
     const [printValid, setPrintValid] = useState(false);
     const [showDateRange, setShowDateRange] = useState(false);
     const [fromDate, setFromDate] = useState(new Date(Date.now()));
     const [toDate, setToDate] = useState(new Date(Date.now()));
-    const [showFromPicker, setShowFromPicker] = useState(false);
-    const [showToPicker, setShowToPicker] = useState(false);
 
-    const rowOpacity = useRef(new Animated.Value(0)).current
+    const rowOpacity = useRef(new Animated.Value(0)).current;
+
+    const {filteredRecords, fetchFilteredRecordsError, fetchingFilteredRecords} = printableRecords;
 
     const handlePrintPress = () => {
         if (printValid === true) {
-            if (fromDate.getFullYear() < toDate.getFullYear()) {
-                if (fromDate.getMonth() < toDate.getMonth()) {
-                    
+            if (filterIndex === 1) {
+                let dateRange = {fromDate, toDate};
+                let fromYear = fromDate.getFullYear();
+                let toYear = toDate.getFullYear();
+                if (fromYear < toYear) {
+                    fetchFilteredRecords(dateRange);
+                } else if (fromYear === toYear) {
+                    let fromMonth = fromDate.getMonth();
+                    let toMonth = toDate.getMonth();
+                    if (fromMonth < toMonth) {
+                        fetchFilteredRecords(dateRange);
+                    } else if (fromMonth === toMonth) {
+                        let fromDay = fromDate.getDate();
+                        let toDay = toDate.getDate();
+                        if (fromDay <= toDay) {
+                            fetchFilteredRecords(dateRange);
+                        } else {
+                            dateRangeError({
+                                fromDateError: "Must be before or equal to the 'To' date.",
+                                toDateError: "Must be after or equal to the 'From' date"
+                            });
+                        }
+                    } else {
+                        dateRangeError({
+                            fromDateError: "Must be before or equal to the 'To' date.",
+                            toDateError: "Must be after or equal to the 'From' date"
+                        });
+                    }
                 } else {
-                    
+                    dateRangeError({
+                        fromDateError: "Must be before or equal to the 'To' date.",
+                        toDateError: "Must be after or equal to the 'From' date"
+                    });
+                }
+                if (fetchFilteredRecordsError === "") {
+                    printRecords();
                 }
             } else {
-                // Set year errors
+                printRecords()
             }
+            
+        }
+    }
+
+    const genrateHtml = () => {
+        let records
+        if (filteredRecords.length > 0) {
+            records = filteredRecords;
+        } else {
+            records = userRecords
+        }
+        return `
+            <html>
+                <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+                </head>
+                <body>
+                    <h1>Blood Pressure Records</h1>
+                    ${records.map(record => {
+                        return `
+                        <div><strong>Systolic:</strong> ${record.systolic}, <strong>Diastolic:</strong> ${record.diastolic}, <strong>Date:</strong> ${record.dateRecorded}</div>
+                        `
+                    })}
+                </body>
+            </html>
+        `
+    }
+
+    const printRecords = async () => {
+        // use expo-print
+        let html = genrateHtml();
+        const file = await Print.printToFileAsync({html});
+        console.log("File has been saved to.", file.uri);
+        if (isAvailableAsync()) {
+            await shareAsync(file.uri, {UTI: '.pdf', mimeType: 'application/pdf'});
+        } else {
+            console.log("Is Available Async", isAvailableAsync())
         }
     }
 
@@ -111,28 +183,36 @@ const PrintForm = () => {
 
     return (
         <View style={styles.printFormContainer}>
-            <View style={styles.printFormTopRow}>
-                <Text style={styles.filterSegmentTitle}>Filter</Text>
-                <SegmentedControl 
-                    style={styles.filterSegment}
-                    values={filterSelections}
-                    selectedIndex={filterIndex}
-                    onChange={(e) => {
-                        setFilterIndex(e.nativeEvent.selectedSegmentIndex);
-                    }}
-                    tintColor='#f00'
-                    fontStyle={{color: "#fff"}}
-                    activeFontStyle={{color: '#fff'}}
-                />
-                {showDateRange === true &&
-                    dateRange
-                }
-            </View>
-            <View style={styles.printFormBottomRow}>
-                <TouchableOpacity onPress={handlePrintPress} style={[styles.printButton, activePrintButton()]}>
-                    <Text style={[styles.printText, activePrintText()]}>Print</Text>
-                </TouchableOpacity>
-            </View>
+            {fetchingFilteredRecords === true ?
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator color={"#fff"} size='large'/>
+                </View>
+                :
+                <>
+                    <View style={styles.printFormTopRow}>
+                        <Text style={styles.filterSegmentTitle}>Filter</Text>
+                        <SegmentedControl 
+                            style={styles.filterSegment}
+                            values={filterSelections}
+                            selectedIndex={filterIndex}
+                            onChange={(e) => {
+                                setFilterIndex(e.nativeEvent.selectedSegmentIndex);
+                            }}
+                            tintColor='#f00'
+                            fontStyle={{color: "#fff"}}
+                            activeFontStyle={{color: '#fff'}}
+                        />
+                        {showDateRange === true &&
+                            dateRange
+                        }
+                    </View>
+                    <View style={styles.printFormBottomRow}>
+                        <TouchableOpacity onPress={handlePrintPress} style={[styles.printButton, activePrintButton()]}>
+                            <Text style={[styles.printText, activePrintText()]}>Print</Text>
+                        </TouchableOpacity>
+                    </View>
+                </>
+            }
         </View>
     )
 }
@@ -175,6 +255,16 @@ const styles = StyleSheet.create({
         fontSize: height * 0.04,
         fontWeight: 'bold'
     },
+    loadingContainer: {
+        positon: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: "center",
+        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+    },
     printFormContainer: {
         width: '90%',
         height: '90%',
@@ -203,4 +293,21 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PrintForm;
+const mapStateToProps = state => {
+    return {
+        printableRecords: state.printableRecords,
+        userRecords: state.records.userRecords,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchFilteredRecords: dateRange => dispatch(fetchFilteredRecords(dateRange)),
+        dateRangeError: errors => dispatch({type: "FILTERED_RECORDS_RANGE_ERROR", errors}),
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PrintForm);
