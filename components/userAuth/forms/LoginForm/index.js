@@ -6,9 +6,14 @@ import { connect } from 'react-redux';
 
 import loginUser from '../../../../redux/actions/userActions/loginUser';
 
-const LoginForm = ({loginUser, authenticationLoading}) => {
+const LoginForm = ({loginUser, user}) => {
+
+    const {authenticationLoading, authErrors} = user;
 
     const viewOpacity = useRef(new Animated.Value(0)).current;
+    const passwordOpacity = useRef(new Animated.Value(0)).current;
+    const emailOpacity = useRef(new Animated.Value(0)).current;
+
     const [loginEmail, setLoginEmail] = useState('');
     const [emailError, setEmailError] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -56,9 +61,39 @@ const LoginForm = ({loginUser, authenticationLoading}) => {
         }
     }
 
+    const fadePasswordErrorIn = () => {
+        Animated.timing(passwordOpacity, {
+            toValue: 1, 
+            duration: 500,
+            useNativeDriver: true
+        }).start();
+    }
+    const fadeEmailErrorIn = () => {
+        Animated.timing(emailOpacity, {
+            toValue: 1, 
+            duration: 500,
+            useNativeDriver: true
+        }).start();
+    }
+
+    const configureAuthErrors = () => {
+        authErrors.forEach(authError => {
+            if (authError.errorType === "PASSWORD") {
+                fadePasswordErrorIn()
+                setPasswordError(authError.message);
+            } else if (authError.errorType === "GENERAL") {
+                fadeEmailErrorIn();
+                setEmailError(authError.message);
+            }
+        })
+    }
+
     useEffect(() => {
-        fadeViewIn()
-    })
+        fadeViewIn();
+        if (authErrors.length > 0) {
+            configureAuthErrors();
+        }
+    }, [authErrors])
 
     const emailSelected = inputFocused === 'email' ?
     {
@@ -83,6 +118,11 @@ const LoginForm = ({loginUser, authenticationLoading}) => {
                 <View style={[styles.formRow]}>
                     <View style={styles.formLabelRow}>
                         <Text style={styles.formLabel}>Email</Text>
+                        {emailError !== "" &&
+                        <Animated.View style={{opacity: emailOpacity}}>
+                            <Text style={styles.errorText}>{emailError}</Text>
+                        </Animated.View>
+                        }
                     </View>
                     <View style={[styles.formInputRow, emailSelected]}>
                         <Ionicons name="mail" size={24} color={dynamicEmailColor()} />
@@ -92,6 +132,11 @@ const LoginForm = ({loginUser, authenticationLoading}) => {
                 <View style={styles.formRow}>
                     <View style={styles.formLabelRow}>
                         <Text style={styles.formLabel}>Password</Text>
+                        {passwordError !== "" &&
+                            <Animated.View style={{opacity: passwordOpacity}}>
+                                <Text style={styles.errorText}>{passwordError}</Text>
+                            </Animated.View>
+                        }
                     </View>
                     <View style={[styles.formInputRow, passwordSelected]}>
                         <Ionicons name="lock-closed" size={24} color={dynamicPasswordColor()} />
@@ -113,12 +158,17 @@ const LoginForm = ({loginUser, authenticationLoading}) => {
 }
 
 const styles = StyleSheet.create({
+    errorText: {
+        color: "#fff",
+    },
     formLabel: {
         color: '#fff',
         fontSize: height * 0.03,
     },
     formLabelRow: {
-
+        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     formInput: {
         flex: 1,
@@ -165,7 +215,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        authenticationLoading: state.user.authenticationLoading,
+        user: state.user,
     }
 }
 

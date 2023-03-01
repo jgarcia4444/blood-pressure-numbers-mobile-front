@@ -2,6 +2,7 @@ const initialState = {
     userId: "",
     email: "",
     authenticationLoading: false,
+    authErrors: [],
     recordsCount: 0,
     autenticationError: "",
     passwordChangeInfo: {
@@ -147,6 +148,7 @@ const userReducer = (state=initialState, action) => {
             return {
                 ...state,
                 authenticationLoading: false,
+                authErrors: action.errors,
             }
         case "LOGGING_IN":
             return {
