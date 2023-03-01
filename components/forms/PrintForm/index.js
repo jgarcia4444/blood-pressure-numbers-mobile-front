@@ -14,8 +14,8 @@ const PrintForm = () => {
     const [filterIndex, setFilterIndex] = useState(0);
     const [printValid, setPrintValid] = useState(false);
     const [showDateRange, setShowDateRange] = useState(false);
-    const [fromDate, setFromDate] = useState('');
-    const [toDate, setToDate] = useState('');
+    const [fromDate, setFromDate] = useState(new Date(Date.now()));
+    const [toDate, setToDate] = useState(new Date(Date.now()));
     const [showFromPicker, setShowFromPicker] = useState(false);
     const [showToPicker, setShowToPicker] = useState(false);
 
@@ -23,7 +23,15 @@ const PrintForm = () => {
 
     const handlePrintPress = () => {
         if (printValid === true) {
-
+            if (fromDate.getFullYear() < toDate.getFullYear()) {
+                if (fromDate.getMonth() < toDate.getMonth()) {
+                    
+                } else {
+                    
+                }
+            } else {
+                // Set year errors
+            }
         }
     }
 
@@ -36,52 +44,36 @@ const PrintForm = () => {
     }
 
     const handleDateChangeFrom = (e, selectedDate) => {
-
+        setFromDate(selectedDate);
     }
 
     const handleDateChangeTo = (e, selectedDate) => {
-        
+        setToDate(selectedDate);
     }
 
     const dateRange = (
         <Animated.View style={[styles.dateRangeRow, {opacity: rowOpacity}]}>
             <View style={styles.datePickerColumn}>
                 <Text style={styles.datePickerLabel}>From</Text>
-                <View style={styles.datePickerContainer}>
-                    <TouchableOpacity style={styles.datePickerTouchContainer}>
-                        <View style={styles.dateValueContainer}>
-                            <Text style={styles.dateValue}>{fromDate}</Text>
-                        </View>
-                        <Ionicons color={'#fff'} size={24} name='calendar'/>
-                    </TouchableOpacity>
-                </View>
-                {showFromPicker &&
-                    <DateTimePicker 
-                        testID='dateTimePickerFrom'
-                        mode="date"
-                        is24Hour={true}
-                        onChange={handleDateChangeFrom}
-                    />
-                }
+                <DateTimePicker
+                    style={styles.datePickerTouchContainer}
+                    value={fromDate}
+                    testID='dateTimePickerFrom'
+                    mode="date"
+                    is24Hour={true}
+                    onChange={handleDateChangeFrom}
+                />
             </View>
             <View style={styles.datePickerColumn}>
                 <Text style={styles.datePickerLabel}>To</Text>
-                <View style={styles.datePickerContainer}>
-                    <TouchableOpacity style={styles.datePickerTouchContainer}>
-                        <View style={styles.dateValueContainer}>
-                            <Text style={styles.dateValue}>{toDate}</Text>
-                        </View>
-                        <Ionicons color={'#fff'} size={24} name='calendar'/>
-                    </TouchableOpacity>
-                </View>
-                {showToPicker &&
-                    <DateTimePicker 
-                        testID='dateTimePickerTo'
-                        mode="date"
-                        is24Hour={true}
-                        onChange={handleDateChangeTo}
-                    />
-                }
+                <DateTimePicker
+                    style={styles.datePickerTouchContainer}
+                    value={toDate}
+                    testID='dateTimePickerTo'
+                    mode="date"
+                    is24Hour={true}
+                    onChange={handleDateChangeTo}
+                />
             </View>
         </Animated.View>
     )
