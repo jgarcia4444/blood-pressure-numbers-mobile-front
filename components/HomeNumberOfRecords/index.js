@@ -3,6 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
+import globalStyles from '../../config/styles/globalStyles';
+const {platformShadow} = globalStyles
+
 const HomeNumberOfRecords = ({recordsCount, loadingUserRecords}) => {
 
     const navigation = useNavigation();
@@ -23,12 +26,12 @@ const HomeNumberOfRecords = ({recordsCount, loadingUserRecords}) => {
             <View style={styles.sectionTitleRow}>
                 <Text style={styles.sectionTitle}>Amount of records taken</Text>
             </View>
-            <View style={styles.numberSeeAllContainer}>
+            <View style={[styles.numberSeeAllContainer, platformShadow]}>
                 <View style={styles.numberContainer}>
                     {renderRecordsCount()}
                 </View>
                 <View style={styles.seeAllButtonContainer}>
-                    <TouchableOpacity onPress={navigateToRecords} style={styles.seeAllButton}>
+                    <TouchableOpacity onPress={navigateToRecords} style={[styles.seeAllButton, platformShadow]}>
                         <Text style={styles.seeAllButtonText}>See All</Text>
                     </TouchableOpacity>
                 </View>
@@ -41,7 +44,7 @@ const {height, width} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
     homeNumberOfRecordsRow: {
-        width: '100%',
+        width: '80%',
         height: height * 0.15,
         alignItems: 'center',
         justifyContent: "flex-start",
@@ -51,8 +54,12 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     numberSeeAllContainer: {
-        width: '80%',
+        width: '100%',
         flexDirection: 'row',
+        backgroundColor: "#f00",
+        paddingHorizontal: height * 0.02,
+        paddingVertical: height * 0.01,
+        borderRadius: 5,
     },
     recordsNumber: {
         color: '#fff',
@@ -61,7 +68,7 @@ const styles = StyleSheet.create({
     },
     seeAllButton: {
         padding: height * 0.015,
-        backgroundColor: "#f00",
+        backgroundColor: "#fff",
         borderRadius: 5,
     },
     seeAllButtonContainer: {
@@ -70,14 +77,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     seeAllButtonText: {
-        color: '#fff',
+        color: '#f00',
+        fontWeight: '900',
     },
     sectionTitle: {
         color: '#fff',
         fontSize: height * 0.03,
     },
     sectionTitleRow: {
-        width: '80%',
+        width: '100%',
     }
 });
 
