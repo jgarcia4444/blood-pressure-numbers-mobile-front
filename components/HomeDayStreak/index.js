@@ -58,7 +58,12 @@ const HomeDayStreak = ({dayStreak, userId, fetchDayStreakInfo}) => {
                             <Text style={styles.daysDescription}>day{days > 1 ? "s" : ""} in a row</Text>
                         </View>
                     :
-                        <Text style={styles.noDays}>Start a new streak today!</Text>
+                        <>
+                            <Text style={styles.noDays}>Start a new streak today!</Text>
+                            {userId === "" &&
+                                <Text style={styles.noUserDescription}>Login or Sign Up to start your daily streak.</Text>
+                            }
+                        </>
                     }
                 </View>
                 {nextStreakRecordAvailable === true &&
@@ -150,6 +155,12 @@ const styles = StyleSheet.create({
         fontSize: height * 0.03,
         fontWeight: "900",
     },
+    noUserDescription: {
+        color: "#fff",
+        fontWeight: '300',
+        fontSize: height * 0.02,
+        opacity: 0.5,
+    }
 });
 
 const mapStateToProps = state => {
