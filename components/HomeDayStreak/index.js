@@ -31,7 +31,9 @@ const HomeDayStreak = ({dayStreak, userId, fetchDayStreakInfo}) => {
 
     useEffect(() => {
         if (fetchDetails === true) {
-            fetchDayStreakInfo(userId);
+            if (userId !== "" && userId !== undefined) {
+                fetchDayStreakInfo(userId);
+            }
         }
     },[fetchDetails])
 

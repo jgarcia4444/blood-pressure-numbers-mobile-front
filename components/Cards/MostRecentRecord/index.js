@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 
 import CardUserRecord from '../../UserRecordsContainer/userRecord/CardUserRecord';
 
+import globalStyles from '../../../config/styles/globalStyles';
+const {platformShadow} = globalStyles;
+
 const {height, width} = Dimensions.get('screen');
 
 const MostRecentRecord = ({records}) => {
@@ -18,7 +21,7 @@ const MostRecentRecord = ({records}) => {
     }
 
     return (
-        <View>
+        <View style={{width: '80%'}}>
             <View style={styles.cardTitleRow}>
                 <Text style={styles.cardTitle}>Most Recent</Text>
             </View>
@@ -28,7 +31,9 @@ const MostRecentRecord = ({records}) => {
                 userRecords.length !== 0 ?
                     mostRecentRecordInfo()
                 :
+                <View style={[styles.noRecordsCard, platformShadow]}>
                     <Text style={styles.noRecordText}>Nothing has been recorded yet...</Text>
+                </View>
                 
             }
         </View>
@@ -59,10 +64,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: "flex-start",
     },
+    noRecordsCard: {
+        backgroundColor: "#f00",
+        padding: height * 0.02,
+        borderRadius: 5,
+    },
     noRecordText: {
         color: '#fff',
         fontWeight: '900',
         fontSize: height * 0.025,
+        width: "100%",
     }
 })
 

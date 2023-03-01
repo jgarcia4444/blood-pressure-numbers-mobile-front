@@ -32,8 +32,7 @@ const Home = ({resetUserReducer, userId, fetchUserRecords, userRecords}) => {
     }
 
     useEffect(() => {
-        fadeIn()
-        console.log("Here is the user id from the home screen useEffect", userId);
+        fadeIn();
         if (userId !== "" && userRecords.length === 0) {
             fetchUserRecords(userId);
         } else if (userId === "") {
