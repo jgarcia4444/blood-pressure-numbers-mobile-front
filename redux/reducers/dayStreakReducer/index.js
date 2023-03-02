@@ -35,6 +35,23 @@ const configureNextDayAvailable = updatedAt => {
 
 const dayStreakReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "DAY_STREAK_UPDATE_ERROR":
+            return {
+                ...state,
+                loadError: action.message,
+                dayStreakLoading: false,
+            }
+        case "DAY_STREAK_UPDATE_SUCCESS":
+            return {
+                ...initialState,
+                ...action.dayStreak,
+            }
+        case "UPDATING_DAY_STREAK":
+            return {
+                ...state,
+                loadError: '',
+                dayStreakLoading: true,
+            }
         case "DAY_STREAK_CREATE_ERROR":
             return {
                 ...initialState,
