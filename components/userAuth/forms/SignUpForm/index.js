@@ -6,7 +6,7 @@ import {Ionicons} from 'react-native-vector-icons'
 
 import createUser from '../../../../redux/actions/userActions/createUser';
 
-const SignUpForm = ({createUser, authenticationLoading}) => {
+const SignUpForm = ({createUser, user}) => {
     const viewOpacity = useRef(new Animated.Value(0)).current;
     const [signUpEmail, setsignUpEmail] = useState('');
     const [signUpPassword, setsignUpPassword] = useState('');
@@ -15,6 +15,8 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmError, setConfirmError] = useState('');
+
+    const {authenticationLoading, authErrors} = user;
 
     const fadeViewIn = () => {
         Animated.timing(viewOpacity, {
@@ -25,27 +27,35 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
     }
 
     const handleSignUpPress = () => {
-        if (signUpEmail !== "" && signUpPassword !== "" && signUpConfirmPassword !== "") {
-            if (signUpConfirmPassword === signUpPassword) {
-                // send user info to backend
-                let userInfo = {
-                    email: signUpEmail,
-                    password: signUpPassword
-                }
-                createUser(userInfo)
-            } else {
-                setPasswordError('Password and confirm password do not match.');
-                setConfirmError('Password and confirm password do not match.');
-            }
+        if (signUpEmail === "") {
+            setEmailError('Email can not be left blank.');
         } else {
-            if (signUpEmail === '') {
-                setEmailError('Email can not be left blank.');
-            }
-            if (signUpPassword === '') {
-                setPasswordError('Password can not be left blank.');
-            }
-            if (signUpConfirmPassword === '') {
-                setConfirmError('Confirm Password must match the password above.')
+            setEmailError("");
+        }
+        if (signUpPassword === "") {
+            setPasswordError('Password can not be left blank.');
+        } else {
+            setPasswordError("");
+        }
+        if (signUpConfirmPassword === "") {
+            setConfirmError('Confirm Password must match the password above.');
+        } else {
+            setConfirmError("");
+        }
+        if (emailError === "") {
+            if (passwordError === "") {
+                if (confirmError === "") {
+                    if (signUpConfirmPassword === signUpPassword) {
+                        let userInfo = {
+                            email: signUpEmail,
+                            password: signUpPassword
+                        }
+                        createUser(userInfo)
+                    } else {
+                        setPasswordError('Password and confirm password do not match.');
+                        setConfirmError('Password and confirm password do not match.');
+                    }
+                }
             }
         }
     }
@@ -57,9 +67,22 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
         return '#ddd';
     }
 
+    const configureReduxErrors = () => {
+        errors.forEach(error => {
+            if (error.errorType === "GENERAL") {
+                setEmailError(error.message);
+            } else {
+                setPasswordError(error.message);
+            }
+        })
+    }
+
     useEffect(() => {
         fadeViewIn()
-    })
+        if (authErrors.length > 0) {
+            configureReduxErrors()
+        }
+    }, [authErrors]);
 
     const inputHighlighted = (inputName) => {
         if (inputName === inputFocused) {
@@ -72,6 +95,12 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
         }
     }
 
+    const inputError = message => {
+        return (
+            <Text style={styles.errorText}>{message}</Text>
+        )
+    }
+
     return (
         <View style={styles.signUpFormContainer}>
             <View style={styles.formTitleRow}>
@@ -81,6 +110,7 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
                 <View style={[styles.formRow]}>
                     <View style={styles.formLabelRow}>
                         <Text style={styles.formLabel}>Email</Text>
+                        {emailError !== "" && inputError(emailError)}
                     </View>
                     <View style={[styles.formInputRow, inputHighlighted('email')]}>
                         <Ionicons name="mail" size={24} color={dynamicIconColor('email')} />
@@ -90,6 +120,7 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
                 <View style={styles.formRow}>
                     <View style={styles.formLabelRow}>
                         <Text style={styles.formLabel}>Password</Text>
+                        {passwordError !== "" && inputError(passwordError)}
                     </View>
                     <View style={[styles.formInputRow, inputHighlighted('password')]}>
                         <Ionicons name="lock-closed" size={24} color={dynamicIconColor('password')} />
@@ -99,6 +130,7 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
                 <View style={styles.formRow}>
                     <View style={styles.formLabelRow}>
                         <Text style={styles.formLabel}>Confirm Password</Text>
+                        {confirmError !== "" && inputError(confirmError)}
                     </View>
                     <View style={[styles.formInputRow, inputHighlighted('confirm')]}>
                         <Ionicons name="lock-closed" size={24} color={dynamicIconColor('confirm')} />
@@ -120,6 +152,9 @@ const SignUpForm = ({createUser, authenticationLoading}) => {
 }
 
 const styles = StyleSheet.create({
+    errorText: {
+        color: "#fff",
+    },
     formLabel: {
         color: '#fff',
         fontSize: height * 0.03,
@@ -172,7 +207,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        authenticationLoading: state.user.authenticationLoading,
+        user: state.user,
     }
 }
 

@@ -29,7 +29,7 @@ const createUser = (userInfo) => {
                     return dispatch({type: "SIGN_UP_SUCCESS", userInfo})
                 } else {
                     let {errors} = data;
-                    return dispatch({type: "SIGN_UP_ERROR"});
+                    return dispatch({type: "SIGN_UP_ERROR", errors});
                 }
             })
     }

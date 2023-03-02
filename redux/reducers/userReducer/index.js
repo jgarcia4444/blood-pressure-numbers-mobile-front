@@ -4,7 +4,7 @@ const initialState = {
     authenticationLoading: false,
     authErrors: [],
     recordsCount: 0,
-    autenticationError: "",
+    authenticationError: "",
     passwordChangeInfo: {
         codeSending: false,
         codeSendError: "",
@@ -172,7 +172,8 @@ const userReducer = (state=initialState, action) => {
             return {
                 ...state,
                 authenticationLoading: false,
-                authenticationError: "There was an error creating your account."
+                authenticationError: "There was an error creating your account.",
+                authErrors: action.errors
             }
         case "SIGNING_UP":
             return {
