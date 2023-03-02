@@ -38,6 +38,7 @@ const AddRecordForm = ({dayStreak, updateDayStreak, createDayStreak, addRecord, 
     }
 
     const persistRecord = () => {
+        console.log("Here is the daystreak days count: ", dayStreak.days);
         let recordInfo = {
             userId,
             systolic,

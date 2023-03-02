@@ -35,6 +35,21 @@ const configureNextDayAvailable = updatedAt => {
 
 const dayStreakReducer = (state=initialState, action) => {
     switch(action.type) {
+        case "DAY_STREAK_CREATE_ERROR":
+            return {
+                ...initialState,
+                loadError: action.message,
+            }
+        case "CREATING_DAY_STREAK":
+            return {
+                ...initialState,
+                dayStreakLoading: true,
+            }
+        case "DAY_STREAK_CREATE_SUCCESS":
+            return {
+                ...initialState,
+                ...action.dayStreak,
+            }
         case "DAY_STREAK_FETCH_SUCCESS":
             let {dayStreak} = action;
             let hoursUntilExpiration = dayStreak.expiresAt === "" ? 0 : configureHoursUntil(dayStreak.expiresAt);
