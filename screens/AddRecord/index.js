@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
 
 import MainBackgroundContainer from '../../components/backgrounds';
 import AddRecordForm from '../../components/forms/AddRecordForm';

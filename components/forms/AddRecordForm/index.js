@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, Alert } from 'react-native';
+import { View, ScrollView, TextInput, Text, StyleSheet, Dimensions, Platform, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import addRecord from '../../../redux/actions/addRecordActions/addRecord';
@@ -38,7 +38,6 @@ const AddRecordForm = ({dayStreak, updateDayStreak, createDayStreak, addRecord, 
     }
 
     const persistRecord = () => {
-        console.log("Here is the daystreak days count: ", dayStreak.days);
         let recordInfo = {
             userId,
             systolic,
@@ -111,63 +110,67 @@ const AddRecordForm = ({dayStreak, updateDayStreak, createDayStreak, addRecord, 
 
     return (
         <View style={[styles.addRecordContainer]}>
-            <ScrollView contentContainerStyle={styles.scrollContent} style={[styles.addRecordScroll, platformShadow]}>
-                <View style={styles.formRow}>
-                    <View style={styles.formCol}>
-                        <View style={styles.formLabelRow}>
-                            <Text style={styles.formLabel}>Systolic</Text>
+
+            <ScrollView style={[styles.addRecordScroll, platformShadow]}>
+                <KeyboardAvoidingView style={styles.scrollContent}
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                    <View style={styles.formRow}>
+                        <View style={styles.formCol}>
+                            <View style={styles.formLabelRow}>
+                                <Text style={styles.formLabel}>Systolic</Text>
+                            </View>
+                            <View style={styles.formInputContainer}>
+                                <TextInput keyboardType='numeric' style={styles.formInput} placeholder='120' value={systolic} onChangeText={(val) => setSystolic(val)} />
+                            </View>
                         </View>
-                        <View style={styles.formInputContainer}>
-                            <TextInput keyboardType='numeric' style={styles.formInput} placeholder='120' value={systolic} onChangeText={(val) => setSystolic(val)} />
+                        <View style={styles.formCol}>
+                            <View style={styles.formLabelRow}>
+                                <Text style={styles.formLabel}>Diastolic</Text>
+                            </View>
+                            <View style={styles.formInputContainer}>
+                                <TextInput keyboardType='numeric' style={styles.formInput} placeholder='80' value={diastolic} onChangeText={(val) => setDiastolic(val)} />
+                            </View>
                         </View>
                     </View>
-                    <View style={styles.formCol}>
-                        <View style={styles.formLabelRow}>
-                            <Text style={styles.formLabel}>Diastolic</Text>
-                        </View>
-                        <View style={styles.formInputContainer}>
-                            <TextInput keyboardType='numeric' style={styles.formInput} placeholder='80' value={diastolic} onChangeText={(val) => setDiastolic(val)} />
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.formRow}>
-                    <View style={styles.formContainer}>
-                        <View style={styles.formLabelRow}>
-                            <Text style={styles.formLabel}>Arm Taken</Text>
-                        </View>
-                        <SegmentedControl 
-                            style={styles.segmentControl}
-                            values={armValues}
-                            selectedIndex={armSelectedIndex}
-                            onChange={(e) => {
-                                setArmSelectedIndex(e.nativeEvent.selectedSegmentIndex);
-                            }}
-                            tintColor='#ccc'
-                            fontStyle={{color: "#000"}}
-                        />
-                    </View>
-                </View>
-                <View style={styles.formRow}>
-                    <View style={styles.formContainer}>
-                        <View style={styles.formLabelRow}>
-                            <Text style={styles.formLabel}>Notes</Text>
-                        </View>
-                        <View style={[styles.formInputContainer, {width: '100%'}]}>
-                            <TextInput 
-                                value={notes}
-                                onChangeText={handleNotesValChange}
-                                placeholder="Write Here"
-                                multiline={true}
-                                style={styles.notesTextArea}
+                    <View style={styles.formRow}>
+                        <View style={styles.formContainer}>
+                            <View style={styles.formLabelRow}>
+                                <Text style={styles.formLabel}>Arm Taken</Text>
+                            </View>
+                            <SegmentedControl 
+                                style={styles.segmentControl}
+                                values={armValues}
+                                selectedIndex={armSelectedIndex}
+                                onChange={(e) => {
+                                    setArmSelectedIndex(e.nativeEvent.selectedSegmentIndex);
+                                }}
+                                tintColor='#ccc'
+                                fontStyle={{color: "#000"}}
                             />
                         </View>
                     </View>
-                </View>
-                <View style={styles.formRow}>
-                    <TouchableOpacity style={[styles.saveBtn, isValid]} onPress={handleSavePress}>
-                        <Text style={[styles.saveBtnText, isValidText]}>Save</Text>
-                    </TouchableOpacity>
-                </View>
+                    <View style={styles.formRow}>
+                        <View style={styles.formContainer}>
+                            <View style={styles.formLabelRow}>
+                                <Text style={styles.formLabel}>Notes</Text>
+                            </View>
+                            <View style={[styles.formInputContainer, {width: '100%'}]}>
+                                <TextInput 
+                                    value={notes}
+                                    onChangeText={handleNotesValChange}
+                                    placeholder="Write Here"
+                                    multiline={true}
+                                    style={styles.notesTextArea}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.formRow}>
+                        <TouchableOpacity style={[styles.saveBtn, isValid]} onPress={handleSavePress}>
+                            <Text style={[styles.saveBtnText, isValidText]}>Save</Text>
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAvoidingView>
             </ScrollView>
         </View>
     )
