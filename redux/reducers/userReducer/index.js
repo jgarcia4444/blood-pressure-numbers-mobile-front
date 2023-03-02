@@ -17,7 +17,13 @@ const initialState = {
 }
 
 const userReducer = (state=initialState, action) => {
+    
     switch(action.type) {
+        case "RECORD_SAVED":
+            return {
+                ...state,
+                recordsCount: state.recordsCount + 1,
+            }
         case "RESET_PASSWORD_DISPLAY":
             return {
                 ...state,
