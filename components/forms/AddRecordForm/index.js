@@ -144,8 +144,9 @@ const AddRecordForm = ({dayStreak, updateDayStreak, createDayStreak, addRecord, 
                                 onChange={(e) => {
                                     setArmSelectedIndex(e.nativeEvent.selectedSegmentIndex);
                                 }}
-                                tintColor='#ccc'
+                                tintColor='#fff'
                                 fontStyle={{color: "#000"}}
+                                activeFontStyle={{color: '#f00'}}
                             />
                         </View>
                     </View>
