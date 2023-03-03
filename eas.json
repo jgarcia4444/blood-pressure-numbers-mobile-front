@@ -15,11 +15,6 @@
         "distribution": "internal"
       },
       "production": {}
-    },
-    "extra": {
-      "eas": {
-        "projectId": "blood-pressure-numbers"
-      }
     }
   }
   
