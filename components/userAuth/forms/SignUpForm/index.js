@@ -68,7 +68,7 @@ const SignUpForm = ({createUser, user}) => {
     }
 
     const configureReduxErrors = () => {
-        errors.forEach(error => {
+        authErrors.forEach(error => {
             if (error.errorType === "GENERAL") {
                 setEmailError(error.message);
             } else {

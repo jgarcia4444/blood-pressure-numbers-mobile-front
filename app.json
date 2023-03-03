@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "BloodPressureNumbers",
-    "slug": "BloodPressureNumbers",
-    "version": "1.0.0",
+    "name": "Blood Pressure Numbers",
+    "slug": "blood-pressure-numbers",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
