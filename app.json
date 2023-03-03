@@ -2,7 +2,7 @@
   "expo": {
     "name": "Blood Pressure Numbers",
     "slug": "blood-pressure-numbers",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,10 +25,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.jgar4444.bloodpressurenumbers"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "adb124d0-09bb-4014-99df-67b925738d1a"
+      }
     }
   }
 }

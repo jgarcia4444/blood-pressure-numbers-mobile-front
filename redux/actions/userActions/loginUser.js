@@ -3,7 +3,7 @@ import Urls from "../../../config/networking/Urls";
 const {baseUrl} = Urls;
 
 const loginUser = (userInfo) => {
-
+    console.log("login action triggered", userInfo);
     let url = `${baseUrl}users/login`;
     let options = {
         method: 'POST',
