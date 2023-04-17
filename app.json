@@ -22,6 +22,7 @@
       "bundleIdentifier": "com.JakeGarcia.Blood-Pressure-Tracker"
     },
     "android": {
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
