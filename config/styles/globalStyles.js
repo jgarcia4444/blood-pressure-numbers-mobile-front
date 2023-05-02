@@ -34,8 +34,9 @@ export default {
     pageTitleContainer: {
         width: '100%',
         height: '15%',
-        alignItems: 'flex-start',
+        alignItems: 'flex-end',
         justifyContent: 'flex-end',
+        flexDirection: 'row',
     },
     platformShadow,
 }
