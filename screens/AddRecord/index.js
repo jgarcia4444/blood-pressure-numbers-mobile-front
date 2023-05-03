@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react';
 import { View, Text, StyleSheet, Dimensions, Modal, TouchableOpacity } from 'react-native';
 import {Ionicons} from 'react-native-vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import MainBackgroundContainer from '../../components/backgrounds';
 import AddRecordForm from '../../components/forms/AddRecordForm';
@@ -12,6 +13,7 @@ const {pageTitle, pageTitleContainer, platformShadow} = globalStyles;
 const AddRecord = () => {
 
     const [showNotificationForm, setShowNotificationForm] = useState(false);
+    const [reminderTime, setReminderTime] = useState(new Date());
 
     const handleReminderPress = () => {
         setShowNotificationForm(true);  
@@ -32,7 +34,12 @@ const AddRecord = () => {
                         <Text style={styles.formTitle}>Set a reminder time!</Text>
                     </View>
                     <View>
-
+                        <Text>Time</Text>
+                        <DateTimePicker 
+                            mode="time"
+                            display="clock"
+                            value={reminderTime}
+                        />
                     </View>
                 </View>
             </View>
