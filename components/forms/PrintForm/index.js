@@ -97,7 +97,6 @@ const PrintForm = ({userRecords, printableRecords, fetchFilteredRecords, dateRan
     const printRecords = async () => {
         let html = genrateHtml();
         const file = await Print.printToFileAsync({html});
-        console.log("File has been saved to.", file.uri);
         if (isAvailableAsync()) {
             await shareAsync(file.uri, {UTI: '.pdf', mimeType: 'application/pdf'});
         } else {

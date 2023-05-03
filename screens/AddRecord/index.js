@@ -19,6 +19,10 @@ const AddRecord = () => {
         setShowNotificationForm(true);  
     }
 
+    const handleSavePress = () => {
+        console.log("Save Pressed!");
+    }
+
     const closeButton = (
         <TouchableOpacity onPress={() => setShowNotificationForm(false)} style={[styles.closeButton, platformShadow]}>
             <Ionicons name="close" size={32} color={"#fff"} />
@@ -33,14 +37,21 @@ const AddRecord = () => {
                     <View>
                         <Text style={styles.formTitle}>Set a reminder time!</Text>
                     </View>
-                    <View>
-                        <Text>Time</Text>
-                        <DateTimePicker 
-                            mode="time"
-                            display="clock"
-                            value={reminderTime}
-                        />
+                    <View style={styles.timePickerContainer}>
+                        <Text style={styles.timePickerLabel}>Time</Text>
+                        <View style={styles.timePickerWrapper}>
+                            <DateTimePicker 
+                                mode="time"
+                                display="clock"
+                                is24Hour={true}
+                                value={reminderTime}
+                                style={styles.timePicker}
+                            />
+                        </View>
                     </View>
+                    <TouchableOpacity onPress={handleSavePress} style={styles.saveButton}>
+                        <Text style={styles.saveButtonText}>Save</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </Modal>
@@ -87,9 +98,12 @@ const styles = StyleSheet.create({
         top: -24,
     },
     formContainer: {
+        width: '75%',
         backgroundColor: '#f00',
         padding: height * 0.04,
-        borderRadius: 5,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: "center",
     },
     formModal: {
         
@@ -103,6 +117,39 @@ const styles = StyleSheet.create({
     formTitle: {
         color: "#fff",
         fontWeight: "bold",
+        fontSize: height * 0.03,
+    },
+    timePicker: {
+        height: '40%',
+        width: '100%',
+    },
+    timePickerWrapper: {
+        width: '50%',
+        height: '45%',
+        alignItems:'center',
+        justifyContent: 'center',
+    },
+    timePickerContainer: {
+        flexDirection: "column",
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',  
+    },
+    timePickerLabel: {
+        color: "#fff",
+        fontSize: height * 0.03,
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    saveButton: {
+        backgroundColor: '#fff',
+        paddingVertical: height * 0.02,
+        paddingHorizontal: height * 0.10,
+        borderRadius: 10,
+    },
+    saveButtonText: {
+        color: "#f00",
+        fontWeight: 'bold',
         fontSize: height * 0.03,
     }
 })
